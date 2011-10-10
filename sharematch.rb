@@ -1,5 +1,8 @@
 require 'sinatra'
+require 'slim'
+
+layout 'layout'
 
 get '/' do
-  'Hello world!'
+  slim :index
 end

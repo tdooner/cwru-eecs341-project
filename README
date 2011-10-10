@@ -7,3 +7,13 @@ Description
 -----------
 
 A project for EECS341, Introduction to Databases at Case Western Reserve University.
+
+
+Install
+----------
+1) Install rvm (Ruby Version Manager)
+2) rvm install 1.9.2
+3) rvm use 1.9.2 --default
+4) gem install bundler
+5) bundle install
+6) ruby sharematch.rb
