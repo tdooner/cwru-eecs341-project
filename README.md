@@ -12,3 +12,4 @@ Running
 -------
 
 Use shotgun to run the app. The main class is sharematch.rb
+The bash script run.sh works now
