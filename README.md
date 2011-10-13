@@ -8,6 +8,11 @@ Description
 
 A project for EECS341, Introduction to Databases at Case Western Reserve University.
 
+Installation
+------------
+Must first run:
+<pre><code>sudo apt-get install libsqlite3-dev</code></pre>
+
 Running
 -------
 

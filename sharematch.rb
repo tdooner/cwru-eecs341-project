@@ -17,7 +17,7 @@ end
 
 get '/find' do
 	@pills[:find] = 'active'
-	@items = db.execute( "select * from test" )
+	@users = db.execute( "select * from users" )
 	slim :find
 end
 
