@@ -1,5 +1,16 @@
-source 'http://rubygems.org'
+source :rubygems
+gem 'sinatra', :git => "git://github.com/sinatra/sinatra.git"
+  
+# server stuff
+gem 'shotgun'
+gem 'thin'
 
-gem 'sinatra'
-gem 'slim'
+# templating stuff
+gem 'less'
+gem 'slim'     
 
+#database stuff
+gem 'sqlite3'
+gem 'dm-core'
+gem 'dm-sqlite-adapter'
+gem 'dm-migrations'

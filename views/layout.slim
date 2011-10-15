@@ -1,3 +1,31 @@
-div Sharematch Header Here
-div.content == yield
-div Sharematch Footer Here
+doctype html
+html
+  head
+    meta charset="utf-8"
+    title Share*Match -- share with friends
+    link rel="stylesheet" type="text/css" href="/bootstrap.css" 
+    script type="text/javascript" src='http://code.jquery.com/jquery-latest.min.js'
+    script src="/alert.js"
+    script src="/twipsy.js"
+  body
+    .container style="margin-top: 10px;"
+      .header
+        a href="/"
+          img src="/sharematch.png"
+        ul.pills style="float: right;"
+          li class="#{@pills[:home]}"
+            a href="/" HOME
+          li class="#{@pills[:share]}"
+            a href="/share" SHARE
+          li class="#{@pills[:find]}"
+            a href="/find" FIND
+          li class="#{@pills[:search]}"
+            a href="/search" SEARCH
+          li class="#{@pills[:other]}"
+            a href="/other" OTHER?
+        br
+        br
+      == yield
+    footer
+      .container
+        |Share*Match 
