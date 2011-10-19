@@ -1,7 +1,6 @@
 require 'minitest/autorun'
 require 'sqlite3'
 
-
 class TestUser < MiniTest::Unit::TestCase
 	
 	def setup

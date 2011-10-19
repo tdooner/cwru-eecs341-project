@@ -56,6 +56,7 @@ DEPENDENCIES
   dm-migrations
   dm-sqlite-adapter
   less
+  rack
   shotgun
   sinatra!
   slim
