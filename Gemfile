@@ -16,3 +16,5 @@ gem 'dm-core'
 gem 'dm-sqlite-adapter'
 gem 'dm-migrations'
 
+#testing stuff
+gem 'faker'
