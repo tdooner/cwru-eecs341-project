@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'slim'
+require 'haml'
 require 'less'
 require 'sqlite3'
 
@@ -12,18 +12,18 @@ end
 
 get '/' do
 	@pills[:home] = 'active'
-	slim :index
+	haml :index
 end
 
 get '/find' do
 	@pills[:find] = 'active'
 	@users = db.execute( "select * from users" )
-	slim :find
+	haml :find
 end
 
 get '/share' do
 	@pills[:share] = 'active'
-	slim :share
+	haml :share
 end
 
 get '/*.css' do
