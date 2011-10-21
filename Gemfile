@@ -7,7 +7,7 @@ gem 'thin'
 
 # templating stuff
 gem 'less'
-gem 'slim'     
+gem 'haml'     
 
 #database stuff
 gem 'sqlite3'
