@@ -12,9 +12,7 @@ gem 'haml'
 
 #database stuff
 gem 'sqlite3'
-gem 'dm-core'
-gem 'dm-sqlite-adapter'
-gem 'dm-migrations'
+gem 'data_mapper'
 
 #testing stuff
 gem 'faker'
