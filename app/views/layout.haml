@@ -1,0 +1,43 @@
+!!!
+%html
+  %head
+    %meta{:charset=>"utf-8"}
+    %title Share*Match -- share with friends
+    %link{:rel=>"stylesheet",:type=>"text/css",:href=>"/bootstrap.css"}
+    %script{:type=>"text/javascript",:src=>'http://code.jquery.com/jquery-latest.min.js'}
+    %script{:src=>"/twipsy.js"}
+    %script{:src=>"/alert.js"}
+    -# TODO: change this to coffeescript
+    :javascript
+      $(document).ready(function(){
+        $(".alert-message").alert()
+      });
+  %body
+    .container{:style=>"margin-top: 10px;"}
+      .header
+        %a{:href=>"/"}
+          %img{:src=>"/sharematch.png"}
+        %ul.pills{:style=>"float: right;"}
+          %li{:class=>"#{@pills[:signup]}"}
+            %a{:href=>"/sign-up"}Sign Up
+          %li{:class=>"#{@pills[:login]}"}
+            %a{:href=>"/login"}Log In
+        %br
+        %ul.tabs
+          %li{:class=>"#{@nav[:home]}"}
+            %a{:href=>"/"}HOME
+          %li{:class=>"#{@nav[:share]}"}
+            %a{:href=>"/share"} SHARE
+          %li{:class=>"#{@nav[:find]}"}
+            %a{:href=>"/find"} FIND
+          %li{:class=>"#{@nav[:search]}"}
+            %a{:href=>"/search"} SEARCH
+          %li{:class=>"#{@nav[:user]}"}
+            %a{:href=>"/you"} YOU
+      =yield
+    %footer
+      .container
+        %h4 Share*Match 
+        :textile
+          | a project for eecs341 at "CWRU":http://case.edu/ by "Tom Dooner":http://tomdooner.com, "Brian Stack":http://brianstack.net, and "Ian Dimayuga":http://iandimayuga.com
+          | crafted with "Sinatra":http://sinatrarb.com, "Less":http://lesscss.org, and "jQuery":http://jquery.com

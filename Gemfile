@@ -9,6 +9,7 @@ gem 'rack'
 # templating stuff
 gem 'less'
 gem 'haml'     
+gem 'RedCloth'
 
 #database stuff
 gem 'sqlite3'

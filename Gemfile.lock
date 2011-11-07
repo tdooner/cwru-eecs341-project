@@ -10,6 +10,7 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    RedCloth (4.2.7)
     addressable (2.2.6)
     bcrypt-ruby (3.0.1)
     daemons (1.1.4)
@@ -83,6 +84,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  RedCloth
   data_mapper
   faker
   haml
