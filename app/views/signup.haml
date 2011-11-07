@@ -1,1 +1,23 @@
-Sign Up here!
+%h3 Sign Up
+%h6 step 1 of 3
+
+%ul.breadcrumb
+  %li
+    %a{:href => '#'}Your Information
+  %li
+    %a{:href => '#'}Pick a Community 
+  %li.active Add Your Items
+
+%form
+  %fieldset
+    %label{:for => 'uname'} Email Address
+    .input
+      %input#uname.xlarge{:type => 'text'}
+    %br
+    %label{:for => 'pword'} Password
+    .input
+      %input#pword.xlarge{:type => 'password'}
+    %br
+    .input
+      %input.btn{:type => 'submit', :value => 'Login'}
+      %a{:href => '#'} forgot password

@@ -1,1 +1,13 @@
-Login here!
+%form
+  %fieldset
+    %label{:for => 'uname'} Email Address
+    .input
+      %input#uname.xlarge{:type => 'text'}
+    %br
+    %label{:for => 'pword'} Password
+    .input
+      %input#pword.xlarge{:type => 'password'}
+    %br
+    .input
+      %input.btn{:type => 'submit', :value => 'Login'}
+      %a{:href => '#'} forgot password
