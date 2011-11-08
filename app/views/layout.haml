@@ -18,22 +18,15 @@
         %a{:href=>"/"}
           %img{:src=>"/sharematch.png"}
         %ul.pills{:style=>"float: right;"}
-          %li{:class=>"#{@pills[:signup]}"}
-            %a{:href=>"/sign-up"}Sign Up
-          %li{:class=>"#{@pills[:login]}"}
-            %a{:href=>"/login"}Log In
+          = nav_li 'Sign Up', '/sign-up', @pills[:signup]
+          = nav_li 'Log In', '/login', @pills[:login]
         %br
         %ul.tabs
-          %li{:class=>"#{@nav[:home]}"}
-            %a{:href=>"/"}HOME
-          %li{:class=>"#{@nav[:share]}"}
-            %a{:href=>"/share"} SHARE
-          %li{:class=>"#{@nav[:find]}"}
-            %a{:href=>"/find"} FIND
-          %li{:class=>"#{@nav[:search]}"}
-            %a{:href=>"/search"} SEARCH
-          %li{:class=>"#{@nav[:user]}"}
-            %a{:href=>"/you"} YOU
+          = nav_li 'HOME', '/', @nav[:home]
+          = nav_li 'SHARE', '/share', @nav[:share]
+          = nav_li 'FIND', '/find', @nav[:find]
+          = nav_li 'SEARCH', '/search',  @nav[:you]
+          = nav_li 'YOU', '/you',  @nav[:user]
       =yield
     %footer
       .container

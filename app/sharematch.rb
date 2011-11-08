@@ -78,6 +78,12 @@ module ShareMatch
 				end
 				return retr
 			end
+
+			def nav_li text, link, key
+				el = "%li{:class=>\"#{key}\"}\n  %a{:href=>\"#{link}\"}#{text}
+				"
+				haml el
+			end
 		end
 	end
 end
