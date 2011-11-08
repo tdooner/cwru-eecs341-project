@@ -1,0 +1,11 @@
+%h3 Sign Up
+%h6 step #{@step} of 3
+
+%ul.breadcrumb
+  = signup_crumbs '1. Your Information', 1, @step
+  %span.divider /
+  = signup_crumbs '2. Pick a Community', 2, @step
+  %span.divider /
+  = signup_crumbs '3. Add Your Items', 3, @step
+
+= haml :"#{@part}"

@@ -1,5 +1,5 @@
 /*!
- * Bootstrap v1.2.0
+ * Bootstrap @VERSION
  *
  * Copyright 2011 Twitter, Inc
  * Licensed under the Apache License v2.0
@@ -12,8 +12,11 @@
 // CSS Reset
 @import "./app/views/style/reset.less";
 
-// Core
-@import "./app/views/style/preboot.less";
+// Core variables and mixins
+@import "./app/views/style/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "./app/views/style/mixins.less";
+
+// Grid system and page structure
 @import "./app/views/style/scaffolding.less";
 
 // Styled patterns and elements
@@ -21,5 +24,3 @@
 @import "./app/views/style/forms.less";
 @import "./app/views/style/tables.less";
 @import "./app/views/style/patterns.less";
-
-

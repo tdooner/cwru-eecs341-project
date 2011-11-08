@@ -1,0 +1,33 @@
+%form
+  %fieldset
+    %label{:for => 'name'} Full Name
+    .input.clearfix
+      %input#name.xlarge{:type => 'text'}
+    %label{:for => 'uname'} Email Address
+    .input.clearfix
+      %input#uname.xlarge{:type => 'text'}
+  %fieldset
+    %label{:for => 'pword'} Password
+    .input.clearfix.success
+      %input#pword.xlarge{:type => 'password'}
+      %span.help-inline keep calm and carry on
+    %label{:for => 'pword'} ReEnter Password
+    .input.clearfix.error
+      %input#pword.xlarge{:type => 'password'}
+      %span.help-inline this shit looks like christmas
+  %fieldset
+    %label{:for => 'address'} Address
+    .input.clearfix
+      %input#address.xlarge{:type => 'text'}
+    %label{:for => 'city'} City
+    .input.clearfix
+      %input#city.xlarge{:type => 'text'}
+    %label{:for => 'zip'} Zip Code
+    .input.clearfix
+      %input#zip.xlarge{:type => 'text'}
+    %label{:for => 'state'} State
+    .input.clearfix
+      %select#state
+  %fieldset
+    .input.clearfix
+      %input.btn{:type => 'submit', :value => 'Sign Up'}

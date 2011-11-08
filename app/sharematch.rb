@@ -41,7 +41,12 @@ module ShareMatch
 		get '/sign-up' do
 			@nav[:user] = 'active'
 			@pills[:signup] = 'active'
-			haml :signup
+
+			@step = 1
+			@step = params[:step] if params[:step]
+			@part = "signup/_step#{@step}"
+
+			haml :'signup/signup'
 		end
 
 		get '/login' do
@@ -57,6 +62,22 @@ module ShareMatch
 
 		get '/*.css' do
 			less (:"style/#{params[:splat][0]}")
+		end
+
+		helpers do 
+			def signup_crumbs text, id, step
+				retr = '<li'
+				if  id == Integer(step)
+					retr << ' class="active">'
+					retr << text
+				else
+					retr << '>'
+					retr << "<a href=\"/sign-up?step=#{id}\">"
+					retr << text
+				        retr << '</a></li>'
+				end
+				return retr
+			end
 		end
 	end
 end
