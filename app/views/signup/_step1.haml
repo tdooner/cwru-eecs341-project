@@ -1,20 +1,47 @@
-%form
+:javascript
+  $(document).ready(function() {
+    $("#sign_up_form").validate({
+      errorClass: 'help-inline',
+      errorElement: 'span',
+      highlight: function(element, errorClass) {
+        $(element).parent().addClass("error");
+      },
+      success: function(label) {
+        label.parent().removeClass("error");
+      },
+      rules: {
+        pword_repeat: {
+          equalTo: "#pword",
+        }
+      }
+    });
+  });
+
+/
+  Validation on this page is done via jQuery Validation Plugin.
+  See: http://rocketsquared.com/wiki/Plugins/Validation/validate#options
+
+  Basically, all the magic happens via the class names of the input fields.
+
+%form#sign_up_form
   %fieldset
-    %label{:for => 'name'} Full Name
+    %label{:for => 'name'} 
+      %b Full Name
     .input.clearfix
-      %input#name.xlarge{:type => 'text'}
-    %label{:for => 'uname'} Email Address
+      %input#name.xlarge.required{:type => 'text'}
+    %label{:for => 'uname'}
+      %b Email Address
     .input.clearfix
-      %input#uname.xlarge{:type => 'text'}
+      %input#uname.xlarge.required.email{:type => 'text'}
   %fieldset
-    %label{:for => 'pword'} Password
-    .input.clearfix.success
-      %input#pword.xlarge{:type => 'password'}
-      %span.help-inline keep calm and carry on
-    %label{:for => 'pword'} ReEnter Password
-    .input.clearfix.error
-      %input#pword.xlarge{:type => 'password'}
-      %span.help-inline this shit looks like christmas
+    %label{:for => 'pword'}
+      %b Password
+    .input.clearfix
+      %input#pword.xlarge.required{:type => 'password', :name=>'pword'}
+    %label{:for => 'pword'} 
+      %b ReEnter Password
+    .input.clearfix
+      %input#pword_repeat.xlarge{:type => 'password', :name=>'pword_repeat'}
   %fieldset
     %label{:for => 'address'} Address
     .input.clearfix
@@ -30,4 +57,4 @@
       %select#state
   %fieldset
     .input.clearfix
-      %input.btn{:type => 'submit', :value => 'Sign Up'}
+      %input.submit.btn{:type => 'submit', :value => 'Sign Up'}

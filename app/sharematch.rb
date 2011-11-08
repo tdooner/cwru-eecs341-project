@@ -45,7 +45,8 @@ module ShareMatch
 			@step = 1
 			@step = params[:step] if params[:step]
 			@part = "signup/_step#{@step}"
-
+    
+            @user = User.new
 			haml :'signup/signup'
 		end
 
