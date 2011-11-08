@@ -14,6 +14,7 @@ gem 'RedCloth'
 #database stuff
 gem 'sqlite3'
 gem 'data_mapper'
+gem 'dm-sqlite-adapter'
 
 #testing stuff
 gem 'faker'
