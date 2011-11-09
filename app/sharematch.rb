@@ -1,7 +1,8 @@
 require 'sinatra'
 require 'haml'
 require 'less'
-require 'sqlite3'
+require File.join(File.dirname(__FILE__), 'environment')
+
 
 
 module ShareMatch
@@ -25,6 +26,9 @@ module ShareMatch
 
 		get '/find' do
 			@nav[:find] = 'active'
+			
+			@items = Item.all
+
 			haml :find
 		end
 
