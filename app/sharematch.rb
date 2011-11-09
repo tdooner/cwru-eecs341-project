@@ -11,6 +11,7 @@ module ShareMatch
 		set :public_folder,   "#{dir}/../public"
 		set :app_file, __FILE__
 		set :views,    "app/views"
+		enable :sessions
 
 
 		before do
@@ -41,7 +42,7 @@ module ShareMatch
 		get '/sign-up' do
 			@nav[:user] = 'active'
 			@pills[:signup] = 'active'
-
+            
 			@step = 1
 			@step = params[:step] if params[:step]
 			@part = "signup/_step#{@step}"
@@ -49,6 +50,19 @@ module ShareMatch
             @user = User.new
 			haml :'signup/signup'
 		end
+
+        post '/sign-up' do
+            if params[:step] == "1"
+                params.delete("step")
+                @a = User.new(params)
+                @a.joined_at = Time.now.utc
+                if @a.valid?
+                    @a.save
+                    session[:user_id] = @a.id
+                end
+            end
+            redirect '/sign-up?step=2'
+        end
 
 		get '/login' do
 			@nav[:user] = 'active'

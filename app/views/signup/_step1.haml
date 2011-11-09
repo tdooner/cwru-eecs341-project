@@ -10,8 +10,8 @@
         label.parent().removeClass("error");
       },
       rules: {
-        pword_repeat: {
-          equalTo: "#pword",
+        password_repeat: {
+          equalTo: "#password",
         }
       }
     });
@@ -23,38 +23,44 @@
 
   Basically, all the magic happens via the class names of the input fields.
 
-%form#sign_up_form
+%form#sign_up_form{:method=>"POST"}
+  %input{:type=>"hidden", :name=>"step", :value=>"1"}
   %fieldset
     %label{:for => 'name'} 
       %b Full Name
     .input.clearfix
-      %input#name.xlarge.required{:type => 'text'}
+      %input#name.xlarge.required{:type => 'text', :name=>"name"}
     %label{:for => 'uname'}
       %b Email Address
     .input.clearfix
-      %input#uname.xlarge.required.email{:type => 'text'}
+      %input#uname.xlarge.required.email{:type => 'text', :name=>"email"}
   %fieldset
-    %label{:for => 'pword'}
+    %label{:for => 'password'}
       %b Password
     .input.clearfix
-      %input#pword.xlarge.required{:type => 'password', :name=>'pword'}
+      %input#password.xlarge.required{:type => 'password', :name=>'password'}
     %label{:for => 'pword'} 
-      %b ReEnter Password
+      %b Repeat Password
     .input.clearfix
-      %input#pword_repeat.xlarge{:type => 'password', :name=>'pword_repeat'}
+      %input#password_repeat.xlarge{:type => 'password', :name=>'password_repeat'}
   %fieldset
-    %label{:for => 'address'} Address
+    %label{:for => 'address'}
+      %b Address
     .input.clearfix
-      %input#address.xlarge{:type => 'text'}
-    %label{:for => 'city'} City
+      %input#address.xlarge.required{:type => 'text', :name=>'address'}
+    %label{:for => 'city'} 
+      %b City
     .input.clearfix
-      %input#city.xlarge{:type => 'text'}
-    %label{:for => 'zip'} Zip Code
+      %input#city.xlarge.required{:type => 'text', :name=>'city'}
+    %label{:for => 'zip'} 
+      %b Zip Code
     .input.clearfix
-      %input#zip.xlarge{:type => 'text'}
-    %label{:for => 'state'} State
+      %input#zip.xlarge.required{:type => 'text', :name=>'zip'}
+    %label{:for => 'state'} 
+      %b State
     .input.clearfix
-      %select#state
+      %select#state.required
+        %option{:value=>"ohio"} OHIO!
   %fieldset
     .input.clearfix
       %input.submit.btn{:type => 'submit', :value => 'Sign Up'}

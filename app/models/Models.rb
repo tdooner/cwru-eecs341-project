@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'digest/sha1'
 require 'data_mapper'
 
 DataMapper::Logger.new($stdout, :debug)
@@ -6,6 +7,10 @@ DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/test.db")
 
 class User
 	include DataMapper::Resource
+	attr_accessor :password, :password_repeat
+	attr_accessor :city, :state, :zip
+	validates_presence_of :name, :address, :email
+	validates_confirmation_of :password, :confirm => :password_repeat
 
 	property :id, Serial
 	property :name, String
@@ -13,8 +18,11 @@ class User
 	property :location_id, Integer
 	property :email, String
 	property :joined_at, DateTime
-	property :password, String #later make this bcrypthash
+	property :password_hash, String 
 
+	def password=(value)
+		self.password_hash = Digest::SHA1.hexdigest(value)
+	end
 	has n, :items
 	has n, :borrowings
 end
