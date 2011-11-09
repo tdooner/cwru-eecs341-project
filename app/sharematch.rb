@@ -1,7 +1,8 @@
 require 'sinatra'
 require 'haml'
 require 'less'
-require 'sqlite3'
+require 'environment' # app/environment.rb
+
 
 
 module ShareMatch
@@ -26,6 +27,9 @@ module ShareMatch
 
 		get '/find' do
 			@nav[:find] = 'active'
+			
+			@items = Item.all
+
 			haml :find
 		end
 
@@ -62,6 +66,7 @@ module ShareMatch
                 end
             end
             redirect '/sign-up?step=2'
+            return params.inspect
         end
 
 		get '/login' do
@@ -92,6 +97,12 @@ module ShareMatch
 				        retr << '</a></li>'
 				end
 				return retr
+			end
+
+			def nav_li text, link, key
+				el = "%li{:class=>\"#{key}\"}\n  %a{:href=>\"#{link}\"}#{text}
+				"
+				haml el
 			end
 		end
 	end
