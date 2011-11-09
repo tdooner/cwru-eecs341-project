@@ -27,7 +27,7 @@ module ShareMatch
 
 		get '/find' do
 			@nav[:find] = 'active'
-			
+
 			@items = Item.all
 
 			haml :find
@@ -46,28 +46,27 @@ module ShareMatch
 		get '/sign-up' do
 			@nav[:user] = 'active'
 			@pills[:signup] = 'active'
-            
+
 			@step = 1
 			@step = params[:step] if params[:step]
 			@part = "signup/_step#{@step}"
-    
-            @user = User.new
+
+			@user = User.new
 			haml :'signup/signup'
 		end
 
-        post '/sign-up' do
-            if params[:step] == "1"
-                params.delete("step")
-                @a = User.new(params)
-                @a.joined_at = Time.now.utc
-                if @a.valid?
-                    @a.save
-                    session[:user_id] = @a.id
-                end
-            end
-            redirect '/sign-up?step=2'
-            return params.inspect
-        end
+		post '/sign-up' do
+			if params[:step] == "1"
+				params.delete("step")
+				@a = User.new(params)
+				if @a.valid?
+					@a.save
+					session[:user_id] = @a.id
+				end
+			end
+			redirect '/sign-up?step=2'
+			return params.inspect
+		end
 
 		get '/login' do
 			@nav[:user] = 'active'
@@ -94,7 +93,7 @@ module ShareMatch
 					retr << '>'
 					retr << "<a href=\"/sign-up?step=#{id}\">"
 					retr << text
-				        retr << '</a></li>'
+					retr << '</a></li>'
 				end
 				return retr
 			end

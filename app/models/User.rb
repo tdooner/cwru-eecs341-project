@@ -10,7 +10,7 @@ class User
 	property :address, String
 	property :location_id, Integer
 	property :email, String
-	property :joined_at, DateTime
+	property :created_at, DateTime
 	property :password_hash, String 
 
 	def password=(value)
