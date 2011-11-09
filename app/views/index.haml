@@ -1,18 +1,33 @@
--#:onclick => 'window.location="/signup"',
-.alert-message.info.fade.in{ 'data-alert' => 'alert'}
-  %a.close{:href=>"#"} x
-  %strong Hey 
-  you haven't signed up yet! Click this bar to start sharing.
+-# TODO: MAKE THESE NOT HARDCODED STYLES
+-# TODO: ALSO MAKE THE DESIGN BETTER AND ADD MORE COPY
+%div{:style => 'clear: both;width: 50%;'}
+  :textile
+    h4. Why it exists
 
-%h1 Share
-.well
-  Stuff
-%h1 Borrow
-.well
-  Stuff
-%h1 Community
-.well
-  Stuff
-%h1 About
-.well
-  Stuff
+    We all have things we own but don't need everyday.  Think about that Phillips-head screwdriver you have lying around the bottom of your drawer of tools.  Share*Match allows you to put that tool to good use by letting others borrow it.
+
+    But _why_ would you do this you ask? Well imagine if you will another scenario we all run into all the time. 
+
+    You... stuff!
+
+%div{:style => 'float: right;width: 50%;border-top: 1px solid #eee;'}
+  :textile
+    h4. How it works
+
+    We build communities around real world places, and connect people living there to the things they need the most.  When someone wants...
+
+
+%div{:style => 'clear: both;width: 50%;border-top: 1px solid #eee;'}
+  :textile
+    h4. What you do
+
+    Tell us where you live, and what you want to share.  We'll do the rest.
+
+%div{:style => 'float: right; clear: both; width: 50%;border-top: 1px solid #eee;'}
+  :textile
+    h4. How it helps
+
+    If commonly (or uncommonly) used objects can be shared among a community of people, then we won't need as many of them!  This cuts down on the resources needed to... or something like that
+
+#sign-up-box{:style => 'text-align: center; clear: both; border-top: 1px solid #eee; margin: 5px; padding: 5px;'}
+  %a.btn.success{:href => '/sign-up'} Sign Up!
