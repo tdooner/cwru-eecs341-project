@@ -1,13 +1,13 @@
-%form
+%form#login_form{:method => "POST"}
   %fieldset
     %label{:for => 'uname'} Email Address
     .input
-      %input#uname.xlarge{:type => 'text'}
+      %input#uname.xlarge{:type => 'text', :name => 'email'}
     %br
     %label{:for => 'pword'} Password
     .input
-      %input#pword.xlarge{:type => 'password'}
+      %input#pword.xlarge{:type => 'password', :name => 'password'}
     %br
     .input
-      %input.btn{:type => 'submit', :value => 'Login'}
+      %input.submit.btn{:type => 'submit', :value => 'Login'}
       %a{:href => '#'} forgot password

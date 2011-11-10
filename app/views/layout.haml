@@ -20,7 +20,10 @@
           %img{:src=>"/sharematch.png"}
         %ul.pills{:style=>"float: right;"}
           = nav_li 'Sign Up', '/sign-up', @pills[:signup]
-          = nav_li 'Log In', '/login', @pills[:login]
+          - if session[:user] 
+            = nav_li 'Log Out', '/logout', @pills[:logout]
+          - else
+            = nav_li 'Log In', '/login', @pills[:login]
         %br
         %ul.tabs
           = nav_li 'HOME', '/', @nav[:home]

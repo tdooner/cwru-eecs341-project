@@ -12,13 +12,26 @@ class User
 	property :email, String
 	property :created_at, DateTime
 	property :password_hash, String 
-
-	def password=(value)
-		self.password_hash = Digest::SHA1.hexdigest(value)
-	end
+	property :salt, String
 
 	has n, :items
 	has n, :borrowings
 	has n, :items, :through => :borrowings
+
+	def self.authenticate(email, pass)
+		current_user = first(:email => email)
+		return nil if current_user.nil? || User.encrypt(pass, current_user.salt) != current_user.password_hash
+		current_user
+	end  
+
+	def password=(pass)
+		self.salt = (1..12).map{(rand(26)+65).chr}.join if !self.salt
+		self.password_hash = User.encrypt(pass, self.salt)
+	end
+
+	protected
+	def self.encrypt(pass, salt)
+		Digest::SHA1.hexdigest(pass + salt)
+	end
 end
 

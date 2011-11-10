@@ -13,6 +13,7 @@ module ShareMatch
 		set :app_file, __FILE__
 		set :views,    "app/views"
 		enable :sessions
+		set :session_secret, "My session secret"#debug only, to work with shotgun
 
 
 		before do
@@ -34,6 +35,7 @@ module ShareMatch
 		end
 
 		get '/share' do
+			login_required
 			@nav[:share] = 'active'
 			haml :share
 		end
@@ -61,10 +63,12 @@ module ShareMatch
 				@a = User.new(params)
 				if @a.valid?
 					@a.save
-					session[:user_id] = @a.id
+					session[:user] = @a.id
+					redirect '/sign-up?step=2'
+				else
+					redirect '/sign-up'
 				end
 			end
-			redirect '/sign-up?step=2'
 			return params.inspect
 		end
 
@@ -74,12 +78,27 @@ module ShareMatch
 			haml :login
 		end
 
-		get '/you' do
+		post '/login' do
+			if user = User.authenticate(params[:email], params[:password])
+				session[:user] = user.id
+				redirect '/login'#TODO: make this redirect to the incoming page!
+			else
+				redirect '/login'
+			end
+		end
+
+		get '/logout' do
+			session[:user] = nil
+			redirect '/'
+		end
+
+		get '/you' do #TODO: This shit is making Roy Fielding angry.  You won't like him when he's angry. 
 			@nav[:user] = 'active'
 			haml :user
 		end
 
 		get '/*.css' do
+			#TODO: make these served up directly to browser and interpreted there
 			less (:"style/#{params[:splat][0]}")
 		end
 
@@ -102,6 +121,18 @@ module ShareMatch
 				el = "%li{:class=>\"#{key}\"}\n  %a{:href=>\"#{link}\"}#{text}
 				"
 				haml el
+			end
+
+			def login_required
+				if session[:user]
+					return true
+				else
+					return redirect '/login'
+				end
+			end
+
+			def current_user
+				User.get(session[:user])
 			end
 		end
 	end
