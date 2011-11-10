@@ -11,5 +11,6 @@ configure do
   DataMapper::Logger.new($stdout, :debug)
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/#{Sinatra::Base.environment}.db")
   DataMapper.finalize
+
 end
 

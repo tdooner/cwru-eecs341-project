@@ -5,15 +5,15 @@
   });
 %div.row
   %div.span8
-    %form
+    %form#login_form{:method => "POST"}
       %fieldset
         %label{:for => 'uname'} Email Address
         .input
-          %input#uname.xlarge{:type => 'text'}
+          %input#uname.xlarge{:type => 'text', :name => 'email}
         %br
         %label{:for => 'pword'} Password
         .input
-          %input#pword.xlarge{:type => 'password'}
+          %input#pword.xlarge{:type => 'password', :name => 'password'}
         %div.actions
           %input.primary.btn{:type => 'submit', :value => 'Login'}
           %a.btn{:href => '#'} Forgot Password
