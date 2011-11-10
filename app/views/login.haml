@@ -1,4 +1,5 @@
 / Focus the login e-mail address for convenience.
+-# TODO: make things like this jump up into the head
 :javascript
   $(document).ready(function() {
     $("#uname").focus();
@@ -9,7 +10,7 @@
       %fieldset
         %label{:for => 'uname'} Email Address
         .input
-          %input#uname.xlarge{:type => 'text', :name => 'email}
+          %input#uname.xlarge{:type => 'text', :name => 'email'}
         %br
         %label{:for => 'pword'} Password
         .input
