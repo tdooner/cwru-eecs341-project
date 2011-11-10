@@ -1,13 +1,27 @@
-%form
-  %fieldset
-    %label{:for => 'uname'} Email Address
-    .input
-      %input#uname.xlarge{:type => 'text'}
-    %br
-    %label{:for => 'pword'} Password
-    .input
-      %input#pword.xlarge{:type => 'password'}
-    %br
-    .input
-      %input.btn{:type => 'submit', :value => 'Login'}
-      %a{:href => '#'} forgot password
+/ Focus the login e-mail address for convenience.
+:javascript
+  $(document).ready(function() {
+    $("#uname").focus();
+  });
+%div.row
+  %div.span8
+    %form
+      %fieldset
+        %label{:for => 'uname'} Email Address
+        .input
+          %input#uname.xlarge{:type => 'text'}
+        %br
+        %label{:for => 'pword'} Password
+        .input
+          %input#pword.xlarge{:type => 'password'}
+        %div.actions
+          %input.primary.btn{:type => 'submit', :value => 'Login'}
+          %a.btn{:href => '#'} Forgot Password
+  %div.span6.offset1
+    %h3 CWRU's sharing platform!
+    %div
+      In just a minute, you'll be logged in to Share*Match, CWRU's leading item-sharing platform. Featuring 
+      %b millions
+      of users and
+      %b petabytes
+      of items, your life after logging in will never be the same.
