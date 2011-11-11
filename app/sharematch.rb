@@ -143,13 +143,6 @@ module ShareMatch
                                 end
                         end
 
-                        def include_styles
-                                styles = Dir.glob("public/styles/*.less").map{|path| path.slice!("public") ; path }
-                                out = ""
-                                styles.each{ |file| out << "%link{:rel=>\"stylesheet/less\",:type=>\"text/css\",:href=>\"#{file}\"}\n" }
-                                haml out
-                        end
-
                         def include_scripts
                                 scripts = Dir.glob("public/scripts/*.js").map{|path| path.slice!("public") ; path }
                                 out = ""
