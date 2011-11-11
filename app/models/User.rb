@@ -13,6 +13,7 @@ class User
 	property :created_at, DateTime
 	property :password_hash, String 
 	property :salt, String
+        property :is_admin, Boolean
 
 	has n, :items
 	has n, :borrowings

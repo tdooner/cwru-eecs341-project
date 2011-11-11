@@ -134,6 +134,14 @@ module ShareMatch
 			def current_user
 				User.get(session[:user])
 			end
+
+                        def admin_required
+                                if session[:user] and User.get(session[:user]).is_admin?
+                                        return true
+                                else
+                                        return redirect '/login'
+                                end
+                        end
 		end
 	end
 end
