@@ -14,8 +14,8 @@
         $(".alert-message").alert()
       });
   %body
-    .container{:style=>"margin-top: 10px;"}
-      .header
+    .header{:style => 'background-image: url(http://subtlepatterns.com/patterns/cubes.png);padding-top: 15px; height: 70px;border-bottom: 1px solid #ddd;'}
+      .container
         %a{:href=>"/"}
           %img{:src=>"/sharematch.png"}
         %ul.pills{:style=>"float: right;"}
@@ -31,8 +31,9 @@
           = nav_li 'FIND', '/find', @nav[:find]
           = nav_li 'SEARCH', '/search',  @nav[:you]
           = nav_li 'YOU', '/you',  @nav[:user]
+    .container
       =yield
-    %footer
+    %footer{:style => 'background-image: url(http://subtlepatterns.com/patterns/cubes.png); height: 150px; border-bottom: 1px solid #ddd;'}
       .container
         %h4 Share*Match 
         :textile
