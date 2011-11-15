@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 # This console script adapted from:rake
-#   http://barkingiguana.com/blog/2009/01/25/scriptconsole-for-your-application/
+#   http://barkingiguana.com/2009/01/25/scriptconsole-for-your-application/
 
 libs = []
 libs << "irb/completion"

@@ -134,6 +134,21 @@ module ShareMatch
 			def current_user
 				User.get(session[:user])
 			end
+
+                        def admin_required
+                                if session[:user] and User.get(session[:user]).is_admin?
+                                        return true
+                                else
+                                        return redirect '/login'
+                                end
+                        end
+
+                        def include_scripts
+                                scripts = Dir.glob("public/scripts/*.js").map{|path| path.slice!("public") ; path }
+                                out = ""
+                                scripts.each{ |file| out << "%script{:src=>\"#{file}\",:type=>\"text/javascript\"}\n" }
+                                haml out
+                        end
 		end
 	end
 end
