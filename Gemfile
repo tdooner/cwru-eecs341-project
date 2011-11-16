@@ -19,6 +19,8 @@ gem 'sqlite3'
 gem 'data_mapper'
 gem 'dm-sqlite-adapter'
 
+#rack stuff
+gem 'mixpanel'
 
 group :test do
 	gem 'rspec', :require => 'spec'

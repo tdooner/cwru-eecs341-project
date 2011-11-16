@@ -8,17 +8,19 @@ require 'environment' # app/environment.rb
 module ShareMatch
 	class App < Sinatra::Base
 		dir = File.dirname(File.expand_path(__FILE__))
+		disable :run
 		set :root,     "#{dir}/.."
 		set :public_folder,   "#{dir}/../public"
 		set :app_file, __FILE__
 		set :views,    "app/views"
 		enable :sessions
 		set :session_secret, "My session secret"#debug only, to work with shotgun
-
+		use Mixpanel::Tracker::Middleware, "0f98554b168f38500e5264ec8afefe3b", :async => true
 
 		before do
 			@nav = Hash.new()
 			@pills = Hash.new()
+			@mixpanel = Mixpanel::Tracker.new("0f98554b168f38500e5264ec8afefe3b", request.env, true)
 		end
 
 		get '/' do
