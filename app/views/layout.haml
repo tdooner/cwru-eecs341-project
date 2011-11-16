@@ -38,7 +38,7 @@
         %ul.tabs
           = nav_li 'HOME', '/', @nav[:home]
           = nav_li 'SHARE', '/share', @nav[:share]
-          = nav_li 'FIND', '/find', @nav[:find]
+          = nav_li 'FIND', '/item', @nav[:find]
           = nav_li 'SEARCH', '/search',  @nav[:you]
           = nav_li 'YOU', '/you',  @nav[:user]
     -#If this is the index, don't put the body in a container
@@ -52,5 +52,6 @@
         %a.right.scrollPage{:href=>'#top'} Back to top &uarr;
         %h4 Share*Match 
         :textile
-          | a project for eecs341 at "CWRU":http://case.edu/ by "Tom Dooner":http://tomdooner.com, "Brian Stack":http://brianstack.net, and "Ian Dimayuga":http://iandimayuga.com
-          | crafted with "Sinatra":http://sinatrarb.com, "Less":http://lesscss.org, and "jQuery":http://jquery.com
+          a project for eecs341 at "CWRU":http://case.edu/ by "Tom Dooner":http://tomdooner.com, "Brian Stack":http://brianstack.net, and "Ian Dimayuga":http://iandimayuga.com
+          crafted with "Sinatra":http://sinatrarb.com, "Less":http://lesscss.org, and "jQuery":http://jquery.com
+        <a href="http://mixpanel.com/f/partner"><img src="http://mixpanel.com/site_media/images/partner/badge_light.png" alt="Real Time Web Analytics" /></a>

@@ -28,12 +28,12 @@ module ShareMatch
 			haml :index
 		end
 
-		get '/find' do
+		get '/item' do
 			@nav[:find] = 'active'
 
 			@items = Item.all
 
-			haml :find
+			haml :'item/index'
 		end
 
 		get '/share' do
