@@ -10,10 +10,20 @@
     -# TODO: change this to coffeescript
     :javascript
       $(document).ready(function(){
-        $(".alert-message").alert()
+        $(".alert-message").alert();
+        $(".scrollPage").click(function() {
+          var elementClicked = $(this).attr("href");
+          var destination = $(elementClicked).offset().top;
+          $("html:not(:animated),body:not(:animated)").animate({ scrollTop: destination}, 700 );
+          return false;
+        });
+      });
+      $(window).resize(function() {
+        $(".card").height($(window).height());
       });
   %body
-    .header{:style => 'background-image: url(http://subtlepatterns.com/patterns/cubes.png);padding-top: 15px; height: 70px;border-bottom: 1px solid #ddd;'}
+    #top
+    .header.cubed
       .container
         %a{:href=>"/"}
           %img{:src=>"/sharematch.png"}
@@ -30,10 +40,15 @@
           = nav_li 'FIND', '/find', @nav[:find]
           = nav_li 'SEARCH', '/search',  @nav[:you]
           = nav_li 'YOU', '/you',  @nav[:user]
-    .container
+    -#If this is the index, don't put the body in a container
+    - if request.path_info == '/'
       =yield
-    %footer{:style => 'background-image: url(http://subtlepatterns.com/patterns/cubes.png); height: 150px; border-bottom: 1px solid #ddd;'}
+    -else
       .container
+        =yield
+    .footer.cubed
+      .container
+        %a.right.scrollPage{:href=>'#top'} Back to top &uarr;
         %h4 Share*Match 
         :textile
           | a project for eecs341 at "CWRU":http://case.edu/ by "Tom Dooner":http://tomdooner.com, "Brian Stack":http://brianstack.net, and "Ian Dimayuga":http://iandimayuga.com

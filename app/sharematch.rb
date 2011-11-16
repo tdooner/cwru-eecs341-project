@@ -149,6 +149,12 @@ module ShareMatch
                                 scripts.each{ |file| out << "%script{:src=>\"#{file}\",:type=>\"text/javascript\"}\n" }
                                 haml out
                         end
+
+			def index_funnel card, text
+				el = ".index-funnel\n  %a.btn.success.large.scrollPage{:href =>'#{card}'} #{text}"
+				haml el
+			end
+
 		end
 	end
 end
