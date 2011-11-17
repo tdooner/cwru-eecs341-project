@@ -1,10 +1,15 @@
 source :rubygems
 gem 'sinatra', :git => "git://github.com/sinatra/sinatra.git"
-  
+
+
+gem 'rake'
+gem 'padrino-mailer'
+
 # server stuff
 gem 'shotgun'
 gem 'thin'
 gem 'rack'
+gem 'rack-flash'
 
 # templating stuff
 gem 'less'
@@ -15,6 +20,12 @@ gem 'RedCloth'
 gem 'sqlite3'
 gem 'data_mapper'
 gem 'dm-sqlite-adapter'
+gem 'bcrypt-ruby'
 
-#testing stuff
-gem 'faker'
+#rack stuff
+gem 'mixpanel'
+
+group :test do
+	gem 'rspec', :require => 'spec'
+	gem 'rack-test'
+end

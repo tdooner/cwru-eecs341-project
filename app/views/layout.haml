@@ -3,38 +3,55 @@
   %head
     %meta{:charset=>"utf-8"}
     %title Share*Match -- share with friends
-    %link{:rel=>"stylesheet",:type=>"text/css",:href=>"/bootstrap.css"}
+    %link{:rel =>'icon', :type => 'image/png', :href => '/icon.png'}
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+    %link{:href=>"/styles/local.less",:rel=>"stylesheet/less",:type=>"text/css"}
     %script{:type=>"text/javascript",:src=>'http://code.jquery.com/jquery-latest.min.js'}
     %script{:type=>"text/javascript",:src=>'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'}
-    %script{:src=>"/twipsy.js"}
-    %script{:src=>"/alert.js"}
-    -# TODO: change this to coffeescript
+    = include_scripts
     :javascript
       $(document).ready(function(){
-        $(".alert-message").alert()
+        $(".alert-message").alert();
+        $(".scrollPage").click(function() {
+          var elementClicked = $(this).attr("href");
+          var destination = $(elementClicked).offset().top;
+          $("html:not(:animated),body:not(:animated)").animate({ scrollTop: destination}, 700 );
+          return false;
+        });
+      });
+      $(window).resize(function() {
+        $(".card").height($(window).height());
       });
   %body
-    .container{:style=>"margin-top: 10px;"}
-      .header
+    #top
+    .header.cubed
+      .container
         %a{:href=>"/"}
           %img{:src=>"/sharematch.png"}
         %ul.pills{:style=>"float: right;"}
-          = nav_li 'Sign Up', '/sign-up', @pills[:signup]
           - if session[:user] 
             = nav_li 'Log Out', '/logout', @pills[:logout]
           - else
+            = nav_li 'Sign Up', '/sign-up', @pills[:signup]
             = nav_li 'Log In', '/login', @pills[:login]
         %br
         %ul.tabs
           = nav_li 'HOME', '/', @nav[:home]
           = nav_li 'SHARE', '/share', @nav[:share]
-          = nav_li 'FIND', '/find', @nav[:find]
+          = nav_li 'FIND', '/item', @nav[:find]
           = nav_li 'SEARCH', '/search',  @nav[:you]
           = nav_li 'YOU', '/you',  @nav[:user]
+    -#If this is the index, don't put the body in a container
+    - if request.path_info == '/'
       =yield
-    %footer
+    -else
       .container
+        =yield
+    .footer.cubed
+      .container
+        %a.right.scrollPage{:href=>'#top'} Back to top &uarr;
         %h4 Share*Match 
         :textile
-          | a project for eecs341 at "CWRU":http://case.edu/ by "Tom Dooner":http://tomdooner.com, "Brian Stack":http://brianstack.net, and "Ian Dimayuga":http://iandimayuga.com
-          | crafted with "Sinatra":http://sinatrarb.com, "Less":http://lesscss.org, and "jQuery":http://jquery.com
+          a project for eecs341 at "CWRU":http://case.edu/ by "Tom Dooner":http://tomdooner.com, "Brian Stack":http://brianstack.net, and "Ian Dimayuga":http://iandimayuga.com
+          crafted with "Sinatra":http://sinatrarb.com, "Less":http://lesscss.org, and "jQuery":http://jquery.com
+        <a href="http://mixpanel.com/f/partner"><img src="http://mixpanel.com/site_media/images/partner/badge_light.png" alt="Real Time Web Analytics" /></a>

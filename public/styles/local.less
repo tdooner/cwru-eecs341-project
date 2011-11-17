@@ -1,0 +1,87 @@
+//GENERAL STYLES
+
+.right {
+  float: right;
+}
+
+.big {
+  height: 10px;
+  font-size: 6em;
+  color: #0069d6;
+  padding: 160px;
+  &:hover {
+    color: lighten(#0069d6, 25%);
+    text-decoration: none;
+  }
+}
+
+
+//LAYOUT STYLES
+.cubed {
+  background-image: url(../cubes.png);
+}
+
+.header {
+  padding-top: 15px;
+  height: 70px;
+  border-bottom: 1px solid #ddd;
+}
+
+.footer {
+  height: 150px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ccc;
+}
+
+//INDEX STYLES
+.card {
+  background-attachment: fixed !important;
+  height: ~`$(window).height() + 'px'`;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 100px;
+  p {
+    font-size: 14px;
+    line-height: 1.3em;
+  }
+  h1, h2 {
+    text-shadow: 0 -1px 1px #cdcdcd;
+  }
+}
+
+#card1 {
+  border-bottom: 2px dashed #000;
+}
+
+#card2 {
+  background-color: #222;
+  background-image: url(../dark_leather.png);
+  color: #fff;
+  h1, h2 {
+    color: #ddd;
+    text-shadow: 0 -1px 1px #262626;
+  }
+  border-bottom: 2px dashed #000;
+}
+
+#card3 {
+  background-image: url(../pinstripe.png);
+  
+  border-bottom: 2px dashed #000;
+}
+
+#card4 {
+  color: #fff;
+  background-color: #003153;//TODO: put this in variables instead as prussian blue
+  background-image: url(../pool_table.png);
+h1 {
+    color: #ddd;
+    text-shadow: 0 -1px 1px #262626;
+  }
+}
+
+.index-funnel {
+  text-align: center; 
+  clear: both; 
+  margin: 5px; padding: 5px;
+}

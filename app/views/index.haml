@@ -1,50 +1,64 @@
 -# TODO: MAKE THESE NOT HARDCODED STYLES
 -# TODO: ALSO MAKE THE DESIGN BETTER AND ADD MORE COPY
-%div{:style => 'clear: both;width: 50%;'}
-  :textile
-    h4. Why it exists
+-# TODO: ALSO FIND HOW TO PUT JAVSCRIPT UP IN HEADER
+.card#card1
+  .container
+    :textile
+      h1. What is this?
 
-    We all have things we own but don't need everyday.  Think about that flathead screwdriver you have lying around the bottom of your drawer of tools.  Share*Match allows you to put that tool to good use by letting others borrow it.
+      Share*Match is your community's solution to what we like to call "Screwdriver Overload." Everyone needs a screwdriver, but how often does one person use theirs? Share*Match provides the collaborative power that allows a community to get by with less stuff, reducing waste and saving money.
 
-    But what's in it for you? Good community members not only share what they have, they know when to ask for help. Share*Match gives you the power to find neighbors and friends who can lend you the things you need.
+    %blockquote
+      %p Neither a borrower nor a lender be... O I am slain!
+      %small Polonius
 
-    Share*Match makes it easy for people to combine their resources to improve their lives as a community.
 
-%div{:style => 'float: right;width: 50%;border-top: 1px solid #eee;'}
-  :textile
-    h4. How it works
+  = index_funnel "#card2", "Read More"
+  %a.big.right{:href => 'http://twitter.com/sharematch'} @sharematch
+.card#card2
+  .container
+    :textile
+      h1. How it works
 
-    We build communities around real world places, and Share*Match connects people living there to the things they need the most. When you're looking to borrow a socket wrench, Share*Match uses its index of people and possessions to connect you with a neighbor who's willing to lend one.
+      We build communities around real world places, and Share*Match connects people living there to the things they need the most. When you're looking to borrow a socket wrench, Share*Match uses its index of people and possessions to connect you with a neighbor who's willing to lend one.
 
-    h5. Borrowing
-    
-    As you start to borrow items and return them in good shape, members of the community can *Trust* you, which increases your *Karma*. Potential lenders can see your Karma when they consider fulfilling your request for an item to borrow.
+      h2. Borrowing
+      
+      As you start to borrow items and return them in good shape, members of the community can *Trust* you, which increases your *Karma*. Potential lenders can see your Karma when they consider fulfilling your request for an item to borrow.
 
-    If something happens to an item while in your possession, you can open an *Issue* with the owner. If you broke it and it's your fault, you could offer to replace it. Maybe it was old and the owner would just like it returned. Either way, Issues provide an easy avenue of communication whenever a problem arises.
+      If something happens to an item while in your possession, you can open an *Issue* with the owner. If you broke it and it's your fault, you could offer to replace it. Maybe it was old and the owner would just like it returned. Either way, Issues provide an easy avenue of communication whenever a problem arises.
 
-    After you've borrowed an item, you can submit a *Review* of the item, rating its usefulness and your overall borrowing experience.
+      After you've borrowed an item, you can submit a *Review* of the item, rating its usefulness and your overall borrowing experience.
 
-    h5. Lending
-    
-    Once you've posted some items you're willing to share, your items will begin to show up in people's search results. The item will be higher in their results if it has many favorable reviews and if you are nearby.
+      h2. Lending
+      
+      Once you've posted some items you're willing to share, your items will begin to show up in people's search results. The item will be higher in their results if it has many favorable reviews and if you are nearby.
 
-    When a person requests to borrow your item, you will be able to see their Karma and decide whether they are trustworthy enough to share with. Lending items to people increases your Karma, so get out there and share!
+      When a person requests to borrow your item, you will be able to see their Karma and decide whether they are trustworthy enough to share with. Lending items to people increases your Karma, so get out there and share!
 
-%div{:style => 'clear: both;width: 50%;border-top: 1px solid #eee;'}
-  :textile
-    h4. What you do
+  = index_funnel "#card3", "Read More"
 
-    Have a look around your home for useful things you don't always need to have around. Upload a picture, write a description, and add it to your inventory. After that, just sit back and relax. Share*Match will let you know when a community member needs one.
+.card#card3
+  .container
+    :textile
+      h1. What you do
 
-    Don't forget to review items you've borrowed! Reviews help Share*Match determine which items are most useful. Also, help trustworthy people gain Karma by clicking *Trust* on their profile. You can also *Block* untrustworthy users. This will remove your items from their search results and decrease their Karma.
+      Have a look around your home for useful things you don't always need to have around. Upload a picture, write a description, and add it to your inventory. After that, just sit back and relax. Share*Match will let you know when a community member needs one.
 
-%div{:style => 'float: right; clear: both; width: 50%;border-top: 1px solid #eee;'}
-  :textile
-    h4. How it helps
+      Don't forget to review items you've borrowed! Reviews help Share*Match determine which items are most useful. Also, help trustworthy people gain Karma by clicking *Trust* on their profile. You can also *Block* untrustworthy users. This will remove your items from their search results and decrease their Karma.
 
-    Share*Match is your community's solution to what we like to call "Screwdriver Overload." Everyone needs a screwdriver, but how often does one person use theirs? Share*Match provides the collaborative power that allows a community to get by with less stuff, reducing waste and saving money.
+  = index_funnel "#card4", "Read More"
 
-    _Neither a borrower nor a lender be... O I am slain! - Polonius_
+.card#card4
+  .container
+    :textile
+      h1. Why it exists
 
-#sign-up-box{:style => 'text-align: center; clear: both; border-top: 1px solid #eee; margin: 5px; padding: 5px;'}
-  %a.btn.success.large{:href => '/sign-up'} Sign Up!
+      We all have things we own but don't need everyday.  Think about that flathead screwdriver you have lying around the bottom of your drawer of tools.  Share*Match allows you to put that tool to good use by letting others borrow it.
+
+      But what's in it for you? Good community members not only share what they have, they know when to ask for help. Share*Match gives you the power to find neighbors and friends who can lend you the things you need.
+
+      Share*Match makes it easy for people to combine their resources to improve their lives as a community.
+
+
+  = index_funnel "/sign-up", "Sign Up!"

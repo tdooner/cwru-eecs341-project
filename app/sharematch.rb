@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'haml'
 require 'less'
+require 'rack-flash'
+require 'padrino-mailer'
 require 'environment' # app/environment.rb
 
 
@@ -8,17 +10,32 @@ require 'environment' # app/environment.rb
 module ShareMatch
 	class App < Sinatra::Base
 		dir = File.dirname(File.expand_path(__FILE__))
+		disable :run
 		set :root,     "#{dir}/.."
 		set :public_folder,   "#{dir}/../public"
 		set :app_file, __FILE__
 		set :views,    "app/views"
 		enable :sessions
 		set :session_secret, "My session secret"#debug only, to work with shotgun
+		use Mixpanel::Tracker::Middleware, "0f98554b168f38500e5264ec8afefe3b", :async => true
+		use Rack::Flash
+		register Padrino::Mailer
 
+
+
+		set :delivery_method, :smtp => { 
+			:address              => "smtp.gmail.com",
+			:port                 => 587,
+			:user_name            => 'bstack01@gmail.com',
+			:password             => 'change this to google apps',
+			:authentication       => :plain,
+			:enable_starttls_auto => true  
+		}
 
 		before do
 			@nav = Hash.new()
 			@pills = Hash.new()
+			@mixpanel = Mixpanel::Tracker.new("0f98554b168f38500e5264ec8afefe3b", request.env, true)
 		end
 
 		get '/' do
@@ -26,12 +43,12 @@ module ShareMatch
 			haml :index
 		end
 
-		get '/find' do
+		get '/item' do
 			@nav[:find] = 'active'
 
 			@items = Item.all
 
-			haml :find
+			haml :'item/index'
 		end
 
 		get '/share' do
@@ -79,12 +96,26 @@ module ShareMatch
 		end
 
 		post '/login' do
-			if user = User.authenticate(params[:email], params[:password])
+			user = User.first(:email => params[:email])
+			if not user.nil? and user.password == params[:password]
 				session[:user] = user.id
 				redirect '/login'#TODO: make this redirect to the incoming page!
 			else
+				flash[:forgot] = ''
 				redirect '/login'
 			end
+		end
+
+		post '/password-reset' do
+			user = User.first(:email => params[:email])
+			newpass = user.forgot_password
+			#TODO: make this email less dumb
+			email(:from => "reset@sharemat.ch", 
+			      :to => user.email,
+			      :subject => "Password Reset",
+			      :body=>"Hi, we've given you a temporary password of #{newpass}. Login to reset.")
+			flash[:sent] = ''
+			redirect '/login'
 		end
 
 		get '/logout' do
@@ -134,6 +165,27 @@ module ShareMatch
 			def current_user
 				User.get(session[:user])
 			end
+
+			def admin_required
+				if session[:user] and User.get(session[:user]).is_admin?
+					return true
+				else
+					return redirect '/login'
+				end
+			end
+
+			def include_scripts
+				scripts = Dir.glob("public/scripts/*.js").map{|path| path.slice!("public") ; path }
+				out = ""
+				scripts.each{ |file| out << "%script{:src=>\"#{file}\",:type=>\"text/javascript\"}\n" }
+				haml out
+			end
+
+			def index_funnel card, text
+				el = ".index-funnel\n  %a.btn.success.large.scrollPage{:href =>'#{card}'} #{text}"
+				haml el
+			end
+
 		end
 	end
 end
