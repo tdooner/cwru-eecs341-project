@@ -18,6 +18,7 @@ gem 'RedCloth'
 gem 'sqlite3'
 gem 'data_mapper'
 gem 'dm-sqlite-adapter'
+gem 'bcrypt-ruby'
 
 #rack stuff
 gem 'mixpanel'

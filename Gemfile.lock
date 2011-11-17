@@ -109,6 +109,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+  bcrypt-ruby
   data_mapper
   dm-sqlite-adapter
   haml

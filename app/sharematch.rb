@@ -81,7 +81,8 @@ module ShareMatch
 		end
 
 		post '/login' do
-			if user = User.authenticate(params[:email], params[:password])
+			user = User.first(:email => params[:email])
+			if user.password == params[:password]
 				session[:user] = user.id
 				redirect '/login'#TODO: make this redirect to the incoming page!
 			else

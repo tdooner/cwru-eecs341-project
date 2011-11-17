@@ -1,5 +1,8 @@
+require 'bcrypt'
+
 class User
 	include DataMapper::Resource
+	include BCrypt
 	attr_accessor :password, :password_repeat
 	attr_accessor :city, :state, :zip
 	validates_presence_of :name, :address, :email
@@ -11,28 +14,24 @@ class User
 	property :location_id, Integer
 	property :email, String
 	property :created_at, DateTime
-	property :password_hash, String 
-	property :salt, String
-        property :is_admin, Boolean
+	property :password_hash, BCryptHash
+	property :is_admin, Boolean
 
 	has n, :items
 	has n, :borrowings
 	has n, :items, :through => :borrowings
 
-	def self.authenticate(email, pass)
-		current_user = first(:email => email)
-		return nil if current_user.nil? || User.encrypt(pass, current_user.salt) != current_user.password_hash
-		current_user
-	end  
 
-	def password=(pass)
-		self.salt = (1..12).map{(rand(26)+65).chr}.join if !self.salt
-		self.password_hash = User.encrypt(pass, self.salt)
+	def password
+		@password ||= Password.new(password_hash)
 	end
 
-	protected
-	def self.encrypt(pass, salt)
-		Digest::SHA1.hexdigest(pass + salt)
+	def password=(new_password)
+		@password = Password.create(new_password)
+		self.password_hash = @password
 	end
+
+
+
 end
 
