@@ -1,0 +1,7 @@
+# copy this file to config/keys.yml and put in your desired values 
+---
+email:
+        address: "website.com"
+        port: 587
+        uname: "user @ website.com"
+        pass: "password"

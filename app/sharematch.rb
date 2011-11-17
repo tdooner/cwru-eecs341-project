@@ -22,12 +22,13 @@ module ShareMatch
 		register Padrino::Mailer
 
 
+		APP_KEYS = YAML.load(File.open "config/keys.yml")
 
 		set :delivery_method, :smtp => { 
-			:address              => "smtp.gmail.com",
-			:port                 => 587,
-			:user_name            => 'bstack01@gmail.com',
-			:password             => 'change this to google apps',
+			:address              => APP_KEYS['email']['address'],
+			:port                 => APP_KEYS['email']['port'],
+			:user_name            => APP_KEYS['email']['uname'],
+			:password             => APP_KEYS['email']['pass'],
 			:authentication       => :plain,
 			:enable_starttls_auto => true  
 		}

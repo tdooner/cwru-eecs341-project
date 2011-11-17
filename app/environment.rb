@@ -4,6 +4,7 @@ require 'mixpanel'
 
 require 'sinatra' unless defined?(Sinatra)
 
+
 configure do
   # load models
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/models")
