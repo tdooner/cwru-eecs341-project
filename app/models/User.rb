@@ -32,6 +32,12 @@ class User
 	end
 
 
+	def forgot_password
+		random_password = Array.new(10).map { (65 + rand(58)).chr }.join
+		self.password = random_password
+		self.save!
+		return random_password
+	end
 
 end
 

@@ -2,27 +2,81 @@
 -# TODO: make things like this jump up into the head
 :javascript
   $(document).ready(function() {
+    $("#forgot-password").modal({keyboard: true, backdrop: true});
+    $("#forgot-password").bind('shown', function () {
+      $("#email").focus();
+    });
+    $("#nevermind").click(function(){$("#forgot-password").modal('hide');});
+    $("#reset").click( function() {
+      $("#reset-form").submit();
+    });
     $("#uname").focus();
+    $("#login-form").validate({
+      errorClass: 'help-inline',
+      errorElement: 'span',
+      highlight: function(element, errorClass) {
+        $(element).parent().addClass("error");
+      },
+      success: function(label) {
+        label.parent().removeClass("error");
+      }
+    });
+    $("#reset-form").validate({
+      errorClass: 'help-inline',
+      errorElement: 'span',
+      highlight: function(element, errorClass) {
+        $(element).parent().addClass("error");
+      },
+      success: function(label) {
+        label.parent().removeClass("error");
+      }
+    });
+
   });
-%div.row
-  %div.span8
-    %form#login_form{:method => "POST"}
+.row
+  .span10
+    %form#login-form{:method => "POST"}
       %fieldset
+        - if flash[:forgot]
+          .alert-message.error
+            %p
+              %strong Uh oh
+              that didn't work. Try again or 
+              %a{'data-controls-modal' => 'forgot-password', :href => '#'} reset password
+
+        - if flash[:sent]
+          .alert-message.info
+            %p
+              You should receive an email shortly
         %label{:for => 'uname'} Email Address
         .input
-          %input#uname.xlarge{:type => 'text', :name => 'email'}
+          %input#uname.xlarge.required{:type => 'text', :name => 'email'}
         %br
         %label{:for => 'pword'} Password
         .input
-          %input#pword.xlarge{:type => 'password', :name => 'password'}
-        %div.actions
+          %input#pword.xlarge.required{:type => 'password', :name => 'password'}
+        .actions
           %input.primary.btn{:type => 'submit', :value => 'Login'}
-          %a.btn{:href => '#'} Forgot Password
-  %div.span6.offset1
+          %a.btn{'data-controls-modal' => 'forgot-password'} Forgot Password
+  .span5.offset1
     %h3 CWRU's sharing platform!
-    %div
-      In just a minute, you'll be logged in to Share*Match, CWRU's leading item-sharing platform. Featuring 
-      %b millions
-      of users and
-      %b petabytes
-      of items, your life after logging in will never be the same.
+    In just a minute, you'll be logged in to Share*Match, CWRU's leading item-sharing platform. Featuring 
+    %b millions
+    of users and
+    %b petabytes
+    of items, your life after logging in will never be the same.
+
+
+#forgot-password.modal.hide.fade.in
+  .modal-header
+    %a.close{:href => '#'} x
+    %h3 Password Reset
+  .modal-body
+    %form#reset-form{:method => "POST", :action => "/password-reset"}
+      .clearfix
+        Enter the email address that you signed up with in the box below and we'll email you to reset your password.
+      .clearfix
+        %input#email.xlarge.required{:type => 'text', :name => 'email'}
+  .modal-footer
+    %a#reset.danger.btn{:type => 'submit', :value => 'Reset Password', :form => 'reset-form'}Reset Password
+    %a#nevermind.btn Nevermind

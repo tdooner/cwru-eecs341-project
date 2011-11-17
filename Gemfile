@@ -3,11 +3,13 @@ gem 'sinatra', :git => "git://github.com/sinatra/sinatra.git"
 
 
 gem 'rake'
+gem 'padrino-mailer'
 
 # server stuff
 gem 'shotgun'
 gem 'thin'
 gem 'rack'
+gem 'rack-flash'
 
 # templating stuff
 gem 'less'
