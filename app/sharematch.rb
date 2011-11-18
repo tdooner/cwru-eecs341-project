@@ -52,10 +52,30 @@ module ShareMatch
 			haml :'item/index'
 		end
 
-		get '/share' do
+		get '/item/new' do
 			login_required
 			@nav[:share] = 'active'
-			haml :share
+
+			@item = Item.new
+
+			haml :'item/create'
+		end
+
+		post '/item/new' do
+			puts params
+			@item = Item.new(params)
+			if @item.valid?
+				@item.save
+				redirect '/item'
+			else
+				flash[:error] = "That item is not valid!"#TODO: improve this text
+				redirect '/item/new'
+			end
+		end
+
+		get '/item/:id' do |id|
+			@item = Item.first(:id => id)
+			haml :'item/profile'
 		end
 
 		get '/search' do

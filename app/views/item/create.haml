@@ -1,0 +1,39 @@
+:javascript
+  $(document).ready(function() {
+    $("#item-form").validate({
+      errorClass: 'help-inline',
+      errorElement: 'span',
+      highlight: function(element, errorClass) {
+        $(element).parent().addClass("error");
+      },
+      success: function(label) {
+        label.parent().removeClass("error");
+      }
+    });
+  });
+
+%h2 Add a new Item
+- if flash[:error]
+  .alert-message.error
+    %p
+      = flash[:error]
+%form#item-form{:method=>"POST"}
+  %input{:type=>"hidden", :name=>"user_id", :value=> session[:user]}
+  %fieldset
+    %label{:for => 'name'} 
+      %b What you are sharing
+    .input.clearfix
+      %input#name.xlarge.required{:type => 'text', :name=>"name"}
+  %fieldset
+    %label{:for => 'value'}
+      %b How much it is worth
+    .input.clearfix
+      %input#value.xlarge.required{:type => 'text', :name=>'value'}
+  %fieldset
+    %label{:for => 'max_loan'}
+      %b How long someone can have it for
+    .input.clearfix
+      %input#max-loan.xlarge.required{:type => 'text', :name=>'max_loan'}
+  %fieldset
+    .input.clearfix
+      %input.submit.btn{:type => 'submit', :value => 'Share it!'}
