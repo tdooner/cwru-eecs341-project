@@ -74,12 +74,11 @@ module ShareMatch
             # for debugging sign-up process, add &really=true to go to whichever step you want.
             unless params[:really]
                 @step = 2 if params[:step] = 1 and @user
-                @step = 3 if @user.location_id
+                @step = 3 if @user and @user.location_id
             end
 
             case @step
             when "1"
-			    @user = User.new
             when "2"
                 self.login_required
                 @communities = Community.all
@@ -203,7 +202,7 @@ module ShareMatch
 					return true
 				else
                     session[:before_path] = request.path
-					return redirect '/login'
+					redirect '/login'
 				end
 			end
 
