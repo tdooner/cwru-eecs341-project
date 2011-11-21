@@ -1,6 +1,6 @@
 require "#{File.dirname(__FILE__)}/spec_helper"
 
-valid_user = {:name => "Tom", :address=>"1234 Street", :email => "tomdooner@gmail.com", :password => "pw", :password_repeat => "pw", :city => "Macedonia", :state => "OH", :zip => 12345}
+valid_user = {:name => "Tom", :address=>"1234 Street", :email => "tomdooner@gmail.com", :password => "pw", :password_repeat => "pw", :city => "Macedonia", :state => "OHIO!", :zip => 12345}
 valid_user2 = {:name => "Brian", :address=>"1234 Brian Stack Ave.", :email => "bis12@case.edu", :password => "password", :password_repeat => "password", :city => "Pittsburgh", :state => "PA", :zip => 45678}
 valid_community = {:name => "place one", :zip_code=>12345}
 valid_community2 = {:name => "place two", :zip_code=>23456}
@@ -71,7 +71,7 @@ describe 'user' do
         u2.save().should eq(true)
     end
 end
-describe 'the sign-up process', :type => :request do
+describe 'The sign-up process', :type => :request do
     it 'allows creation of a user' do
         signup_page_one(valid_user)
         find("div.container h6").should have_content("step 2 of 3")
@@ -87,6 +87,18 @@ describe 'the sign-up process', :type => :request do
         click_button 'Create and Join'
         find("div.container h6").should have_content("step 3 of 3")
         body.should_not have_content("Error: Could not join community!")
+    end
+end
+describe 'User edit page', :type => :request do
+    it 'shows you a page of your own information' do
+        signup_page_one(valid_user)
+        click_link valid_user[:name]
+        current_path.should match(/\/users\/[0-9]+\/edit/)
+        find_field("name").value.should eq(valid_user[:name])
+        find_field("email").value.should eq(valid_user[:email])
+        find_field("address").value.should eq(valid_user[:address])
+        find_field("city").value.should eq(valid_user[:city])
+        find_field("zip").value.to_i.should eq(valid_user[:zip].to_i)
     end
 end
 describe 'the login process', :type => :request do

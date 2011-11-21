@@ -31,6 +31,7 @@ def signup_page_one(user)
     fill_in "address", :with => user[:address]
     fill_in "city", :with => user[:city]
     fill_in "zip", :with => user[:zip]
+    select user[:state], :from => "state"
     click_button 'Sign Up'
 end
 def login(user)

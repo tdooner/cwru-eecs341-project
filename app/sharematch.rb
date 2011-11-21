@@ -98,12 +98,13 @@ module ShareMatch
                 @step = 3 if @user and @user.location_id
             end
 
-            case @step
-            when "1"
-            when "2"
+            case @step.to_i
+            when 1
+                @user = User.new
+            when 2
                 self.login_required
                 @communities = Community.all
-            when "3"
+            when 3
                 self.login_required
             end
 
@@ -187,9 +188,9 @@ module ShareMatch
 			redirect '/'
 		end
 
-		get '/you' do #TODO: This shit is making Roy Fielding angry.  You won't like him when he's angry. 
+		get '/users/:id/edit' do #TODO: This shit is making Roy Fielding angry.  You won't like him when he's angry. 
 			@nav[:user] = 'active'
-			haml :user
+			haml :"users/edit"
 		end
 
 		get '/*.css' do

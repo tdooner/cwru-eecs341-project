@@ -1,0 +1,39 @@
+%input{:type=>"hidden", :name=>"step", :value=>"1"}
+%fieldset
+  %label{:for => 'name'} 
+    %b Full Name
+  .input.clearfix
+    %input#name.xlarge.required{:type => 'text', :name=>"name", :value=>@user.name}
+  %label{:for => 'uname'}
+    %b Email Address
+  .input.clearfix
+    %input#uname.xlarge.required.email{:type => 'text', :name=>"email", :value=>@user.email}
+%fieldset
+  %label{:for => 'password'}
+    %b Password
+  .input.clearfix
+    %input#password.xlarge.required{:type => 'password', :name=>'password'}
+  %label{:for => 'pword'} 
+    %b Repeat Password
+  .input.clearfix
+    %input#password_repeat.xlarge{:type => 'password', :name=>'password_repeat'}
+%fieldset
+  %label{:for => 'address'}
+    %b Address
+  .input.clearfix
+    %input#address.xlarge.required{:type => 'text', :name=>'address', :value=>@user.address}
+  %label{:for => 'city'} 
+    %b City
+  .input.clearfix
+    %input#city.xlarge.required{:type => 'text', :name=>'city', :value=>@user.city}
+  %label{:for => 'zip'} 
+    %b Zip Code
+  .input.clearfix
+    %input#zip.xlarge.number.required{:type => 'text', :name=>'zip', :value=>@user.zip}
+  %label{:for => 'state'} 
+    %b State
+  .input.clearfix
+    %select#state.required{:name=>"state"}
+      %option{:value=>"", :id=>"Choose One!",:selected=>@user.state==""?"true":""} Choose One!
+      %option{:value=>"OHIO!", :id=>"OHIO!",:selected=>@user.state=="selected"?"true":""} OHIO!
+      %option{:value=>"PA", :id=>"PA",:selected=>@user.state=="selected"?"true":""} PA
