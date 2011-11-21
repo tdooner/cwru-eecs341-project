@@ -7,13 +7,14 @@ require 'sinatra'
 require 'rspec'
 require 'capybara/rspec'
 require 'rack/test'
-require 'sharematch'    # app/sharematch.rb
 
 # set test environment
 Sinatra::Base.set :environment, :test
 Sinatra::Base.set :run, false
 Sinatra::Base.set :raise_errors, true
 Sinatra::Base.set :logging, false
+require 'sharematch'    # app/sharematch.rb
+
 
 Capybara.app = ShareMatch::App
 
