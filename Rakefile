@@ -28,11 +28,6 @@ namespace :db do
 		DataMapper.auto_upgrade!
 	end
 
-	desc 'Load seed data into database for testing and demonstration'
-	task :seed => :environment do
-		puts 'Will be implemented soon'
-	end
-
 	desc "Run all pending migrations, or up to specified migration"
 	task :migrate, [:version] => :load_migrations do |t, args|
 		if vers = args[:version] || ENV['VERSION']
