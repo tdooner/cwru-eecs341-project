@@ -181,6 +181,7 @@ DEPENDENCIES
   rack-test
   rake
   rspec
+  rspec-core
   shotgun
   sinatra!
   sqlite3
