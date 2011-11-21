@@ -39,6 +39,8 @@ module ShareMatch
 			@nav = Hash.new()
 			@pills = Hash.new()
 			@mixpanel = Mixpanel::Tracker.new("0f98554b168f38500e5264ec8afefe3b", request.env, true)
+            
+            @user = User.get( session[:user_id] ) if session[:user_id]
 		end
 
 		get '/' do
@@ -87,28 +89,52 @@ module ShareMatch
 
 		get '/sign-up' do
 			@pills[:signup] = 'active'
-
 			@step = 1
-			@step = params[:step] if params[:step]
+            @step = params[:step] if params[:step]
+
+            # for debugging sign-up process, add &really=true to go to whichever step you want.
+            unless params[:really]
+                @step = 2 if params[:step] = 1 and @user
+                @step = 3 if @user and @user.location_id
+            end
+
+            case @step
+            when "1"
+            when "2"
+                self.login_required
+                @communities = Community.all
+            when "3"
+                self.login_required
+            end
+
 			@part = "signup/_step#{@step}"
 
-			@user = User.new
 			haml :'signup/signup'
 		end
 
 		post '/sign-up' do
-			if params[:step] == "1"
-				params.delete("step")
-				@a = User.new(params)
-				if @a.valid?
-					@a.save
-					session[:user] = @a.id
-					redirect '/sign-up?step=2'
-				else
-					redirect '/sign-up'
-				end
+			case params[:step] 
+            when "1"
+                params.delete("step")
+                @a = User.new(params)
+                if @a.valid?
+                    @a.save
+                    session[:user_id] = @a.id
+                    redirect '/sign-up?step=2'
+                else
+                    flash[:error] = @a.errors.first
+                    redirect '/sign-up'
+                end
+            when "2"
+                self.login_required
+                @user.location_id = params[:community_id]
+                if @user.save
+                    redirect '/sign-up?step=3'
+                else
+                    flash[:error] = "Could not join community!"
+                    redirect '/sign-up?step=2'
+                end
 			end
-			return params.inspect
 		end
 
 		get '/login' do
@@ -118,9 +144,9 @@ module ShareMatch
 
 		post '/login' do
 			user = User.first(:email => params[:email])
-			if not user.nil? and user.password == params[:password]
-				session[:user] = user.id
-				redirect '/login'#TODO: make this redirect to the incoming page!
+			if not user.nil? and user.password_hash == params[:password]
+				session[:user_id] = user.id
+                redirect session[:before_path] || '/' 
 			else
 				flash[:forgot] = ''
 				redirect '/login'
@@ -138,9 +164,26 @@ module ShareMatch
 			flash[:sent] = ''
 			redirect '/login'
 		end
+        post '/communities/new' do
+            self.login_required
+            c = Community.new(params)
+            if c.valid? and c.save
+                @user.location_id = c.id
+                if @user.save
+                    # All went well!
+                    redirect '/sign-up?step=3'
+                else
+                    flash[:error] = "Could not join community!"
+                    redirect '/sign-up?step=2'
+                end
+            else
+                flash[:error] = "Could not create community!"
+                redirect '/sign-up?step=2'
+            end
+        end
 
 		get '/logout' do
-			session[:user] = nil
+			session[:user_id] = nil
 			redirect '/'
 		end
 
@@ -176,19 +219,20 @@ module ShareMatch
 			end
 
 			def login_required
-				if session[:user]
+				if session[:user_id]
 					return true
 				else
-					return redirect '/login'
+                    session[:before_path] = request.path
+					redirect '/login'
 				end
 			end
 
 			def current_user
-				User.get(session[:user])
+				User.get(session[:user_id])
 			end
 
 			def admin_required
-				if session[:user] and User.get(session[:user]).is_admin?
+				if session[:user_id] and User.get(session[:user_id]).is_admin?
 					return true
 				else
 					return redirect '/login'

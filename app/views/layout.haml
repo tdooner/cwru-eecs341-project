@@ -29,7 +29,8 @@
         %a{:href=>"/"}
           %img{:src=>"/sharematch.png"}
         %ul.pills{:style=>"float: right;"}
-          - if session[:user] 
+          - if @user 
+            = nav_li @user.name, '#', @pills[:user_edit]
             = nav_li 'Log Out', '/logout', @pills[:logout]
           - else
             = nav_li 'Sign Up', '/sign-up', @pills[:signup]

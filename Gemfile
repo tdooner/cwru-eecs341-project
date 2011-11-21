@@ -32,5 +32,6 @@ gem 'mini_magick'
 
 group :test do
 	gem 'rspec', :require => 'spec'
+    gem 'capybara'
 	gem 'rack-test'
 end
