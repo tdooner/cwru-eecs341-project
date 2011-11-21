@@ -13,6 +13,7 @@ module ShareMatch
 	class App < Sinatra::Base
 		dir = File.dirname(File.expand_path(__FILE__))
 		disable :run
+		disable :static
 		set :root,     "#{dir}/.."
 		set :public_folder,   "#{dir}/../public"
 		set :app_file, __FILE__
@@ -190,11 +191,6 @@ module ShareMatch
 		get '/you' do #TODO: This shit is making Roy Fielding angry.  You won't like him when he's angry. 
 			@nav[:user] = 'active'
 			haml :user
-		end
-
-		get '/*.css' do
-			#TODO: make these served up directly to browser and interpreted there
-			less (:"style/#{params[:splat][0]}")
 		end
 
 		helpers do 
