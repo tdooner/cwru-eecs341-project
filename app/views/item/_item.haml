@@ -1,5 +1,7 @@
-.span-one-third
-  %img.thumbnail{:src => "http://placehold.it/210x150"}
-  %a{:href => "/item/#{item.id}"}= item.name
-  = item.value
+.item-small
+  %a{:href => "/item/#{item.id}"}
+    %img.thumbnail{:src => item.image.thumb.url, :width => 210, :height => 150}
+    = item.name
+    %br
+    = item.value
 

@@ -62,7 +62,7 @@ module ShareMatch
 		end
 
 		post '/item/new' do
-			puts params
+			login_required
 			@item = Item.new(params)
 			if @item.valid?
 				@item.save

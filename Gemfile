@@ -25,6 +25,11 @@ gem 'bcrypt-ruby'
 #rack stuff
 gem 'mixpanel'
 
+#image stuff
+gem 'carrierwave'
+gem 'carrierwave-datamapper', :require => 'carrierwave/datamapper'
+gem 'mini_magick'
+
 group :test do
 	gem 'rspec', :require => 'spec'
 	gem 'rack-test'

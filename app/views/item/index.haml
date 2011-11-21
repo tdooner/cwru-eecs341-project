@@ -1,3 +1,12 @@
-All our stuff
-- @items.each do |item|
-  = haml :'item/_item', :locals => {:item => item}
+%h2 All our stuff
+%ul.media-grid
+  - @items.each do |item|
+    %li
+      = haml :'item/_item', :locals => {:item => item}
+  %li
+    .item-small
+      %a{:href => "item/new"}
+        / is this height a good one?  it is kinda nice that it is larger than usual
+        %img.thumbnail{:src => '/default.png', :width => 210, :height => 210}
+        :textile
+          Add another item for the community!
