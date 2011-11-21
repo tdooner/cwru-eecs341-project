@@ -1,4 +1,23 @@
-%h2 All our stuff
+%h2 Shared Items
+.pagination
+  %ul
+    %li.prev.disabled
+      %a{:href => '#'} &larr; Previous
+    %li.active
+      %a{:href => '#'} 1
+    %li
+      %a{:href => '#'} 2
+    %li
+      %a{:href => '#'} 3
+    %li
+      %a{:href => '#'} 4
+    %li
+      %a{:href => '#'} 5
+    %li
+      %a{:href => '#'} 6
+    %li.next
+      %a{:href => '#'} Next &rarr;
+
 %ul.media-grid
   - @items.each do |item|
     %li

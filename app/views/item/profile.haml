@@ -1,2 +1,39 @@
-= @item.name
-This can be borrowed for #{@item.max_loan} days.
+.spacer{:style => 'padding: 10px;'}
+  %a{:href => '/item'}
+    &larr; Go back to items
+  %span.divider /
+  %a{:href => '/search'}
+    Start a new search
+.row
+  .span5
+    %img.thumbnail.hilite{:src => @item.image.url, :width => 300, :height => 300}
+
+  .span10.offset1
+    .well
+      %h1
+        = @item.name
+        %small can be borrowed for #{@item.max_loan} days.
+      Shared by
+      %a{:href => "/users/#{@item.user.id}"}
+        #{@item.user.name} 
+        %img{:src => gravatar(@item.user), :width => 20, :height => 20}
+      %br
+      %small Shared since #{@item.created_at.strftime("%B %e, %Y")}
+      -# this should be inactive if already borrowed
+      -# and alert should then show up
+      %br
+      %a.btn.primary{:href => '#'} Borrow
+      %a.btn.scrollPage{:href => '#reviews'} View Feedback
+      %a.btn.scrollPage{:href => '#end'} Review
+      %a{:href => '#'} Alert when available
+      %h3 Description 
+      :textile
+        #{@item.desc}
+
+#reviews
+  .rev This is a review
+  .rev So is this
+  .rev#end
+    This is the last review
+.spacer{:style => 'height: 700px;'}
+.spacer{:style => 'height: 10px;'}

@@ -21,22 +21,28 @@
   %input{:type=>"hidden", :name=>"user_id", :value=> session[:user]}
   %fieldset
     %label{:for => 'name'} 
-      %b What you are sharing
+      %b Name
     .input.clearfix
       %input#name.xlarge.required{:type => 'text', :name=>"name"}
   %fieldset
     %label{:for => 'value'}
-      %b How much it is worth
+      %b Worth
     .input.clearfix
       %input#value.xlarge.required{:type => 'text', :name=>'value'}
   %fieldset
     %label{:for => 'max_loan'}
-      %b How long someone can have it for
+      -# Make this smart about how to enter info
+      %b Max Loan Time
     .input.clearfix
       %input#max-loan.xlarge.required{:type => 'text', :name=>'max_loan'}
   %fieldset
+    %label{:for => 'desc'}
+      %b Description
+    .input.clearfix
+      %textarea#description.xlarge{:name=>'desc'}
+  %fieldset
     %label{:for => 'image'}
-      %b Image of item
+      %b Item Image
     -if @item.image?
       %img{:src => @item.image.icon60, :width => 60, :height => 60, :style => 'border: 2px solid #777; margin: 10px; margin-left: 100px;'}
       %br

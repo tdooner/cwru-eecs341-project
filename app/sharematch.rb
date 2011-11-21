@@ -3,6 +3,8 @@ require 'haml'
 require 'less'
 require 'rack-flash'
 require 'padrino-mailer'
+require 'digest/md5'
+
 require 'environment' # app/environment.rb
 
 
@@ -84,7 +86,6 @@ module ShareMatch
 		end
 
 		get '/sign-up' do
-			@nav[:user] = 'active'
 			@pills[:signup] = 'active'
 
 			@step = 1
@@ -111,7 +112,6 @@ module ShareMatch
 		end
 
 		get '/login' do
-			@nav[:user] = 'active'
 			@pills[:login] = 'active'
 			haml :login
 		end
@@ -205,6 +205,11 @@ module ShareMatch
 			def index_funnel card, text
 				el = ".index-funnel\n  %a.btn.success.large.scrollPage{:href =>'#{card}'} #{text}"
 				haml el
+			end
+
+			def gravatar user
+				hash = Digest::MD5.hexdigest(user.email.downcase)
+				"http://www.gravatar.com/avatar/#{hash}"
 			end
 
 		end

@@ -27,6 +27,10 @@ class ItemImageUploader < CarrierWave::Uploader::Base
 	version :thumb do 
 		process :resize_to_limit => [210, 150] 
 	end 
+	
+	version :profile do
+		process :resize_to_limit => [300, 300]
+	end
 end
 
 
@@ -41,6 +45,7 @@ class Item
 	property :created_at, DateTime
 	property :max_loan, Integer #Consider renaming/changing datatype
 	property :name, String
+	property :desc, Text
 	mount_uploader :image, ItemImageUploader
 
 	belongs_to :user
