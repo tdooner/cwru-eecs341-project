@@ -101,6 +101,7 @@ module ShareMatch
                     session[:user_id] = @a.id
                     redirect '/sign-up?step=2'
                 else
+                    flash[:error] = @a.errors.first
                     redirect '/sign-up'
                 end
             when "2"
@@ -123,7 +124,7 @@ module ShareMatch
 
 		post '/login' do
 			user = User.first(:email => params[:email])
-			if not user.nil? and user.password == params[:password]
+			if not user.nil? and user.password_hash == params[:password]
 				session[:user_id] = user.id
                 redirect session[:before_path] || '/' 
 			else

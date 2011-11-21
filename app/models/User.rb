@@ -4,15 +4,17 @@ class User
 	include DataMapper::Resource
 	include BCrypt
 	attr_accessor :password, :password_repeat
-	attr_accessor :city, :state, :zip
 
 	validates_presence_of :name, :address, :email, :city, :state, :zip
-	validates_confirmation_of :password, :confirm => :password_repeat
+    validates_with_method :passwords_match
     validates_with_method :password_not_nil
 
 	property :id, Serial
 	property :name, String
 	property :address, String
+	property :city, String
+	property :state, String
+	property :zip, Integer
 	property :location_id, Integer
 	property :email, String
 	property :created_at, DateTime
@@ -24,14 +26,19 @@ class User
 	has n, :items, :through => :borrowings
 
 	def password=(new_password)
-		@password = Password.create(new_password)
-		self.password_hash = @password
+        return if new_password.to_s.empty?
+        self.instance_variable_set(:@password, new_password)
+        self.password_hash = Password.create(new_password)
 	end
+
+    def passwords_match
+        return true if self.password == self.password_repeat
+    end
 
     def password_not_nil
         # If this is an unsaved user, the password should not be nil
         return true unless self.id.nil?
-        if self.password.empty? or self.password_repeat.empty?
+        if self.password.to_s.empty? or self.password_repeat.to_s.empty?
             return [false, "Password cannot be empty!"]
         else
             return true
