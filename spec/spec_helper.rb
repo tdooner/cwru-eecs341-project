@@ -1,3 +1,4 @@
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'app')  # spec/../app/
 
 require 'rubygems'
@@ -20,6 +21,9 @@ Capybara.app = ShareMatch::App
 
 # establish in-memory database for testing
 DataMapper.setup(:default, "sqlite3::memory:")
+
+# Load the seed data...
+require 'test_fixtures'     # spec/test_fixtures.rb
 
 # Helpers
 def signup_page_one(user)
