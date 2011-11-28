@@ -55,7 +55,7 @@ class Item
 	def available?
 		#TODO: this will not work because borrowings wont be destroyed
 		#upon return I think?
-		return true if self.borrowings.empty? else false
+		return true if self.borrowings.empty?
 	end
 end
 

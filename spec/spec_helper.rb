@@ -1,3 +1,4 @@
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'app')  # spec/../app/
 
 require 'rubygems'
@@ -7,18 +8,22 @@ require 'sinatra'
 require 'rspec'
 require 'capybara/rspec'
 require 'rack/test'
-require 'sharematch'    # app/sharematch.rb
 
 # set test environment
 Sinatra::Base.set :environment, :test
 Sinatra::Base.set :run, false
 Sinatra::Base.set :raise_errors, true
 Sinatra::Base.set :logging, false
+require 'sharematch'    # app/sharematch.rb
+
 
 Capybara.app = ShareMatch::App
 
 # establish in-memory database for testing
 DataMapper.setup(:default, "sqlite3::memory:")
+
+# Load the seed data...
+require 'test_fixtures'     # spec/test_fixtures.rb
 
 # Helpers
 def signup_page_one(user)
@@ -30,6 +35,7 @@ def signup_page_one(user)
     fill_in "address", :with => user[:address]
     fill_in "city", :with => user[:city]
     fill_in "zip", :with => user[:zip]
+    select user[:state], :from => "state"
     click_button 'Sign Up'
 end
 def login(user)

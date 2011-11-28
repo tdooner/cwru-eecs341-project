@@ -1,7 +1,6 @@
 source :rubygems
 gem 'sinatra', :git => "git://github.com/sinatra/sinatra.git"
 
-
 gem 'rake'
 gem 'padrino-mailer'
 
@@ -31,8 +30,7 @@ gem 'carrierwave'
 gem 'carrierwave-datamapper', :require => 'carrierwave/datamapper'
 gem 'mini_magick'
 
-group :test do
-	gem 'rspec', :require => 'spec'
-    gem 'capybara'
-	gem 'rack-test'
-end
+gem 'rspec', :require => 'spec'
+gem 'rspec-core'
+gem 'capybara'
+gem 'rack-test'

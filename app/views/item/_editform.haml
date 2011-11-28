@@ -1,0 +1,57 @@
+:javascript
+  $(document).ready(function() {
+    $("#item-form").validate({
+      errorClass: 'help-inline',
+      errorElement: 'span',
+      highlight: function(element, errorClass) {
+        $(element).parent().addClass("error");
+      },
+      success: function(label) {
+        label.parent().removeClass("error");
+      }
+    });
+  });
+
+%h2 Add a new Item
+- if flash[:error]
+  .alert-message.error
+    %p
+      = flash[:error]
+%form#item-form{:method=>"POST", :enctype => 'multipart/form-data'}
+  %input{:type=>"hidden", :name=>"user_id", :value=> session[:user_id]}
+  %fieldset
+    %label{:for => 'name'} 
+      %b Name
+    .input.clearfix
+      %input#name.xlarge.required{:type => 'text', :name=>"name"}
+  %fieldset
+    %label{:for => 'value'}
+      %b Worth
+    .input.clearfix
+      %input#value.xlarge.required{:type => 'text', :name=>'value'}
+  %fieldset
+    %label{:for => 'max_loan'}
+      -# Make this smart about how to enter info
+      %b Max Loan Time
+    .input.clearfix
+      %input#max-loan.xlarge.required{:type => 'text', :name=>'max_loan'}
+  %fieldset
+    %label{:for => 'desc'}
+      %b Description
+    .input.clearfix
+      %textarea#description.xlarge{:name=>'desc'}
+  -# TODO: Make this look not dumb with the remove checkbox and everything
+  -# TODO: Make fields fill out and updated properly and whatnot
+  %fieldset
+    %label{:for => 'image'}
+      %b Item Image
+    -if @item.image?
+      %img{:src => @item.image.icon60, :width => 60, :height => 60, :style => 'border: 2px solid #777; margin: 10px; margin-left: 100px;'}
+      %br
+      %label{:for => 'remove-thumb'}
+        %b Remove Thumbnail
+      .input.clearfix 
+        %input#remove-thumb{:type => 'checkbox', :name => 'remove_thumb', :value => 'true'}
+    .input.clearfix
+      %input#thumb{:type => 'file', :name => 'image'}
+

@@ -20,7 +20,15 @@ namespace :db do
 
 	desc 'Nuke the database and build back up from nothing'
 	task :rebuild => :environment do
-		DataMapper.auto_migrate!
+        DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/production.db")
+        DataMapper.auto_migrate!
+        DataMapper.finalize
+        DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/development.db")
+        DataMapper.auto_migrate!
+        DataMapper.finalize
+        DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/test.db")
+        DataMapper.auto_migrate!
+        DataMapper.finalize
 	end
 
 	desc 'Add new fields to database without nuking everything'
