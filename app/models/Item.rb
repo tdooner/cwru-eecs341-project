@@ -51,5 +51,11 @@ class Item
 	belongs_to :user
 	has n, :borrowings
 	has n, :users, :through => :borrowings
+
+	def available?
+		#TODO: this will not work because borrowings wont be destroyed
+		#upon return I think?
+		return true if self.borrowings.empty? else false
+	end
 end
 

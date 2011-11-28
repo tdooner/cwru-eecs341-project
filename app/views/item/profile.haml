@@ -13,19 +13,22 @@
       %h1
         = @item.name
         %small can be borrowed for #{@item.max_loan} days.
-      Shared by
-      %a{:href => "/users/#{@item.user.id}"}
+      %small Shared since #{@item.created_at.strftime("%B %e, %Y")} by 
+      %a.no-decor{:href => "/users/#{@item.user.id}"}
         #{@item.user.name} 
-        %img{:src => gravatar(@item.user), :width => 20, :height => 20}
+        %img.tiny-pic{:src => gravatar(@item.user), :width => 20, :height => 20}
       %br
-      %small Shared since #{@item.created_at.strftime("%B %e, %Y")}
       -# this should be inactive if already borrowed
       -# and alert should then show up
       %br
-      %a.btn.primary{:href => '#'} Borrow
+      - if @item.available?
+        %a.btn.primary{:href => '#'} Borrow
+      - else
+        %a.btn.primary.disabled{:href => '#'} Borrow
       %a.btn.scrollPage{:href => '#reviews'} View Feedback
       %a.btn.scrollPage{:href => '#end'} Review
-      %a{:href => '#'} Alert when available
+      - if not @item.available?
+        %a{:href => '#'} Alert when available
       %h3 Description 
       :textile
         #{@item.desc}

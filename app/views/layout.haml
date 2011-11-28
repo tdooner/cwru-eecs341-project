@@ -26,8 +26,9 @@
     #top
     .header.cubed
       .container
-        %a{:href=>"/"}
+        %a#logo{:href=>"/"}
           %img{:src=>"/sharematch.png"}
+        %img{:src=>"/sharematch_gs.png"}
         %ul.pills{:style=>"float: right;"}
           - if @user 
             = nav_li @user.name, '#', @pills[:user_edit]

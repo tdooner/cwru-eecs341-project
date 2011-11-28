@@ -9,6 +9,13 @@
   -moz-border-radius: @radius;
 }
 
+.fade-transition (@duration: .6s, @property: color) {
+  -o-transition-duration: @duration;
+  -o-transition-property: @property;
+  -webkit-transition-duration: @duration;
+  -webkit-transition-property: @property;
+}
+
 
 
 //GENERAL STYLES
@@ -33,6 +40,20 @@
   .rounded-corners(9px); 
 }
 
+.no-decor {
+  .fade-transition();
+  &:hover {
+    text-decoration: none;
+    color: #11aadd;
+  }
+}
+
+.tiny-pic {
+  border: 1px solid #aaa;
+  position: relative;
+  top: 0.5em;
+}
+
 //LAYOUT STYLES
 
 .cubed {
@@ -49,6 +70,15 @@
   height: 150px;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ccc;
+}
+
+#logo {
+  .fade-transition(.6s, opacity);
+  position: absolute;
+  &:hover {
+    opacity: 0;
+    text-decoration: none;
+  }
 }
 
 //INDEX STYLES
@@ -105,15 +135,4 @@ h1 {
 }
 
 
-//FIND STYLES
 
-ul.media-grid li div.item-small a {
-  -o-transition-duration: .8s;
-  -o-transition-property: color;
-  -webkit-transition-duration: .6s;
-  -webkit-transition-property: color;
-  &:hover {
-    text-decoration: none;
-    color: #11aadd;
-  }
-}
