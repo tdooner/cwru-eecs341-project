@@ -41,8 +41,6 @@
           = nav_li 'SHARE', '/item/new', @nav[:share]
           = nav_li 'FIND', '/item', @nav[:find]
           = nav_li 'SEARCH', '/search',  @nav[:you]
-          - if session[:user]
-            = nav_li 'YOU', '/you',  @nav[:user]
     -#If this is the index, don't put the body in a container
     - if request.path_info == '/'
       =yield

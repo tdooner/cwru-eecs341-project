@@ -1,3 +1,6 @@
+//VARIABLES
+
+
 //MIXINS
 
 .rounded-corners (@radius: 5px) {
@@ -30,8 +33,8 @@
   .rounded-corners(9px); 
 }
 
-
 //LAYOUT STYLES
+
 .cubed {
   background-image: url(../cubes.png);
 }
@@ -99,4 +102,18 @@ h1 {
   text-align: center; 
   clear: both; 
   margin: 5px; padding: 5px;
+}
+
+
+//FIND STYLES
+
+ul.media-grid li div.item-small a {
+  -o-transition-duration: .8s;
+  -o-transition-property: color;
+  -webkit-transition-duration: .6s;
+  -webkit-transition-property: color;
+  &:hover {
+    text-decoration: none;
+    color: #11aadd;
+  }
 }

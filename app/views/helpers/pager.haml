@@ -1,0 +1,25 @@
+.pagination
+  %ul
+    -# Previous button
+    - if page == 1
+      %li.prev.disabled
+        %a{:href => '#'} &larr; Previous
+    - else
+      %li.prev
+        %a{:href => "/item?page=#{page - 1}"} &larr; Previous
+    -# Now do each page
+    - pages.times do |i|
+      - if i + 1 == page
+        %li.active
+          %a{:href => '#'}= i + 1
+      - else 
+        %li
+          %a{:href => "/item?page=#{i + 1}"}= i + 1
+
+    -# Next button
+    - if page < pages
+      %li.next
+        %a{:href => "/item?page=#{page + 1}"} Next &rarr;
+    - else
+      %li.next.disabled
+        %a{:href => '#'} Next &rarr;

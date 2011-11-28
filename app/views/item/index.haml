@@ -1,31 +1,7 @@
 %h2 Shared Items
-.pagination
-  %ul
-    %li.prev.disabled
-      %a{:href => '#'} &larr; Previous
-    %li.active
-      %a{:href => '#'} 1
-    %li
-      %a{:href => '#'} 2
-    %li
-      %a{:href => '#'} 3
-    %li
-      %a{:href => '#'} 4
-    %li
-      %a{:href => '#'} 5
-    %li
-      %a{:href => '#'} 6
-    %li.next
-      %a{:href => '#'} Next &rarr;
-
+= haml :'helpers/pager', :locals => {:page => @page, :pages => @pages}
 %ul.media-grid
   - @items.each do |item|
     %li
       = haml :'item/_item', :locals => {:item => item}
-  %li
-    .item-small
-      %a{:href => "item/new"}
-        / is this height a good one?  it is kinda nice that it is larger than usual
-        %img.thumbnail{:src => '/default.png', :width => 210, :height => 210}
-        :textile
-          Add another item for the community!
+= haml :'helpers/pager', :locals => {:page => @page, :pages => @pages}

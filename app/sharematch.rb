@@ -3,6 +3,7 @@ require 'haml'
 require 'less'
 require 'rack-flash'
 require 'padrino-mailer'
+require 'dm-pager'
 require 'digest/md5'
 
 require 'environment' # app/environment.rb
@@ -50,9 +51,19 @@ module ShareMatch
 		end
 
 		get '/item' do
+			item_per_page = 12.0 #must be float for pages to be correctly calculated
 			@nav[:find] = 'active'
+			@page = 1
+			@page = params[:page].to_i if params[:page]
+			@pages = (Item.count / item_per_page).ceil
 
-			@items = Item.all
+			if @page > @pages
+				@page = @pages
+			elsif @page < 1
+				@page = 1
+			end
+
+			@items = Item.page @page, :per_page => item_per_page
 
 			haml :'item/index'
 		end
