@@ -57,5 +57,9 @@ class Item
 		#upon return I think?
 		return true if self.borrowings.empty?
 	end
+
+        def printvalue
+                return "$%01.2f" % self.value
+        end
 end
 
