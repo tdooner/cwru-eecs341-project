@@ -101,10 +101,16 @@ html, body {
 div.container {
     height:100%;
     margin-bottom:-220px; // -1 * footer height
+    div.footerclearfix {
+        float:left;
+    }
 }
 div.card div.container {
     height:auto;
     margin-bottom:0px;
+}
+div.footer {
+    clear:both;
 }
 
 #card1 {
