@@ -134,7 +134,8 @@ module ShareMatch
 				@user = User.new
 			when 2
 				self.login_required
-				@communities = Community.all
+                # Get the closest 20 communities
+				@communities = @user.closest_communities
 			when 3
 				self.login_required
 			end

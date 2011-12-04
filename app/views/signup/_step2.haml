@@ -9,14 +9,16 @@
         %th{:width=>"100px"} Zip Code
         %th{:width=>"50px"}
       %tbody
-        - Community.all.each do |c|
+        - @communities.each do |c|
           %tr
             %td
-              %h4=c.name
-            %td{:style=>"vertical-align:middle;"}=c.zip_code
+              %h4
+                =c[:community].name
+                %span{:style=>"color:#CCC"} (#{(Math.sqrt(c[:distance])*79.31).round} miles)
+            %td{:style=>"vertical-align:middle;"}=c[:community].zip_code
             %td{:style=>"vertical-align:middle;"}
               %form{:action=>'/sign-up?step=2',:method=>'POST',:style=>"margin:0px;"}
-                %input{:type=>"hidden",:name=>"community_id", :value=>c.id}
+                %input{:type=>"hidden",:name=>"community_id", :value=>c[:community].id}
                 %input.btn.primary{:type=>"submit", :value=>"Join"}
   %div.span5
     %h2 Create a Community
