@@ -18,6 +18,18 @@ end
 
 namespace :db do
 
+	desc 'Add fake users, items, communities, and in general everything needed.'
+	task :seed, [:count]  => :environment do |t, args|
+		require './script/seed.rb'
+		DataMapper.auto_migrate!
+		DataMapper.finalize
+		if count = args[:count] 
+			Seed.run! count
+		else
+			Seed.run! 20
+		end
+	end
+
 	desc 'Nuke the database and build back up from nothing'
 	task :rebuild => :environment do
         DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/production.db")
@@ -79,11 +91,17 @@ namespace :db do
 		end
 	end
 
-
+	desc "Load external ZIP code data into the database."
+	task :load_zip_codes => :load_migrations do
+        DataMapper::MigrationRunner.migrations.detect{|x| x.name == "create_zip_code_table"}.perform_up
+    end
 end
 
 task :environment do
 	$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/app')
 	require File.join(File.dirname(__FILE__), 'app', 'sharematch.rb')
+	CarrierWave.configure do |config| 
+		config.root = "#{Dir.pwd}/public/" 
+	end 
 end
 

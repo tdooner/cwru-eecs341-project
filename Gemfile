@@ -21,6 +21,7 @@ gem 'data_mapper'
 gem 'dm-sqlite-adapter'
 gem 'bcrypt-ruby'
 gem 'dm-pager'
+gem 'faker'
 
 #rack stuff
 gem 'mixpanel'

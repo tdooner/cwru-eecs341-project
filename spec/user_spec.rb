@@ -33,6 +33,9 @@ describe 'user' do
         invalid_user = Fixtures::VALID_USER.dup
         invalid_user[:state] = ""
         User.new( invalid_user ).valid?.should eq(false)
+        invalid_user = Fixtures::VALID_USER.dup
+        invalid_user[:zip] = nil
+        User.new( invalid_user ).valid?.should eq(false)
     end
     it "should save successfully to the database" do
         u = User.new(Fixtures::VALID_USER)
@@ -62,7 +65,7 @@ describe 'user' do
         u = User.new(Fixtures::VALID_USER)   # Create the user first
         u.save().should eq(true)
         u2 = User.get(u.id)        # Then load it and have it join
-        u2.location_id = 1         #  the community
+        u2.community_id = 1         #  the community
         u2.save().should eq(true)
     end
 end
@@ -84,7 +87,7 @@ describe 'The sign-up process', :type => :request do
     it 'allows you to create a community' do
         signup_page_one(Fixtures::VALID_USER)
         fill_in 'name', :with=>Fixtures::VALID_COMMUNITY[:name]
-        fill_in 'zip_code', :with=>Fixtures::VALID_COMMUNITY[:zip_code]
+        fill_in 'zip', :with=>Fixtures::VALID_COMMUNITY[:zip]
         click_button 'Create and Join'
         find("div.container h6").should have_content("step 3 of 3")
         body.should_not have_content("Error:")
