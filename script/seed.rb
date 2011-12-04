@@ -62,18 +62,17 @@ class Seed
 			f[:filename] = path.split('/')[-1]
 			f[:type] = 'image/' + path.split('.')[-1]
 			f[:name] = 'seed-image'
-			f[:tempfile] = File.open("script/images/3.jpg")
-			f[:head] = "Content-Disposition: form-data; name=\"image\"; filename=\"icon.png\"\r\nContent-Type: image/png\r\n"
+			f[:tempfile] = File.open(images[rand(images.size)])
 
 
-			a = Item.new(:value => rand(500) +rand,
+			a = Item.new(:value => rand(500),
 				     :max_loan => 1 + rand(20),
 				     :name => item_names[rand(item_names.size)],
 				     :desc => Faker::Lorem.paragraph(5),
 				     :user => user,
 				     :image => f,
 				     :created_at => self.time_rand(user.created_at))
-			a.save!
+			a.save
 		end
 	end
 
