@@ -19,7 +19,7 @@ module Fixtures
         :state => "PA",
         :zip => 45678
     }
-    VALID_COMMUNITY = {:name => "place one", :zip_code=>12345}
-    VALID_COMMUNITY2 = {:name => "place two", :zip_code=>23456}
+    VALID_COMMUNITY = {:name => "place one", :zip=>12345}
+    VALID_COMMUNITY2 = {:name => "place two", :zip=>23456}
     VALID_ITEM = {:name => "Frying Pan", :value => 99.99, :max_loan => 20, :desc => ""}
 end

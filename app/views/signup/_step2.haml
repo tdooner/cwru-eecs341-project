@@ -9,14 +9,17 @@
         %th{:width=>"100px"} Zip Code
         %th{:width=>"50px"}
       %tbody
-        - Community.all.each do |c|
+        - @communities.each do |c|
           %tr
             %td
-              %h4=c.name
-            %td{:style=>"vertical-align:middle;"}=c.zip_code
+              %h4
+                =c[:community].name
+                - if c[:distance].to_miles != 0
+                  %span{:style=>"color:#CCC"} (#{(c[:distance].to_miles).round} miles)
+            %td{:style=>"vertical-align:middle;"}=c[:community].zip
             %td{:style=>"vertical-align:middle;"}
               %form{:action=>'/sign-up?step=2',:method=>'POST',:style=>"margin:0px;"}
-                %input{:type=>"hidden",:name=>"community_id", :value=>c.id}
+                %input{:type=>"hidden",:name=>"community_id", :value=>c[:community].id}
                 %input.btn.primary{:type=>"submit", :value=>"Join"}
   %div.span5
     %h2 Create a Community
@@ -28,6 +31,6 @@
       %p 
         For purposes of location, input the ZIP code which will be used for others to automatically find this community.
       %p
-        %input#zip{:type=>"text",:name=>"zip_code"}
+        %input#zip{:type=>"text",:name=>"zip"}
       %p
         %input.btn.small{:type=>"submit", :value=>"Create and Join"}

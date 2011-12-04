@@ -14,7 +14,7 @@ module ShareMatch
 	class App < Sinatra::Base
 		dir = File.dirname(File.expand_path(__FILE__))
 		disable :run
-		disable :static
+		#disable :static
 		set :root,     "#{dir}/.."
 		set :public_folder,   "#{dir}/../public"
 		set :app_file, __FILE__
@@ -135,7 +135,8 @@ module ShareMatch
 				@user = User.new
 			when 2
 				self.login_required
-				@communities = Community.all
+                # Get the closest 20 communities
+				@communities = @user.closest_communities
 			when 3
 				self.login_required
 			end
@@ -160,7 +161,7 @@ module ShareMatch
 				end
 			when "2"
 				self.login_required
-				@user.location_id = params[:community_id]
+				@user.community_id = params[:community_id]
 				if @user.save
 					redirect '/sign-up?step=3'
 				else
@@ -201,7 +202,7 @@ module ShareMatch
 			self.login_required
 			c = Community.new(params)
 			if c.valid? and c.save
-				@user.location_id = c.id
+				@user.community_id = c.id
 				if @user.save
 					# All went well!
 					redirect '/sign-up?step=3'

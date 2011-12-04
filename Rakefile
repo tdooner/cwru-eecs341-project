@@ -90,6 +90,11 @@ namespace :db do
 			load migration
 		end
 	end
+
+	desc "Load external ZIP code data into the database."
+	task :load_zip_codes => :load_migrations do
+        DataMapper::MigrationRunner.migrations.detect{|x| x.name == "create_zip_code_table"}.perform_up
+    end
 end
 
 task :environment do
