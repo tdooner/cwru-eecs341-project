@@ -16,7 +16,6 @@ class User
 	property :city, String
 	property :state, String
 	property :zip, Integer
-	property :location_id, Integer
 	property :email, String
 	property :created_at, DateTime
 	property :password_hash, BCryptHash
@@ -25,6 +24,7 @@ class User
 	has n, :items
 	has n, :borrowings
 	has n, :items, :through => :borrowings
+	belongs_to :community
 
 	def password=(new_password)
         return if new_password.to_s.empty?
