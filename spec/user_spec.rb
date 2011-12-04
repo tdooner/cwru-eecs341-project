@@ -33,6 +33,9 @@ describe 'user' do
         invalid_user = Fixtures::VALID_USER.dup
         invalid_user[:state] = ""
         User.new( invalid_user ).valid?.should eq(false)
+        invalid_user = Fixtures::VALID_USER.dup
+        invalid_user[:zip] = nil
+        User.new( invalid_user ).valid?.should eq(false)
     end
     it "should save successfully to the database" do
         u = User.new(Fixtures::VALID_USER)
