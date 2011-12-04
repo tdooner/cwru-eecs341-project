@@ -87,7 +87,7 @@ describe 'The sign-up process', :type => :request do
     it 'allows you to create a community' do
         signup_page_one(Fixtures::VALID_USER)
         fill_in 'name', :with=>Fixtures::VALID_COMMUNITY[:name]
-        fill_in 'zip_code', :with=>Fixtures::VALID_COMMUNITY[:zip_code]
+        fill_in 'zip', :with=>Fixtures::VALID_COMMUNITY[:zip]
         click_button 'Create and Join'
         find("div.container h6").should have_content("step 3 of 3")
         body.should_not have_content("Error:")
