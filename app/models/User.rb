@@ -1,4 +1,5 @@
 require 'bcrypt'
+require 'haversine'
 
 class User
 	include DataMapper::Resource
@@ -54,6 +55,15 @@ class User
 		self.save!
 		return random_password
 	end
-
+    
+    def closest_communities
+        communities = repository.adapter.select("select c.id, z.latitude, z.longitude, z.latitude-(select latitude from zip_codes where zip = ?) as latdiff, z.longitude-(select longitude from zip_codes where zip = ?) as londiff FROM zip_codes z, communities c WHERE c.zip_code = z.zip ORDER BY latdiff*latdiff+londiff*londiff ASC;",self.zip,self.zip);
+        # Return the Haversine difference, a great-circle distance.
+        communities.map{|x| 
+            c = Community.get(x.id)
+            
+            {:community => c, :distance=>Haversine.distance(x.latitude,x.longitude,c.latitude, c.longitude)}
+        }
+    end
 end
 

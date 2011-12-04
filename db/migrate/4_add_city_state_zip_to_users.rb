@@ -1,5 +1,5 @@
 
-migration 2, :add_city_state_zip_to_users do
+migration 4, :add_city_state_zip_to_users do
 	up do
 		modify_table :users do
 			add_column :city, String
