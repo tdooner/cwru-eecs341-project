@@ -32,15 +32,17 @@ namespace :db do
 
 	desc 'Nuke the database and build back up from nothing'
 	task :rebuild => :environment do
-        DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/production.db")
-        DataMapper.auto_migrate!
-        DataMapper.finalize
-        DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/development.db")
-        DataMapper.auto_migrate!
-        DataMapper.finalize
-        DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/test.db")
-        DataMapper.auto_migrate!
-        DataMapper.finalize
+		FileUtils.rm_rf "#{Dir.pwd}/public/uploads/items/"
+		FileUtils.rm_rf "#{Dir.pwd}/public/uploads/tmp/"
+		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/production.db")
+		DataMapper.auto_migrate!
+		DataMapper.finalize
+		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/development.db")
+		DataMapper.auto_migrate!
+		DataMapper.finalize
+		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/test.db")
+		DataMapper.auto_migrate!
+		DataMapper.finalize
 	end
 
 	desc 'Add new fields to database without nuking everything'
@@ -93,8 +95,8 @@ namespace :db do
 
 	desc "Load external ZIP code data into the database."
 	task :load_zip_codes => :load_migrations do
-        DataMapper::MigrationRunner.migrations.detect{|x| x.name == "create_zip_code_table"}.perform_up
-    end
+		DataMapper::MigrationRunner.migrations.detect{|x| x.name == "create_zip_code_table"}.perform_up
+	end
 end
 
 task :environment do
