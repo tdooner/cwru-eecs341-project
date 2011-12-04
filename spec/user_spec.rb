@@ -65,7 +65,7 @@ describe 'user' do
         u = User.new(Fixtures::VALID_USER)   # Create the user first
         u.save().should eq(true)
         u2 = User.get(u.id)        # Then load it and have it join
-        u2.location_id = 1         #  the community
+        u2.community_id = 1         #  the community
         u2.save().should eq(true)
     end
 end

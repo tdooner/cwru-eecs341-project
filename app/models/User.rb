@@ -24,7 +24,8 @@ class User
 	has n, :items
 	has n, :borrowings
 	has n, :items, :through => :borrowings
-	belongs_to :community
+
+	belongs_to :community, :required => false
 
 	def password=(new_password)
         return if new_password.to_s.empty?

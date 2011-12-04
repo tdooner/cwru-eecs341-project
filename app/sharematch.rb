@@ -161,7 +161,7 @@ module ShareMatch
 				end
 			when "2"
 				self.login_required
-				@user.location_id = params[:community_id]
+				@user.community_id = params[:community_id]
 				if @user.save
 					redirect '/sign-up?step=3'
 				else
@@ -202,7 +202,7 @@ module ShareMatch
 			self.login_required
 			c = Community.new(params)
 			if c.valid? and c.save
-				@user.location_id = c.id
+				@user.community_id = c.id
 				if @user.save
 					# All went well!
 					redirect '/sign-up?step=3'
