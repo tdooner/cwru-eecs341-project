@@ -14,6 +14,8 @@ namespace :deploy do
     desc "Initialize the database."
     task :db_rebuild do
         run "cd #{release_path} && #{rake} db:rebuild"
+        run "cd #{release_path} && #{rake} db:seed[10] RACK_ENV=production"
+        run "cd #{release_path} && #{rake} db:load_zip_codes RACK_ENV=production"
     end
 end
 
