@@ -14,7 +14,7 @@
             %td
               %h4
                 =c[:community].name
-                %span{:style=>"color:#CCC"} (#{(Math.sqrt(c[:distance])*79.31).round} miles)
+                %span{:style=>"color:#CCC"} (#{(c[:distance].to_miles).round} miles)
             %td{:style=>"vertical-align:middle;"}=c[:community].zip_code
             %td{:style=>"vertical-align:middle;"}
               %form{:action=>'/sign-up?step=2',:method=>'POST',:style=>"margin:0px;"}
