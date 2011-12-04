@@ -62,7 +62,7 @@ class User
                 c = Community.get(x.id)
                 
                 {:community => c, :distance=>Haversine.distance(self.latitude, self.longitude, x.latitude, x.longitude)}
-            }
+            }.sort{|x,y| x[:distance] <=> y[:distance]}
         rescue
             Community.all.map{|x| {:community => x, :distance=>Haversine.distance(0,0,0,0)}}
         end

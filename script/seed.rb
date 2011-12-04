@@ -10,10 +10,12 @@ class Seed
 	end
 
 	def self.communities
-		#Create Pittsburgh
-		Community.create(:name => 'Macedonia', :zip => 44056, :description => 'A nice place below Cleveland')
-		#Create Cleveland
-		Community.create(:name => 'Cleveland', :zip => 44106, :description => 'Home of Case Western Reserve University')
+		Community.create(:name => 'Redmond, WA', :zip => 98052, :description => 'Micro$oft!')
+		Community.create(:name => 'Pittsburgh, PA', :zip => 15217, :description => 'Pittsburgh Steelers')
+		Community.create(:name => 'Bolingbrook, IL', :zip => 60490, :description => 'Bolingbrook User Groups')
+		Community.create(:name => 'San Francisco, CA', :zip => 94108, :description => 'San Francisco is fun!')
+		Community.create(:name => 'Macedonia, OH', :zip => 44056, :description => 'A nice place below Cleveland')
+		Community.create(:name => 'Cleveland, OH', :zip => 44106, :description => 'Home of Case Western Reserve University')
 	end
 
 	def self.users count
