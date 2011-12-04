@@ -6,18 +6,21 @@ class User
 	attr_accessor :password, :password_repeat
 
 	validates_presence_of :name, :address, :email, :city, :state, :zip
-    validates_with_method :passwords_match
-    validates_with_method :password_not_nil
+        validates_format_of :email, :as => :email_address
+        validates_uniqueness_of :email
+        validates_format_of :zip, :with => /^\d{5}(-\d{4})?$/
+        validates_with_method :passwords_match
+        validates_with_method :password_not_nil
 
 	property :id, Serial
 	property :name, String
 	property :address, String
 	property :city, String
 	property :state, String
-	property :zip, Integer
+	property :zip, String
 	property :location_id, Integer
 	property :email, String
-	property :created_at, DateTime
+        property :created_at, DateTime
 	property :password_hash, BCryptHash
 	property :is_admin, Boolean
 
