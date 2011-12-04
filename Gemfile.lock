@@ -84,6 +84,8 @@ GEM
       data_objects (= 0.10.7)
     escape (0.0.4)
     eventmachine (0.12.10)
+    faker (1.0.1)
+      i18n (~> 0.4)
     fastercsv (1.5.4)
     ffi (1.0.11)
     haml (3.1.3)
@@ -175,6 +177,7 @@ DEPENDENCIES
   data_mapper
   dm-pager
   dm-sqlite-adapter
+  faker
   haml
   less
   mini_magick

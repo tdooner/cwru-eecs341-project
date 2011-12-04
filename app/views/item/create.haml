@@ -1,4 +1,25 @@
-= haml :'item/_editform'
-%fieldset
-  .input.clearfix
-    %input.submit.btn{:type => 'submit', :value => 'Share it!'}
+:javascript
+  $(document).ready(function() {
+    $("#item-form").validate({
+      errorClass: 'help-inline',
+      errorElement: 'span',
+      highlight: function(element, errorClass) {
+        $(element).parent().addClass("error");
+      },
+      success: function(label) {
+        label.parent().removeClass("error");
+      }
+    });
+  });
+
+
+%h2 Add a new Item
+- if flash[:error]
+  .alert-message.error
+    %p
+      = flash[:error]
+%form#item-form{:method=>"POST", :enctype => 'multipart/form-data'}
+  = haml :'item/_editform'
+  %fieldset
+    .input.clearfix
+      %input.submit.btn{:type => 'submit', :value => 'Share it!'}

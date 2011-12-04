@@ -79,6 +79,7 @@ module ShareMatch
 
 		post '/item/new' do
 			login_required
+			puts params.inspect
 			@item = Item.new(params)
 			if @item.valid?
 				@item.save
@@ -126,7 +127,7 @@ module ShareMatch
 			# for debugging sign-up process, add &really=true to go to whichever step you want.
 			unless params[:really]
 				@step = 2 if params[:step] = 1 and @user
-				@step = 3 if @user and @user.location_id
+				@step = 3 if @user and @user.community
 			end
 
 			case @step.to_i
