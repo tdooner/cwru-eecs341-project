@@ -79,10 +79,11 @@ module ShareMatch
 
 		post '/item/new' do
 			login_required
+			params[:user_id] = @user.id
 			@item = Item.new(params)
 			if @item.valid?
 				@item.save
-				redirect '/item'
+				redirect "/item/#{@item.id}"
 			else
 				flash[:error] = "That item is not valid!"#TODO: improve this text
 				redirect '/item/new'
@@ -91,7 +92,11 @@ module ShareMatch
 
 		get '/item/:id' do |id|
 			@item = Item.first(:id => id)
-			haml :'item/profile'
+			if  @item.nil?
+				haml :'404'
+			else
+				haml :'item/profile'
+			end
 		end
 
 		get '/item/:id/edit' do |id|
