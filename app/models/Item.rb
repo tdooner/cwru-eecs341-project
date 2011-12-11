@@ -51,6 +51,7 @@ class Item
 	belongs_to :user
 	has n, :borrowings
 	has n, :users, :through => :borrowings
+	has n, :reviews
 
 	def available?
 		#TODO: this will not work because borrowings wont be destroyed
