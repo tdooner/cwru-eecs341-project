@@ -78,6 +78,7 @@ class Seed
 
     def self.get_image(string)
         # Returns the top image in Google Image search for that string
+        puts "Searching for " + string
         search_url = URI('http://ajax.googleapis.com/ajax/services/search/images')
         q = { :v => "1.0", :rsz => '8', :q => string }
         search_url.query = URI.encode_www_form(q)
@@ -88,6 +89,7 @@ class Seed
             begin
                 image_url = res["responseData"]["results"].sample["unescapedUrl"]
                 f = Tempfile.new(string.gsub(/[^\w]*/,"")) 
+                puts "Downloading " + image_url + "..."
                 Net::HTTP.get_response(URI(image_url)) do |image|
                     f.write(image.body)
                 end
