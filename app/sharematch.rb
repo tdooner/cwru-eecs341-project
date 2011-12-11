@@ -118,6 +118,20 @@ module ShareMatch
 			haml :'item/edit'
 		end
 
+		post '/item/:id' do |id|
+			login_required
+			@item = Item.first(:id => params[:item_id])
+			@review = Review.new(:user => @user,
+					     :item => @item,
+					     :body => params['body'])
+			if @review.valid?
+				@review.save
+			end
+
+			redirect "/item/#{@item.id}"
+		end
+
+
 		get '/search' do
 			@nav[:search] = 'active'
 			haml :search
