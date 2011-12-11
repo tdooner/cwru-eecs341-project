@@ -10,6 +10,7 @@ class Seed
 		self.communities
 		self.users count
 		self.items (count*4)
+		self.tags (count*8)
 		self.reviews (count*16)
 	end
 
@@ -105,6 +106,24 @@ class Seed
         t
     end
 
+	def self.tags count
+		f = open('./script/tag_names.yml')
+		tag_names = YAML::load(f)
+		tag_names.each do |tag|
+			Tag.create(:name => tag)
+		end
+
+		tags = Tag.all
+		items = Item.all
+		count.times do
+			tag = tags[rand(tags.size)]
+			item = items[rand(items.size)]
+			item.tags << tag
+			item.save
+		end
+
+	end
+
 	def self.reviews count
 		items = Item.all
 		users = User.all
@@ -112,11 +131,16 @@ class Seed
 			user = users[rand(users.size)]
 			item = items[rand(items.size)]
 
-			creation = self.time_rand()
-			Review.create(:user => user,
-				      :item => item,
-				      :body => Faker::Lorem.paragraph(4),
-				      :created_at => creation) 
+			creation = self.time_rand([user.created_at, item.created_at].max)
+
+			begin
+				Review.create(:user => user,
+					      :item => item,
+					      :body => Faker::Lorem.paragraph(4),
+					      :created_at => creation) 
+			rescue
+				next
+			end
 		end
 	end
 
