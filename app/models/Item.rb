@@ -52,7 +52,6 @@ class Item
 	has n, :borrowings
 	has n, :users, :through => :borrowings
 	has n, :reviews
-	has n, :tags, :through => Resource
 
 	def available?
 		#TODO: this will not work because borrowings wont be destroyed
