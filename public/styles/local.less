@@ -65,6 +65,7 @@
 }
 
 .footer {
+  margin-top: 10px;
   height: 150px;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ccc;
@@ -95,16 +96,6 @@
   }
 }
 
-html, body {
-    height:100%;
-}
-div.container {
-    height:100%;
-    margin-bottom:-220px; // -1 * footer height
-    div.footerclearfix {
-        float:left;
-    }
-}
 div.card div.container {
     height:auto;
     margin-bottom:0px;
@@ -151,4 +142,41 @@ h1 {
 }
 
 
+//REVIEWS STYLES
 
+div#reviews {
+  position: relative;
+  margin-top: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 0 10px #888;
+  padding: 20px;
+  .rounded-corners(10px);
+
+  .rev {
+    margin: 4px;
+    border: 1px solid #ddd;
+    .rounded-corners(10px);
+    box-shadow: inset 0 0 4px #ccc;
+    background-color: #fafafa;
+    padding: 8px; 
+    line-height: 1.5em;
+    
+    textarea {
+      padding-top: 5px;
+      height: 120px;
+      width: 550px;
+      margin-bottom: 4px;
+    }
+    
+    .span5 {
+      position: relative;
+      top: -10px;
+    }
+    
+    .bd {
+      margin-top: 4px;
+      width: 80%;
+    }
+  }
+}
