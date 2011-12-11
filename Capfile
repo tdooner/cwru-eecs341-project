@@ -4,8 +4,8 @@ desc "Restart the server."
 namespace :deploy do
     desc "Restart the server"
     task :restart, :on_error => :continue do
-        run "cd #{release_path} && bundle exec thin stop -a 0.0.0.0 -e 'production' -p 4567 -d -R ./config.ru"
-        run "cd #{release_path} && bundle exec thin start -a 0.0.0.0 -e 'production' -p 4567 -d -R ./config.ru"
+        run "bundle exec thin stop -a 0.0.0.0 -e 'production' -p 4567 -d -c #{current_path} -R ./config.ru"
+        run "bundle exec thin start -a 0.0.0.0 -e 'production' -p 4567 -d -c #{current_path} -R ./config.ru"
     end
     desc "Make keys.yml"
     task :keys_file do
@@ -13,15 +13,15 @@ namespace :deploy do
     end
     desc "Initialize the database."
     task :db_rebuild do
-        run "cd #{release_path} && #{rake} db:rebuild"
-        run "cd #{release_path} && #{rake} db:seed[10] RACK_ENV=production"
-        run "cd #{release_path} && #{rake} db:load_zip_codes RACK_ENV=production"
+        run "cd #{current_path} && #{rake} db:rebuild"
+        run "cd #{current_path} && #{rake} db:seed[10] RACK_ENV=production"
+        run "cd #{current_path} && #{rake} db:load_zip_codes RACK_ENV=production > /dev/null"
     end
 end
 
 desc "Run the rake tests on the new install."
 task :run_tests do
-    run "cd #{release_path} && #{rake} test"
+    run "cd #{current_path} && #{rake} test"
 end
 
 before "deploy:restart", "deploy:keys_file"

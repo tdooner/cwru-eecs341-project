@@ -83,7 +83,8 @@ class Seed
         search_url.query = URI.encode_www_form(q)
         google_says = Net::HTTP.get_response(search_url)
         res = JSON.parse(google_says.read_body) 
-        while (!defined?(t) || t.empty?)
+        t = {}
+        while (t.empty?)
             begin
                 image_url = res["responseData"]["results"].sample["unescapedUrl"]
                 f = Tempfile.new(string.gsub(/[^\w]*/,"")) 
@@ -91,13 +92,10 @@ class Seed
                     f.write(image.body)
                 end
                 f.rewind
-                t = {} 
                 t[:filename] = f.path.split("/")[-1]
                 t[:type] = 'image/' + image_url.split('.')[-1]
                 t[:name] = 'seed-image'
                 t[:tempfile] = f
-            rescue
-                t = {}
             end
         end
 
