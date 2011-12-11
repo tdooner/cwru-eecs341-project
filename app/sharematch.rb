@@ -79,7 +79,6 @@ module ShareMatch
 
 		post '/item/new' do
 			login_required
-			puts params.inspect
 			@item = Item.new(params)
 			if @item.valid?
 				@item.save

@@ -28,7 +28,7 @@
       .container
         %a#logo{:href=>"/"}
           %img{:src=>"/sharematch.png"}
-        %img{:src=>"/sharematch_gs.png"}
+        %img{:src=>"/sharematch_b.png"}
         %ul.pills{:style=>"float: right;"}
           - if @user && !@user.dirty?
             = nav_li @user.name, '/users/' + @user.id.to_s + '/edit', @pills[:user_edit]
