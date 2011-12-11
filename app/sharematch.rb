@@ -230,6 +230,10 @@ module ShareMatch
 			haml :"users/edit"
 		end
 
+		not_found do
+			haml :'404'
+		end
+
 		helpers do 
 			def signup_crumbs text, id, step
 				retr = '<li'
