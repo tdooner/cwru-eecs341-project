@@ -1,8 +1,11 @@
 class Helpful
 	include DataMapper::Resource
 
-	property :review_id, Integer, :key => true
-	property :user_id, Integer, :key => true
 	property :helpful, Boolean
+	property :review_id, Integer, :key => true 
+	property :user_id, Integer, :key => true 
+
+	belongs_to :review
+	belongs_to :user
 end
 

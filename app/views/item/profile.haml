@@ -1,3 +1,20 @@
+:javascript
+  $(document).ready(function() {
+    $("#comment").validate({
+      errorPlacement: function(error, element) {
+        error.appendTo( element );
+      },
+      success: function(label) {
+        $("#com-sub").removeClass("disabled");
+      }
+    });
+
+    $("#comment").waypoint(function() {
+      $("#revarea").focus();
+    }, 
+    {offset: 'bottom-in-view'});
+  });
+
 .spacer{:style => 'padding: 10px;'}
   %a{:href => '/item'}
     &larr; Go back to items
@@ -26,12 +43,24 @@
       - else
         %a.btn.primary.disabled{:href => '#'} Borrow
       %a.btn.scrollPage{:href => '#reviews'} View Feedback
-      %a.btn.scrollPage{:href => '#end'} Review
+      %a.btn.scrollPage{:href => '#end', :onclick => 'setTimeout("$("#revarea").focus()",5000);'} Review
       - if not @item.available?
         %a{:href => '#'} Alert when available
       %h3 Description 
       :textile
         #{@item.desc}
+      %h3 Tags
+      - @item.tags.each do |tag|
+        %a.label{:href => "/tag/#{tag.id}"}= tag.name
+
+
+#similar
+  %h2 Similar Items
+  %ul.media-grid
+    - @similar.each do |item|
+      %li
+        = haml :'item/_item', :locals => {:item => item}
+
 
 #reviews
   %h1 Reviews
@@ -46,17 +75,22 @@
       .bd
         :textile 
           #{review.body}
+        %hr
+        Vote: 
+        %a.label.success{:href => '#'}  Helpful 
+        %a.label.important{:href => '#'}  Unhelpful 
+
   .rev#end
     %h3 Add a Review
-    %form{:method => "POST"}
+    %form#comment{:method => "POST"}
       %input{:type => "hidden", :name => "item_id", :value => @item.id}
-      %textarea{:name => 'body'}
+      %textarea#revarea.required{:name => 'body'}
       .span5.right
         %h4 Let your voice be heard
         :textile
           Try to give constructive criticism and just plain helpful reviews in general.  This is helping others know what they are getting with this item, and letting the owner know about it too.  You comment will be parsed with "textile":http://textile.thresholdstate.com/.
       %br
-      %input.submit.btn{:type => 'submit', :value => 'Post Review'}
+      %input#com-sub.submit.btn.disabled{:type => 'submit', :value => 'Post Review'}
 
 
 
