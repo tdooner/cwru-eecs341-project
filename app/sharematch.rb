@@ -95,8 +95,6 @@ module ShareMatch
 			if  @item.nil?
 				haml :'404'
 			else
-				@similar = Item.first 4
-				#TODO: LATER MAKE THIS SIMILAR WORK WITH TAGS!
 				haml :'item/profile' 
 			end
 		end
