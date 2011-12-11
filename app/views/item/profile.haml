@@ -44,7 +44,7 @@
         %a{:href => "/user/#{review.user.id}"}= review.user.name
         %small= review.created_at.strftime("%B %e, %Y")
       .bd
-        :textile
+        :textile 
           #{review.body}
   .rev#end
     %h3 Add a Review
@@ -57,3 +57,7 @@
           Try to give constructive criticism and just plain helpful reviews in general.  This is helping others know what they are getting with this item, and letting the owner know about it too.  You comment will be parsed with "textile":http://textile.thresholdstate.com/.
       %br
       %input.submit.btn{:type => 'submit', :value => 'Post Review'}
+
+
+
+

@@ -95,7 +95,7 @@ module ShareMatch
 			if  @item.nil?
 				haml :'404'
 			else
-				haml :'item/profile'
+				haml :'item/profile' 
 			end
 		end
 
@@ -153,10 +153,11 @@ module ShareMatch
 				@user = User.new
 			when 2
 				self.login_required
-                # Get the closest 20 communities
+				# Get the closest 20 communities
 				@communities = @user.closest_communities
 			when 3
 				self.login_required
+				@item = Item.new
 			end
 
 			@part = "signup/_step#{@step}"
