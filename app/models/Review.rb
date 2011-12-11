@@ -1,7 +1,10 @@
 class Review
 	include DataMapper::Resource
 
-	property :item_id, Integer, :key => true
-	property :user_id, Integer, :key => true
+	property :id, Serial
 	property :body, Text
+	property :created_at, DateTime
+
+	belongs_to :user
+	belongs_to :item
 end

@@ -10,6 +10,7 @@ class Seed
 		self.communities
 		self.users count
 		self.items (count*4)
+		self.reviews (count*16)
 	end
 
 	def self.communities
@@ -104,6 +105,20 @@ class Seed
         t
     end
 
+	def self.reviews count
+		items = Item.all
+		users = User.all
+		count.times do
+			user = users[rand(users.size)]
+			item = items[rand(items.size)]
+
+			creation = self.time_rand()
+			Review.create(:user => user,
+				      :item => item,
+				      :body => Faker::Lorem.paragraph(4),
+				      :created_at => creation) 
+		end
+	end
 
 
 	def self.time_rand from = (DateTime.now - 100)

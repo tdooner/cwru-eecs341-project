@@ -79,11 +79,11 @@ module ShareMatch
 
 		post '/item/new' do
 			login_required
-			puts params.inspect
+			params[:user_id] = @user.id
 			@item = Item.new(params)
 			if @item.valid?
 				@item.save
-				redirect '/item'
+				redirect "/item/#{@item.id}"
 			else
 				flash[:error] = "That item is not valid!"#TODO: improve this text
 				redirect '/item/new'
@@ -92,7 +92,11 @@ module ShareMatch
 
 		get '/item/:id' do |id|
 			@item = Item.first(:id => id)
-			haml :'item/profile'
+			if  @item.nil?
+				haml :'404'
+			else
+				haml :'item/profile' 
+			end
 		end
 
 		get '/item/:id/edit' do |id|
@@ -113,6 +117,20 @@ module ShareMatch
 			@item = Item.first(:id => id)
 			haml :'item/edit'
 		end
+
+		post '/item/:id' do |id|
+			login_required
+			@item = Item.first(:id => params[:item_id])
+			@review = Review.new(:user => @user,
+					     :item => @item,
+					     :body => params['body'])
+			if @review.valid?
+				@review.save
+			end
+
+			redirect "/item/#{@item.id}"
+		end
+
 
 		get '/search' do
 			@nav[:search] = 'active'
@@ -135,10 +153,11 @@ module ShareMatch
 				@user = User.new
 			when 2
 				self.login_required
-                # Get the closest 20 communities
+				# Get the closest 20 communities
 				@communities = @user.closest_communities
 			when 3
 				self.login_required
+				@item = Item.new
 			end
 
 			@part = "signup/_step#{@step}"
@@ -224,6 +243,10 @@ module ShareMatch
 		get '/users/:id/edit' do #TODO: This shit is making Roy Fielding angry.  You won't like him when he's angry. 
 			@nav[:user] = 'active'
 			haml :"users/edit"
+		end
+
+		not_found do
+			haml :'404'
 		end
 
 		helpers do 

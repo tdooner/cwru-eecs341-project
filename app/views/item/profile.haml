@@ -14,7 +14,7 @@
         = @item.name
         %small can be borrowed for #{@item.max_loan} days.
       %small Shared since #{@item.created_at.strftime("%B %e, %Y")} by 
-      %a.no-decor{:href => "/users/#{@item.user.id}"}
+      %a.no-decor{:href => "/user/#{@item.user.id}"}
         #{@item.user.name} 
         %img.tiny-pic{:src => gravatar(@item.user), :width => 20, :height => 20}
       %br
@@ -34,9 +34,30 @@
         #{@item.desc}
 
 #reviews
-  .rev This is a review
-  .rev So is this
+  %h1 Reviews
+  - if @item.reviews.empty?
+    .rev There aren't any reviews yet! Awwww...
+  - @item.reviews.each do |review|
+    .rev
+      %img.tiny-pic.right{:src => gravatar(review.user), :width => 40, :height => 40}
+      %h3
+        %a{:href => "/user/#{review.user.id}"}= review.user.name
+        %small= review.created_at.strftime("%B %e, %Y")
+      .bd
+        :textile 
+          #{review.body}
   .rev#end
-    This is the last review
-.spacer{:style => 'height: 700px;'}
-.spacer{:style => 'height: 10px;'}
+    %h3 Add a Review
+    %form{:method => "POST"}
+      %input{:type => "hidden", :name => "item_id", :value => @item.id}
+      %textarea{:name => 'body'}
+      .span5.right
+        %h4 Let your voice be heard
+        :textile
+          Try to give constructive criticism and just plain helpful reviews in general.  This is helping others know what they are getting with this item, and letting the owner know about it too.  You comment will be parsed with "textile":http://textile.thresholdstate.com/.
+      %br
+      %input.submit.btn{:type => 'submit', :value => 'Post Review'}
+
+
+
+
