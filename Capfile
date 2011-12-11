@@ -4,8 +4,8 @@ desc "Restart the server."
 namespace :deploy do
     desc "Restart the server"
     task :restart, :on_error => :continue do
-        run "bundle exec thin stop -a 0.0.0.0 -e 'production' -p 4567 -d -c #{current_path} -R ./config.ru"
-        run "bundle exec thin start -a 0.0.0.0 -e 'production' -p 4567 -d -c #{current_path} -R ./config.ru"
+        run "cd #{current_path} && bundle exec thin stop -a 0.0.0.0 -e 'production' -p 4567 -d -c #{current_path} -R ./config.ru"
+        run "cd #{current_path} && bundle exec thin start -a 0.0.0.0 -e 'production' -p 4567 -d -c #{current_path} -R ./config.ru"
     end
     desc "Make keys.yml"
     task :keys_file do
