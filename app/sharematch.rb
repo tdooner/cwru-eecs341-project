@@ -102,6 +102,40 @@ module ShareMatch
 			end
 		end
 
+    post '/item/review' do
+      login_required
+      h = Helpful.first_or_new({:review_user_id => params['rev_user'],
+                              :review_item_id => params['rev_item'],
+                              :user => @user})
+
+      h[:helpful] = params['dir'] == 'up'? true : false;
+      if not h.save
+        h.errors.each do |e|
+          puts e
+        end
+      end
+
+      rev = Review.first(:user_id => params['rev_user'], :item_id => params['rev_item'])
+      haml :'item/_votes', :layout => false, :locals => {:upd => rev.upDownVotes, 
+                                       :user => params['rev_user'], 
+                                       :item => params['rev_item'],
+                                       :divid => params['divid']}
+    end
+
+
+    post '/item/:id/tag' do |id|
+      login_required
+      item = Item.get(id)
+      
+      tag = Tag.first_or_create(:name => params['tag'])
+      
+      item.tags << tag
+
+      item.save
+
+      haml :'/item/_tags', :layout => false, :locals => {:item => item} 
+    end
+
 		get '/item/:id/edit' do |id|
 			login_required
 			@nav[:share] = 'active'
@@ -283,7 +317,11 @@ module ShareMatch
 			end
 
 			def current_user
-				User.get(session[:user_id])
+				u = User.get(session[:user_id])
+        if not u
+					redirect '/login'
+        end
+        return u
 			end
 
 			def admin_required

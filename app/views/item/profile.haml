@@ -1,4 +1,14 @@
 :javascript
+  tagit = function(event){
+    if(event.keyCode == 13){
+      $.post('/item/#{@item.id}/tag',
+        {tag: $("#addtag").val()},
+        function(data){
+          $('#tagdiv').html(data);
+          $("#addtag").keyup(function(event){tagit(event);});
+        });
+    }
+  }
   $(document).ready(function() {
     $("#comment").validate({
       errorPlacement: function(error, element) {
@@ -13,7 +23,22 @@
       $("#revarea").focus();
     }, 
     {offset: 'bottom-in-view'});
+
+
+    $("#addtag").keyup(function(event){tagit(event);});
   });
+
+  
+
+  vote = function(direction, review_user, review_item, id){
+    $.post('/item/review',
+      {dir: direction, rev_user: review_user, rev_item: review_item, divid: id},
+      function(data){
+        $('#' + id).html(data);
+    });
+  }
+
+
 
 .spacer{:style => 'padding: 10px;'}
   %a{:href => '/item'}
@@ -49,9 +74,8 @@
       %h3 Description 
       :textile
         #{@item.desc}
-      %h3 Tags
-      - @item.tags.each do |tag|
-        %a.label{:href => "/tag/#{tag.id}"}= tag.name
+      #tagdiv
+        = haml :'item/_tags', :locals => {:item => @item}
 
 
 #similar
@@ -66,7 +90,9 @@
   %h1 Reviews
   - if @item.reviews.empty?
     .rev There aren't any reviews yet! Awwww...
+  - @i = 0
   - @item.reviews.each do |review|
+    - @i += 1
     .rev
       %img.tiny-pic.right{:src => gravatar(review.user), :width => 40, :height => 40}
       %h3
@@ -76,11 +102,8 @@
         :textile 
           #{review.body}
         %hr
-        Vote: 
-        %a.label.success{:href => '#'}  Helpful 
-        %a.label.important{:href => '#'}  Unhelpful 
-        | #{review.helpful.size} people found this review helpful
-        | #{review.helpful.size} people found this review unhelpful
+        %div{:id => "revvote#{@i}"}= haml :'item/_votes', :locals => {:upd => review.upDownVotes, 
+                :user => review.user.id, :item => @item.id, :divid => "revvote#{@i}"}
 
   .rev#end
     %h3 Add a Review

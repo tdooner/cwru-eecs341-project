@@ -3,7 +3,7 @@ class Helpful
 
 	property :helpful, Boolean
 
-	belongs_to :review, :key => true
-
+  belongs_to :review, :key => true
+  belongs_to :user, :key => true
 end
 

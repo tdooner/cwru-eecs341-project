@@ -1,0 +1,5 @@
+%h3 Tags
+- item.tags.each do |tag|
+  %a.label{:href => "/tag/#{tag.id}"}= tag.name
+%input#addtag.mini{:type => 'text'}
+

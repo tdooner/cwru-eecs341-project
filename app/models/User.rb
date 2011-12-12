@@ -28,7 +28,7 @@ class User
   has n, :items
   has n, :borrowings
   has n, :items, :through => :borrowings
-  has n, :helpful
+  has n, :helpfuls
 
   belongs_to :community
 

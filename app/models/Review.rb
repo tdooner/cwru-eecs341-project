@@ -3,10 +3,19 @@ class Review
 
 	property :body, Text
 	property :created_at, DateTime
-	property :user_id, Integer, :key => true
-	property :item_id, Integer, :key => true
 
-	belongs_to :user
-	belongs_to :item
-  has n, :helpful
+	belongs_to :user, :key => true
+	belongs_to :item, :key => true
+  has n, :helpfuls
+
+  def upDownVotes
+    self.helpfuls.reduce({:up => 0, :down => 0}) do |result, hf|
+      if hf.helpful
+        result[:up] += 1
+      else
+        result[:down] += 1
+      end
+      result
+    end
+  end
 end
