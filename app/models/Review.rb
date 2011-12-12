@@ -8,4 +8,5 @@ class Review
 
 	belongs_to :user
 	belongs_to :item
+  has n, :helpful
 end

@@ -97,6 +97,7 @@ module ShareMatch
 			else
 				@similar = Item.first 4
 				#TODO: LATER MAKE THIS SIMILAR WORK WITH TAGS!
+        #THIS IS GONNA REQUIRE A CUSTOM QUERY METHINKS
 				haml :'item/profile' 
 			end
 		end
