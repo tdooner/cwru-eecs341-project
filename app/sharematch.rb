@@ -168,6 +168,26 @@ module ShareMatch
 			redirect "/item/#{@item.id}"
 		end
 
+        get '/tag/:id' do
+            @nav[:find] = 'active'
+			item_per_page = 12.0 #must be float for pages to be correctly calculated
+			@page = 1
+			@page = params[:page].to_i if params[:page]
+
+            @tag = Tag.get(params[:id])                   # define this variable for the view
+            @items = @tag.items
+			@items = @items.page @page, :per_page => item_per_page
+
+			@pages = (@items.count / item_per_page).ceil
+
+			if @page > @pages
+				@page = @pages
+			elsif @page < 1
+				@page = 1
+			end
+
+            haml :'item/index'
+        end
 
 		get '/search' do
 			@nav[:search] = 'active'

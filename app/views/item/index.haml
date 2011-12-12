@@ -1,4 +1,7 @@
-%h2 Shared Items
+%h2 
+  Shared Items
+  - if @tag
+    ="in " + @tag.name
 = haml :'helpers/pager', :locals => {:page => @page, :pages => @pages}
 %ul.media-grid
   - @items.each do |item|
