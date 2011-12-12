@@ -95,7 +95,7 @@ module ShareMatch
 			if  @item.nil?
 				haml :'404'
 			else
-				@similar = Item.first 4
+				@similar = @item.get_similar 4, @item.tags
 				#TODO: LATER MAKE THIS SIMILAR WORK WITH TAGS!
         #THIS IS GONNA REQUIRE A CUSTOM QUERY METHINKS
 				haml :'item/profile' 

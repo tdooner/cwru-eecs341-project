@@ -30,7 +30,7 @@ class User
   has n, :items, :through => :borrowings
   has n, :helpfuls
 
-  belongs_to :community
+  belongs_to :community, :required => false
 
   def password=(new_password)
     return if new_password.to_s.empty?
