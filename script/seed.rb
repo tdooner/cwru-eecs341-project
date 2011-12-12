@@ -1,7 +1,4 @@
 require 'faker'
-require 'net/http'
-require 'json'
-require 'tempfile'
 
 class Seed
 
@@ -63,13 +60,18 @@ class Seed
 		images = Dir.glob("./script/images/*")
 		count.times do
 			user = users[rand(users.size)]
-    
-            name = item_names[rand(item_names.size)]
-            f = self.get_image(name)
+
+			f = {}
+			path = images[rand(images.size)]
+			f[:filename] = path.split('/')[-1]
+			f[:type] = 'image/' + path.split('.')[-1]
+			f[:name] = 'seed-image'
+			f[:tempfile] = File.open(images[rand(images.size)])
+
 
 			a = Item.new(:value => rand(500),
 				     :max_loan => 1 + rand(20),
-				     :name => name,
+				     :name => item_names[rand(item_names.size)],
 				     :desc => Faker::Lorem.paragraph(5),
 				     :user => user,
 				     :image => f,
@@ -77,34 +79,6 @@ class Seed
 			a.save
 		end
 	end
-
-    def self.get_image(string)
-        # Returns the top image in Google Image search for that string
-        puts "Searching for " + string
-        search_url = URI('http://ajax.googleapis.com/ajax/services/search/images')
-        q = { :v => "1.0", :rsz => '8', :q => string }
-        search_url.query = URI.encode_www_form(q)
-        google_says = Net::HTTP.get_response(search_url)
-        res = JSON.parse(google_says.read_body) 
-        t = {}
-        while (t.empty?)
-            begin
-                image_url = res["responseData"]["results"].sample["unescapedUrl"]
-                f = Tempfile.new(string.gsub(/[^\w]*/,"")) 
-                puts "Downloading " + image_url + "..."
-                Net::HTTP.get_response(URI(image_url)) do |image|
-                    f.write(image.body)
-                end
-                f.rewind
-                t[:filename] = f.path.split("/")[-1]
-                t[:type] = 'image/' + image_url.split('.')[-1]
-                t[:name] = 'seed-image'
-                t[:tempfile] = f
-            end
-        end
-
-        t
-    end
 
 	def self.tags count
 		f = open('./script/tag_names.yml')
@@ -143,7 +117,6 @@ class Seed
 			end
 		end
 	end
-
 
 	def self.time_rand from = (DateTime.now - 100)
 		from = Time.parse(from.to_s)
