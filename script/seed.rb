@@ -123,9 +123,15 @@ class Seed
       user = users[rand(users.size)]
       review = reviews[rand(reviews.size)]
 
-      Helpful.first_or_create({:review => review,
-                               :user => user},
-                              {:helpful => rand() > 0.4 ? true : false})
+      h = Helpful.first_or_create({:review => review,
+                               :user => user})
+      
+      h[:helpful] = rand() > 0.3 ? true : false
+      if not h.save
+        h.errors.each do |e|
+          puts e
+        end
+      end
     end
   end
 

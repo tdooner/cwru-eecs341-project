@@ -108,7 +108,7 @@ module ShareMatch
                               :review_item_id => params['rev_item'],
                               :user => @user})
 
-      h[:helpful] = params['dir'] == 'up'? true : false;
+      h[:helpful] = params['dir'] == 'up'? true : false
       if not h.save
         h.errors.each do |e|
           puts e
