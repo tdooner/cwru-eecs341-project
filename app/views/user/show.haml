@@ -1,0 +1,39 @@
+.spacer{:style => 'padding: 10px;'}
+  %a{:href => '/user'}
+    &larr; Go back to users
+
+- if flash[:success]
+  .alert-message.success=flash[:success]
+
+.row
+  .span5
+    %img.thumbnail.hilite{:src => gravatar(@u), :width => 250, :height => 250}
+
+  .span10.offset1
+    .well
+      %h1
+        = @u.name
+        - if @you
+          %small (you)
+      %small 
+        is a member of the 
+        %a{:href => "/community/#{@u.community.id}"}= @u.community.name
+        community
+      %hr
+      - if @you
+        %a{:href => "/user/#{@u.id}/edit"} Edit your profile
+
+%br
+- if not @u.items
+  - if @you
+    %h6 
+      You haven't shared anything yet.  
+      %a{:href => '/item/new'} Share something here!
+  - else
+    %h6 This user hasn't shared anything yet...
+- else
+  %h2 Items #{@u.name} is sharing: 
+  %ul.media-grid
+    - @u.items.each do |item|
+      %li
+        = haml :'item/_item', :locals => {:item => item}

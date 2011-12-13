@@ -6,7 +6,7 @@
         %a{:href => '#'} &larr; Previous
     - else
       %li.prev
-        %a{:href => "/item?page=#{page - 1}"} &larr; Previous
+        %a{:href => "/#{model}?page=#{page - 1}"} &larr; Previous
 
 
 
@@ -24,7 +24,7 @@
           %a{:href => '#'}= i + 1
       - else 
         %li
-          %a{:href => "/item?page=#{i + 1}"}= i + 1
+          %a{:href => "/#{model}?page=#{i + 1}"}= i + 1
 
 
 
@@ -32,7 +32,7 @@
     -# Next button
     - if page < pages
       %li.next
-        %a{:href => "/item?page=#{page + 1}"} Next &rarr;
+        %a{:href => "/#{model}?page=#{page + 1}"} Next &rarr;
     - else
       %li.next.disabled
         %a{:href => '#'} Next &rarr;

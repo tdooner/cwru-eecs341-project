@@ -1,0 +1,4 @@
+.item-small
+  %a.no-decor{:href => "/user/#{user.id}"}
+    %img.thumbnail{:src => gravatar(user), :width => 210, :height => 150}
+    .holder= user.name

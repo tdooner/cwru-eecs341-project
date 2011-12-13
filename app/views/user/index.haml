@@ -1,0 +1,7 @@
+%h2 Sharers and Borrowers
+= haml :'helpers/pager', :locals => {:page => @page, :pages => @pages, :model => 'user'}
+%ul.media-grid
+  - @users.each do |user|
+    %li
+      = haml :'user/_user', :locals => {:user => user}
+= haml :'helpers/pager', :locals => {:page => @page, :pages => @pages, :model => 'user'}

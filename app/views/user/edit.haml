@@ -17,14 +17,11 @@
     });
   });
 
-/
-  Validation on this page is done via jQuery Validation Plugin.
-  See: http://rocketsquared.com/wiki/Plugins/Validation/validate#options
-
-  Basically, all the magic happens via the class names of the input fields.
-
-%form#sign_up_form{:method=>"POST"}
+%h1 Edit Profile
+- if flash[:error]
+  .alert-message.error=flash[:error]
+%form#edit_form{:method=>"POST"}
   =haml :"user/_editform"
   %fieldset
     .input.clearfix
-      %input.submit.btn{:type => 'submit', :value => 'Sign Up'}
+      %input.submit.btn{:type => 'submit', :value => 'Edit User'}

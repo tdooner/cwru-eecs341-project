@@ -5,6 +5,7 @@ class Community
 
   property :id, Serial
   property :name, String
+  property :state, String
 	property :zip, Integer
 	property :description, Text
 	property :created_on, Date

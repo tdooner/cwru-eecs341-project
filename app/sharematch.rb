@@ -14,14 +14,20 @@ module ShareMatch
 	class App < Sinatra::Base
 		dir = File.dirname(File.expand_path(__FILE__))
 		disable :run
-		#disable :static
 		set :root,     "#{dir}/.."
 		set :public_folder,   "#{dir}/../public"
 		set :app_file, __FILE__
 		set :views,    "app/views"
 		enable :sessions
-		set :session_secret, "My session secret"#debug only, to work with shotgun
-		use Mixpanel::Tracker::Middleware, "0f98554b168f38500e5264ec8afefe3b", :async => true
+
+    configure :development do
+		  set :session_secret, "My session secret"#debug only, to work with shotgun
+    end
+
+    configure :production do
+		  use Mixpanel::Tracker::Middleware, "0f98554b168f38500e5264ec8afefe3b", :async => true
+    end
+
 		use Rack::Flash
 		register Padrino::Mailer
 
@@ -64,6 +70,7 @@ module ShareMatch
 			end
 
 			@items = Item.page @page, :per_page => item_per_page
+      @tags = Tag.all
 
 			haml :'item/index'
 		end
@@ -201,7 +208,7 @@ module ShareMatch
 				@user = User.new
 			when 2
 				self.login_required
-				# Get the closest 20 communities @communities = @user.closest_communities
+			  @communities = @user.closest_communities
 			when 3
 				self.login_required
 				@item = Item.new
@@ -264,6 +271,7 @@ module ShareMatch
 			flash[:sent] = ''
 			redirect '/login'
 		end
+
 		post '/communities/new' do
 			self.login_required
 			c = Community.new(params)
@@ -287,9 +295,57 @@ module ShareMatch
 			redirect '/'
 		end
 
-		get '/users/:id/edit' do #TODO: This shit is making Roy Fielding angry.  You won't like him when he's angry. 
+
+    get '/user' do
+ 			user_per_page = 12.0 #must be float for pages to be correctly calculated
+			@page = 1
+			@page = params[:page].to_i if params[:page]
+			@pages = (User.count / user_per_page).ceil
+
+			if @page > @pages
+				@page = @pages
+			elsif @page < 1
+				@page = 1
+			end
+
+			@users = User.page @page, :per_page => user_per_page
+
+			haml :'user/index'
+    end
+
+    get '/user/:id' do |id|
+      if id.to_i == @user.id
+        @you = true
+        puts 'true'
+        @u = @user
+      else
+        @you = false
+        @u = User.get(id)
+      end
+      haml :'user/show'
+    end
+
+		get '/user/:id/edit' do  
 			@nav[:user] = 'active'
-			haml :"users/edit"
+			haml :"user/edit"
+		end
+
+		post '/user/:id/edit' do |id|
+			@nav[:user] = 'active'
+		  params.delete("step")
+		  params.delete("splat")
+		  params.delete("captures")
+      if params["password"] == ""
+        params.delete("password")
+        params.delete("password_repeat")
+      end
+      if @user.update(params)
+        flash[:success] = 'Updated Profile succesfully'
+        redirect "/user/#{id}"
+      else
+        flash[:error] = "Error updating profile"
+      end
+			haml :"user/edit"
 		end
 
 		not_found do
