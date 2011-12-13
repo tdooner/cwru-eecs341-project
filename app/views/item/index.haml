@@ -1,8 +1,11 @@
-%h6 Filter based on tags or <a href="/search"> search based on keywords</a>
-#tagdiv
+#tagdiv.well{:style => 'margin-top: 10px;'}
+  %h6 Filter based on tags or <a href="/search"> search based on keywords</a>
   - @tags.each do |tag|
     %a.label{:href => "/tag/#{tag.id}"}= tag.name
-%h2 Shared Items
+%h1 
+  Shared Items
+  - if @tag
+    %small="in " + @tag.name
 = haml :'helpers/pager', :locals => {:page => @page, :pages => @pages, :model => 'item'}
 %ul.media-grid
   - @items.each do |item|
