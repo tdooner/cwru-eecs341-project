@@ -1,1 +1,59 @@
-Search
+:javascript
+  $(document).ready(function() {
+    $("#searchform").validate({
+      errorPlacement: function(error, element) {
+        error.appendTo( element );
+      },
+      success: function(label) {
+        $("#searchsub").removeClass("disabled");
+      }
+    });
+
+    /*also test when page loads*/
+    if ($("#searchsub").val() != ""){
+      $("#searchsub").removeClass("disabled");
+    }
+
+    $("#query").keyup(function(event){
+      if(event.keyCode == 13){
+        $("#searchform").submit();
+      }
+    });
+  });
+
+%h1 Search 
+%form#searchform{:method => 'GET'}
+  %fieldset
+    %label{:for => 'query'} 
+      %b Search
+    .input.clearfix
+      %input#query.xxlarge.required{:type => 'text', :name=>"query", :value => @query}
+  %fieldset
+    .input.clearfix
+      %input#searchsub.submit.btn.primary.disabled{:type => 'submit', :value => 'Search'}
+- if not @results.empty?
+  %hr
+  %h1 
+    Results
+    %small returned #{@results.size} items in #{@sec} seconds
+  .multibox
+    - @results.each do |result|
+      .rev
+        %img.tiny-pic.right{:src => result.image.icon60, :width => 60, :height => 60}
+        %h3
+          %a{:href => "/user/#{result.id}"}= result.name
+          %small= result.user.community.name
+        .bd
+          :textile 
+            #{result.desc}
+          %hr
+          - if result.available?
+            %span.label.success Available
+          - else
+            %span.label Unavailable 
+          %a{:href => "/user/#{result.id}"} Go to item
+
+- elsif @query
+  %h6 Sorry, there aren't any results for that query...
+
+

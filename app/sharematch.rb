@@ -171,6 +171,17 @@ module ShareMatch
 
 		get '/search' do
 			@nav[:search] = 'active'
+      @results = []
+      start = Time.now
+      if params['query']
+        if tag = Tag.first(:name => params['query'])
+          @results.concat tag.items
+        end
+        @query = params['query']
+        q = "%#{params['query']}%"
+        @results.concat Item.all(:name.like => q) + Item.all( :desc.like => q)
+      end
+      @sec = (Time.now - start).to_s[0..5]
 			haml :search
 		end
 
@@ -190,8 +201,7 @@ module ShareMatch
 				@user = User.new
 			when 2
 				self.login_required
-				# Get the closest 20 communities
-				@communities = @user.closest_communities
+				# Get the closest 20 communities @communities = @user.closest_communities
 			when 3
 				self.login_required
 				@item = Item.new
