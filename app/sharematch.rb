@@ -324,6 +324,10 @@ module ShareMatch
       redirect '/login'
     end
 
+    get '/communities' do
+        haml :'community/index'
+    end
+
     post '/communities/new' do
       self.login_required
       c = Community.new(params)
@@ -342,11 +346,6 @@ module ShareMatch
       end
     end
 
-    get '/logout' do
-      session[:user_id] = nil
-      redirect '/'
-    end
-
     get '/community/:id' do |id|
       @c = Community.get(id)
       if @c.nil?
@@ -356,8 +355,9 @@ module ShareMatch
       end
     end
 
-    post '/community/:id' do |id|
+    post '/community/join' do
       self.login_required
+      id = params[:community_id]
       @user.community_id = id
       if @user.save
         redirect "/community/#{id}"
@@ -365,6 +365,11 @@ module ShareMatch
         flash[:error] = "Could not join community!"
         redirect "/community/#{id}"
       end
+    end
+
+    get '/logout' do
+      session[:user_id] = nil
+      redirect '/'
     end
 
     get '/user' do
