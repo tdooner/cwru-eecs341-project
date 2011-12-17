@@ -102,7 +102,8 @@ The most important integrity constraint is that when a user ceases to exist, the
 
 \section{ER Model Data Design}
 % From Project Proposal 2
-Our ER Model Diagram is attached at the end of this document as Figure \ref{fig:ERDiagram}.
+Our ER Model Diagram is attached at the end of this document as Figure \ref{fig:ERDiagram}. To design the ER Diagram, we
+noted all the objects we needed and the relationships between them.
 \begin{figure*}[p]
     \includegraphics[width=\textwidth]{EECS341ProjectERDiagram.pdf}
     \caption{ER Diagram for Share*Match}
@@ -127,7 +128,8 @@ Our Relational Model Diagram is attached at the end of this document as Figure \
 
 \section{Creating Our Database}
 % From Project Proposal 3
-Our SQL Create Table commands are listed at the end of this document as Figure \ref{fig:SQLCreateCommands}.
+Our SQL Create Table commands are listed at the end of this document as Figure \ref{fig:SQLCreateCommands}. These commands
+were automatically outputted by the ORM once we described our models according to our relational diagram.
 \begin{figure*}[p]
     \begin{lstlisting}
     CREATE TABLE borrowings (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
