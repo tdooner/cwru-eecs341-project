@@ -26,6 +26,37 @@
 
 
     $("#addtag").keyup(function(event){tagit(event);});
+
+    $("#borrow-btn").click(function(){
+      $.ajax({
+        url: '/item/#{@item.id}/borrow',
+        dataType: 'json',
+        success: function(data) {
+          if(data.success){
+            $('#success-modal').modal('show');
+            $('#normal-control').hide();
+            $('#borrow-control').removeClass('hide');
+            $('#borrow-control').show();
+          }
+        }
+      });
+    });
+
+
+    $("#return-btn").click(function(){
+      $.ajax({
+        url: '/item/#{@item.id}/return',
+        dataType: 'json',
+        success: function(data) {
+          if(data.success){
+            $('#return-modal').modal('show');
+            $('#borrow-control').hide();
+            $('#normal-control').removeClass('hide');
+            $('#normal-control').show();
+          }
+        }
+      });
+    });
   });
 
   
@@ -46,6 +77,10 @@
   %span.divider /
   %a{:href => '/search'}
     Start a new search
+- if flash[:error]
+  .alert-message.error
+    %p
+      = flash[:error]
 .row
   .span5
     %img.thumbnail.hilite{:src => @item.image.url, :width => 300, :height => 300}
@@ -58,6 +93,8 @@
       %small Shared since #{@item.created_at.strftime("%B %e, %Y")} by 
       %a.no-decor{:href => "/user/#{@item.user.id}"}
         #{@item.user.name} 
+        - if @yours
+          (you)
         %img.tiny-pic{:src => gravatar(@item.user), :width => 20, :height => 20}
       %br
       -# this should be inactive if already borrowed
@@ -75,6 +112,9 @@
           %a.btn.scrollPage{:href => '#end', :onclick => 'setTimeout("$("#revarea").focus()",5000);'} Review
       - if not @item.available?
         %a{:href => '#'} Alert when available
+      %div
+        = @control_panel
+
       %h3 Description 
       :textile
         #{@item.desc}
@@ -126,3 +166,21 @@
         %br
         :textile
           Thanks for reviewing!
+
+#success-modal.modal.hide.fade.in
+  .modal-header
+    %a.close{:href => '#'} x
+    %h3 Congratulations!
+  .modal-body
+    You've borrowed #{@item.name}.  #{@item.user.name} will be notified shortly and we'll put you in contact about how you can pick it up.
+  .modal-footer
+    %a.btn.primary{:onclick => "$('#success-modal').modal('hide')"} Cool!
+
+#return-modal.modal.hide.fade.in
+  .modal-header
+    %a.close{:href => '#'} x
+    %h3 Thanks!
+  .modal-body
+    #{@item.user.name} will be happy to have this back. You'll be notified as soon as they've told us they have it.
+  .modal-footer
+    %a.btn.primary{:onclick => "$('#return-modal').modal('hide')"} You're Welcome!
