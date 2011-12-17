@@ -2,25 +2,25 @@
   %label{:for => 'name'} 
     %b Name
   .input.clearfix
-    %input#name.xlarge.required{:type => 'text', :name=>"name"}
+    %input#name.xlarge.required{:type => 'text', :name=>"name", :value => @item.name || ""}
 %fieldset
   %label{:for => 'value'}
     %b Worth
   .input.clearfix
-    %input#value.xlarge.required{:type => 'text', :name=>'value'}
+    %input#value.xlarge.required{:type => 'text', :name=>'value', :value => @item.printvalue || ""}
 %fieldset
   %label{:for => 'max_loan'}
     -# Make this smart about how to enter info
     %b Max Loan Time
   .input.clearfix
-    %input#max-loan.xlarge.required{:type => 'text', :name=>'max_loan'}
+    %input#max-loan.xlarge.required{:type => 'text', :name=>'max_loan', :value => @item.max_loan || ""}
 %fieldset
   %label{:for => 'desc'}
     %b Description
   .input.clearfix
     %textarea#description.xlarge{:name=>'desc'}
+      = @item.desc || ""
 -# TODO: Make this look not dumb with the remove checkbox and everything
--# TODO: Make fields fill out and updated properly and whatnot
 %fieldset
   %label{:for => 'image'}
     %b Item Image

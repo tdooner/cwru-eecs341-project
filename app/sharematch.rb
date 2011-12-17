@@ -301,8 +301,10 @@ module ShareMatch
     post '/login' do
       user = User.first(:email => params[:email])
       if not user.nil? and user.password_hash == params[:password]
+        path = session[:before_path]
+        session[:before_path] = nil
         session[:user_id] = user.id
-        redirect session[:before_path] || '/' 
+        redirect path || '/' 
       else
         flash[:forgot] = ''
         redirect '/login'
@@ -469,10 +471,18 @@ module ShareMatch
 
       def current_user
         u = User.get(session[:user_id])
-        if not u
+        if not request.xhr? and not u
           redirect '/login'
         end
         return u
+      end
+
+      def logged_in
+        if session[:user_id]
+            return true
+        else
+            return false
+        end
       end
 
       def admin_required
