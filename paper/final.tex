@@ -255,13 +255,13 @@ In Relational Algebra and Tuple Relational Calculus, the query is actually quite
 \end{split}
 \]
 (assuming $C(x)$ is true for tuples $x \in \textit{community}$ and $Z(x)$ is true for tuples $x \in \textit{zip\_codes}$).
-%TODO: Add two more queries to this section.
 % Tom's other query
 Another interesting query in the Karma section is getting a list of all trusted users. This allows the find page
 to intelligently prioritize the items found according to the users' preferences. The query looks something like
 \begin{lstlisting}
 SELECT i.* FROM items i, karmas k 
-  WHERE i.user_id = k.unto AND k.from = ? AND k.type = TRUE;
+  WHERE i.user_id = k.unto AND
+  k.from = ? AND k.type = TRUE;
 \end{lstlisting}
 
 In Relational Algebra, this can be represented as
@@ -274,6 +274,31 @@ In Tuple Relational Calculus, this can be represented as
 \[ 
 \begin{split} \{ t | I(t) \to ((\forall k) (K(k) \to t[user\_id] = k[unto] \\
 \land k[from] = ? \land k[type] = TRUE)) \} \end{split} \]
+
+% Brian's other query
+The final interesting query we will show is the one to find the items that are available to be shared in a community.  Using our ORM we can write this as \texttt{Community.users.items} which will return all of the items owned by users that are in this community. In SQL this would be equivilant to 
+\begin{lstlisting}
+SELECT * FROM items 
+  NATURAL JOIN users  
+  NATURAL JOIN communities c
+    WHERE c.id = ?
+\end{lstlisting}
+
+In Relational Algebra, this can be represented by
+\[
+\begin{split}
+  \sigma_{c.id=?}(items \bowtie users \\
+    \bowtie communities~c)
+\end{split}
+\]
+
+In Tuple Relational Calculus, this is
+\[
+\begin{split}
+
+\end{split}
+\]
+
 \section{Integrity Constraints}
 In our application, we decided to do application-level data validation as much as possible. Thus, the database
 contains few constraints. For example, in our Create Table commands (in Figure \ref{fig:SQLCreateCommands}) only
