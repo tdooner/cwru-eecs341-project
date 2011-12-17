@@ -1,11 +1,12 @@
 class Review
 	include DataMapper::Resource
 
+    property :id, Serial
 	property :body, Text
 	property :created_at, DateTime
 
-	belongs_to :user, :key => true
-	belongs_to :item, :key => true
+	belongs_to :user
+	belongs_to :item
   has n, :helpfuls
 
   def upDownVotes

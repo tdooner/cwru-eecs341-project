@@ -30,9 +30,9 @@
 
   
 
-  vote = function(direction, review_user, review_item, id){
+  vote = function(direction, review_id, id){
     $.post('/item/review',
-      {dir: direction, rev_user: review_user, rev_item: review_item, divid: id},
+      {dir: direction, review_id: review_id, divid: id},
       function(data){
         $('#' + id).html(data);
     });
@@ -103,7 +103,7 @@
           #{review.body}
         %hr
         %div{:id => "revvote#{@i}"}= haml :'item/_votes', :locals => {:upd => review.upDownVotes, 
-                :user => review.user.id, :item => @item.id, :divid => "revvote#{@i}"}
+                :review_id => review.id, :divid => "revvote#{@i}"}
 
   .rev#end
     %h3 Add a Review
