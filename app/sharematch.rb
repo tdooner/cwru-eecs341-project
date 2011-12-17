@@ -135,7 +135,7 @@ module ShareMatch
         @similar = @item.get_similar 4, @item.tags
         @yours = true if @user == @item.user
         @control_panel = get_item_control_panel @item
-        @can_karma = Karma.new({:from=>@user.id, :unto=>@item.user.id, :type=>true}).valid?
+        @can_karma = @user && Karma.new({:from=>@user.id, :unto=>@item.user.id, :type=>true}).valid?
         haml :'item/profile' 
       end
     end
