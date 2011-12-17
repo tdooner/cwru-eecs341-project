@@ -2,6 +2,7 @@
 \usepackage{listings}
 \usepackage{amsmath} % For "split" math environment.
 \hyphenation{data-base}
+\lstset{language=SQL}
 
 \begin{document}
 \title{Share*Match: EECS341 Project}
@@ -128,49 +129,59 @@ Our Relational Model Diagram is attached at the end of this document as Figure \
 % From Project Proposal 3
 Our SQL Create Table commands are listed at the end of this document as Figure \ref{fig:SQLCreateCommands}.
 \begin{figure*}[p]
-    \begin{verbatim}
-    CREATE TABLE "borrowings" ("borrow_id" INTEGER NOT NULL PRIMARY KEY 
-      AUTOINCREMENT, "borrow_at" TIMESTAMP, "user_id" INTEGER, "item_id" INTEGER);
+    \begin{lstlisting}
+    CREATE TABLE borrowings (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      created_at TIMESTAMP, returned_at TIMESTAMP, 
+      current BOOLEAN DEFAULT 't', user_id INTEGER NOT NULL, 
+      item_id INTEGER NOT NULL);
 
-    CREATE TABLE "helpfuls" ("review_id" INTEGER NOT NULL, "user_id" INTEGER 
-      NOT NULL, "helpful" BOOLEAN, PRIMARY KEY("review_id", "user_id"));
+    CREATE TABLE communities (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      name VARCHAR(50), state VARCHAR(50), zip INTEGER, description TEXT, 
+      created_on DATE);
 
-    CREATE TABLE "issues" ("issue_id" INTEGER NOT NULL PRIMARY KEY 
-      AUTOINCREMENT, "created_at" TIMESTAMP);
+    CREATE TABLE helpfuls (review_id INTEGER NOT NULL, user_id INTEGER 
+      NOT NULL, helpful BOOLEAN, PRIMARY KEY(review_id, user_id));
 
-    CREATE TABLE "items" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
-       "value" DECIMAL(6, 2), "created_at" TIMESTAMP, "max_loan" INTEGER, 
-       "user_id" INTEGER);
+    CREATE TABLE issues (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      created_at TIMESTAMP, resolved BOOLEAN DEFAULT 'f', 
+      admin_notified BOOLEAN DEFAULT 'f', borrowing_id INTEGER NOT NULL);
 
-    CREATE TABLE "karmas" ("from" INTEGER NOT NULL, "unto" INTEGER NOT NULL, 
-        "type" BOOLEAN, PRIMARY KEY("from", "unto"));
+    CREATE TABLE items (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      value DECIMAL(6, 2), created_at TIMESTAMP, max_loan INTEGER, 
+      name VARCHAR(50), desc TEXT, image VARCHAR(50), 
+      user_id INTEGER NOT NULL);
 
-    CREATE TABLE "locations" ("zip_code" INTEGER NOT NULL, "description" TEXT, 
-        "created_on" DATE, PRIMARY KEY("zip_code"));
+    CREATE TABLE item_tags (item_id INTEGER NOT NULL, 
+      tag_id INTEGER NOT NULL, PRIMARY KEY(item_id, tag_id));
 
-    CREATE TABLE "media" ("media_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
-        "item_id" INTEGER, "media_location" VARCHAR(50));
+    CREATE TABLE karmas (from INTEGER NOT NULL, unto INTEGER NOT NULL, 
+      type BOOLEAN, PRIMARY KEY(from, unto));
 
-    CREATE TABLE "messages" ("message_id" INTEGER NOT NULL PRIMARY KEY 
-        AUTOINCREMENT, "body" TEXT, "created_at" TIMESTAMP, "sender" INTEGER, 
-        "reciever" INTEGER);
+    CREATE TABLE locations (zip_code INTEGER NOT NULL, description TEXT, 
+        created_on DATE, PRIMARY KEY(zip_code));
 
-    CREATE TABLE "parties" ("issue_id" INTEGER NOT NULL, "user_id" INTEGER 
-        NOT NULL, PRIMARY KEY("issue_id", "user_id"));
+    CREATE TABLE messages (message_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      body TEXT, created_at TIMESTAMP, sender_id INTEGER, receiver_id INTEGER);
 
-    CREATE TABLE "reviews" ("item_id" INTEGER NOT NULL, "user_id" INTEGER NOT 
-        NULL, "body" TEXT, PRIMARY KEY("item_id", "user_id"));
+    CREATE TABLE parties (issue_id INTEGER NOT NULL, user_id INTEGER 
+        NOT NULL, PRIMARY KEY(issue_id, user_id));
 
-    CREATE TABLE "taggings" ("item_id" INTEGER NOT NULL, "tag_id" INTEGER NOT 
-        NULL, PRIMARY KEY("item_id", "tag_id"));
+    CREATE TABLE reviews (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      body TEXT, created_at TIMESTAMP, user_id INTEGER NOT NULL, 
+      item_id INTEGER NOT NULL);
 
-    CREATE TABLE "tags" ("tag_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
-        "name" VARCHAR(50));
+    CREATE TABLE tags (tag_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+        name VARCHAR(50));
 
-    CREATE TABLE "users" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
-        "name" VARCHAR(50), "address" VARCHAR(50), "location_id" INTEGER, 
-        "email" VARCHAR(50), "joined_at" TIMESTAMP, "password" INTEGER);
-    \end{verbatim}
+    CREATE TABLE users (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      name VARCHAR(50), address VARCHAR(50), city VARCHAR(50), 
+      state VARCHAR(50), zip VARCHAR(50), location_id INTEGER, 
+      email VARCHAR(50), created_at TIMESTAMP, password_hash VARCHAR(60), 
+      is_admin BOOLEAN, community_id INTEGER);
+
+    CREATE TABLE zip_codes (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      zip INTEGER, city_name VARCHAR(50), latitude DECIMAL, longitude DECIMAL);
+    \end{lstlisting}
     \caption{SQL CREATE Commands}
     \label{fig:SQLCreateCommands}
 \end{figure*}
@@ -178,7 +189,6 @@ Our SQL Create Table commands are listed at the end of this document as Figure \
 \section{SQL Queries in RA and TRC}
 By and large, as with any web application, our project consists of mostly simple queries. 
 \begin{centering}
-\lstset{language=SQL}
 \begin{lstlisting}
 SELECT * FROM items;
 \end{lstlisting}
@@ -234,7 +244,7 @@ SELECT c.id, z.latitude, z.longitude,
  ORDER BY latdiff*latdiff+londiff*londiff ASC;
 \end{lstlisting}
 
-In Relational Algebra and Tuple Relational Calculus, the query is actually quite simple due to the lack of orde
+In Relational Algebra and Tuple Relational Calculus, the query is actually quite simple due to the lack of order
 \[ \pi_{c.id,z.latitude,z.longitude}(\textit{community}\bowtie\textit{zip\_codes}) \]
 \[ 
 \begin{split}\{ t | t[1] = c[id] \land t[2] = z[latitude] \land t[3] = z[longitude] \land \\
@@ -244,7 +254,24 @@ In Relational Algebra and Tuple Relational Calculus, the query is actually quite
 \]
 (assuming $C(x)$ is true for tuples $x \in \textit{community}$ and $Z(x)$ is true for tuples $x \in \textit{zip\_codes}$).
 %TODO: Add two more queries to this section.
+% Tom's other query
+Another interesting query in the Karma section is getting a list of all trusted users. This allows the find page
+to intelligently prioritize the items found according to the users' preferences. The query looks something like
+\begin{lstlisting}
+SELECT i.* FROM items i, karmas k 
+  WHERE i.user_id = k.unto AND k.from = ? AND k.type = TRUE;
+\end{lstlisting}
 
+In Relational Algebra, this can be represented as
+\[ \begin{split}
+\pi_{i.*}(\sigma_{k.type=TRUE \land k.from=?}( \\
+  items \bowtie_{items.user\_id=karmas.unto} karmas))
+\end{split}\]
+
+In Tuple Relational Calculus, this can be represented as
+\[ 
+\begin{split} \{ t | I(t) \to ((\forall k) (K(k) \to t[user\_id] = k[unto] \\
+\land k[from] = ? \land k[type] = TRUE)) \} \end{split} \]
 \section{Integrity Constraints}
 In our application, we decided to do application-level data validation as much as possible. Thus, the database
 contains few constraints. For example, in our Create Table commands (in Figure \ref{fig:SQLCreateCommands}) only
