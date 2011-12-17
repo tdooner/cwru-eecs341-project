@@ -97,7 +97,7 @@ describe 'User edit page', :type => :request do
     it 'shows you a page of your own information' do
         signup_page_one(Fixtures::VALID_USER)
         click_link Fixtures::VALID_USER[:name]
-        current_path.should match(/\/users\/[0-9]+\/edit/)
+        current_path.should match(/\/user\/[0-9]+\/edit/)
         find_field("name").value.should eq(Fixtures::VALID_USER[:name])
         find_field("email").value.should eq(Fixtures::VALID_USER[:email])
         find_field("address").value.should eq(Fixtures::VALID_USER[:address])

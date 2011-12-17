@@ -6,7 +6,7 @@ module Fixtures
         :password => "pw", 
         :password_repeat => "pw", 
         :city => "Macedonia", 
-        :state => "OHIO!", 
+        :state => "Ohio", 
         :zip => 12345
     }
     VALID_USER2 = {
@@ -16,7 +16,7 @@ module Fixtures
         :password => "password",
         :password_repeat => "password",
         :city => "Pittsburgh",
-        :state => "PA",
+        :state => "Pennsylvania",
         :zip => 45678
     }
     VALID_COMMUNITY = {:name => "place one", :zip=>12345}
