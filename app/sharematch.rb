@@ -346,6 +346,25 @@ module ShareMatch
       redirect '/'
     end
 
+    get '/community/:id' do |id|
+      @c = Community.get(id)
+      if @c.nil?
+        haml :'404'
+      else
+        haml :'community/show'
+      end
+    end
+
+    post '/community/:id' do |id|
+      self.login_required
+      @user.community_id = id
+      if @user.save
+        redirect "/community/#{id}"
+      else
+        flash[:error] = "Could not join community!"
+        redirect "/community/#{id}"
+      end
+    end
 
     get '/user' do
       user_per_page = 12.0 #must be float for pages to be correctly calculated
