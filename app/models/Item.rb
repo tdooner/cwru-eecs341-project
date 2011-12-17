@@ -61,7 +61,7 @@ class Item
   end
 
   def printvalue
-    return "$%01.2f" % self.value
+    return "%01.2f" % self.value
   end
 
   def get_similar(n, tags)
