@@ -2,7 +2,7 @@
   %label{:for => 'name'} 
     %b Name
   .input.clearfix
-    %input#name.xlarge.required{:type => 'text', :name=>"name"}
+    %input#name.xlarge.required{:type => 'text', :name=>"name", :value => @item.name}
 %fieldset
   %label{:for => 'value'}
     %b Worth
