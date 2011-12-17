@@ -315,18 +315,47 @@ big blue \textit{Borrow} button.
 \label{fig:ItemView.png}
 \end{centering}
 \end{figure}
-
-% Pull in the individual files from another file. To ignore it after creation, run
-% git update-index --assume-unchanged individual.tex
-\input{individual.tex}
+\section{Revisiting the Whole Project}
+\subsection{Ian}
+\subsection{Tom}
+\subsection{Brian}
+\section{Team Work}
+\subsection{Ian}
+\subsection{Tom}
+\subsection{Brian}
 \section{Conclusions}
 \section{Appendix 1: Installation Manual}
 This application follows the standard Ruby web development installation process.  Given a clean install of an operating system, the administrator must install the Ruby programming language. Most Linux distributions will have this in their package repositories, and other operating systems can download it directly from \texttt{http://www.ruby-lang.org/}.  The maintainers of this project however, recommend using RVM, which will automatically keep different Ruby versions separate, including libraries that are insalled. RVM can be found at \texttt{https://rvm.beginrescueend.com/} but will work only for UNIX and Linux operating systems.  
 
 Once Ruby is installed, the administrator must download the source code of this project which can be found at \\\texttt{http://github.com/bis12/eecs341-project}.  Download this into any directory on the local system.  This project requires some non-Ruby gem libraries in order to run properly.  First install \texttt{libsqlite3} and \texttt{imagemagick} from whatever source your operating system normally uses. Then, as with any Ruby project, run \texttt{bundle install} from the top level directory of the project. This will install all of the dependencies of the project.
 
-The application is now ready to run, but has no database.  Before running for the first time,  run \texttt{rake db:rebuild}. This will create all of the databases that you need to run the application.  If this is being run in production mode, just manually add an administrator by running \texttt{tux} in the top level directory and creating a new User with admin priviliges.  If this is for development or demonstration purposes, run \texttt{rake db:seed[x]} where \texttt{x} is the number of fake users you want to generate.  This will fill the database with all of the basic objects that interact in this application.
+The application is now ready to run, but has no database.  Before running for the first time,  run \texttt{rake db:rebuild}. This will create all of the databases that you need to run the application.  If this is being run in production mode, just manually add an administrator by running \texttt{tux} in the top level directory and creating a new User with admin privileges.  If this is for development or demonstration purposes, run \texttt{rake db:seed[x]} where \texttt{x} is the number of fake users you want to generate.  This will fill the database with all of the basic objects that interact in this application.  
+
+Once this step is completed the application can be run in one of two modes.  The script to run the application is \texttt{run.sh} and passing it ``production'' will run the application in production mode, whereas an empty string will run it in development mode. Once the server starts and reports that it is listening on the proper ports, go to the url specified and the application will respond.  If the application is seeded with the default seed, there is a user with the email \texttt{admin@sharemat.ch} and password \texttt{password} that will be able to log in.
+
+If this works, the application has been successfully installed!
 \section{Appendix 2: Users Manual}
+Using ShareMatch should be very easy because it functions the same as any standard web application.  Just access the index page\footnote{which could just be \texttt{http://sharemat.ch} if using the maintainer's install}.  There is a sign up button and log in button in the upper right hand side of the page and find, share, and search links on the upper left. Accessing each of these will allow the user to do the actions specified in the link.  Search is a simple textbox that will search through all of the items to find matches to queries.  Find is merely a listing of items by tags that they have been given, and Share is a form that allows users to add items of their own to ShareMatch.
+
+Once a user navigates to an item that they want to borrow, there is a large blue button on the page that allows the to borrow it.  When clicked, it will alert the owner of the item that a trade should be made, and then the item will go into the possession of the borrower.  The borrow bar then becomes a bar for returning the item.  That process works nearly identically to the borrowing process, except in reverse.
+
+On the page for an item, a user can also review the item, and view other reviews by previous borrowers.   These reviews can be marked helpful or unhelpful.  This all contributes to the community aspect of the project.  
+
+Communities are the most important part of ShareMatch other than the items themselves.  When a user first signs up, they will be stepped through a process of putting in their information, joining a community, and then adding your first item.  The communities will be shown to the user based on the proximity to their stated location.
+
+These are the most important aspects of the process and the rest will be fairly self explanatory.
 \section{Appendix 3: Programmer's Manual}
+There are a number of classes that make up the application.  The basic architecture of ShareMatch is the MVC pattern, which has models corresponding to database tables, controllers corresponding to RESTful routing endpoints and views that are actually rendered on the web browser.  This design pattern is advantageous because it allows us to separate logically the different parts of the application.  The important models are as follows
+
+\begin{description}
+\item[Item] This class holds all of the information about an item that can be borrowed.
+\item[User] This is a user of the application. They own and borrow multiple items at a time.
+\item[Review] A user reviews an item and it is stored in this object which has multiple joins to Users which indicate how helpful it was.
+\item[Tag] Items can be tagged in any number of different fashions to facilitate searching for them.
+\item[Community] Users join communities so that only people who are geographically near to one another can share items.
+\item[Borrowing]  When a user borrows an item, an entry is made in the Borrowing table, this will include things like whether or not the item was successfully returned.
+\end{description}
+
+Those basic objects in addition to a few helpers make up the majority of the model part of our application.  Each one can be interacted with in multiple ways using the different endpoints in the controller layer.
 
 \end{document}

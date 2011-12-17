@@ -1,7 +1,7 @@
 class Message
 	include DataMapper::Resource
 
-	property :message_id, Serial
+	property :id, Serial
 	property :body, Text
 	property :created_at, DateTime
 	property :sender, Integer #user_id1
