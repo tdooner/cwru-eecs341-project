@@ -415,7 +415,11 @@ module ShareMatch
       end
 
       def logged_in
-        return User.get(session[:user_id]) != nil
+        if session[:user_id]
+            return true
+        else
+            return false
+        end
       end
 
       def admin_required

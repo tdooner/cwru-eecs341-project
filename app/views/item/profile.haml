@@ -69,7 +69,7 @@
         %a.btn.primary.disabled{:href => '#'} Borrow
       %a.btn.scrollPage{:href => '#reviews'} View Feedback
       - if logged_in
-        a.btn.scrollPage{:href => '#end', :onclick => 'setTimeout("$("#revarea").focus()",5000);'} Review
+        %a.btn.scrollPage{:href => '#end', :onclick => 'setTimeout("$("#revarea").focus()",5000);'} Review
       - if not @item.available?
         %a{:href => '#'} Alert when available
       %h3 Description 
