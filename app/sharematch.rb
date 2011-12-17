@@ -437,6 +437,57 @@ module ShareMatch
         else
             return a.errors.to_a.join("")
         end
+
+    get '/issue/new' do
+      login_required
+      item = Item.get(params['item'].to_i)
+      borrowership_required item
+      b = item.borrowings(:current => true).first
+      if not b
+        flash[:error] = "You're not borrowing that item!"
+        redirect request.referrer
+      end
+      i = Issue.new(:borrowing => b)
+      if i.save
+        redirect "/issue/#{i.id}"
+      else
+        flash[:error] = "Error creating issue!"
+        redirect request.referrer
+      end
+    end
+
+    get '/issue/:id' do |id|
+      login_required
+      #TODO: add validation that users are involved
+      @issue = Issue.get(id)
+      if  @issue.nil?
+        haml :'404'
+      else
+        haml :'issue/show'
+      end
+    end
+
+    get '/issue' do
+      login_required
+      admin_required
+      @issues = Issue.all
+      haml :'issue/index'
+    end
+
+    get '/issue/:id/resolve' do |id|
+      i = Issue.get(id)
+      i.resolved = true
+      if i.save
+        return {:success => true}.to_json
+      end
+    end
+
+    get '/issue/:id/complain' do |id|
+      i = Issue.get(id)
+      i.admin_notified = true
+      if i.save
+        return {:success => true}.to_json
+      end
     end
 
     not_found do
