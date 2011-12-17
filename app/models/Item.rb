@@ -65,6 +65,7 @@ class Item
       return "%01.2f" % self.value
     else
       return ""
+    end
   end
 
   def get_similar(n, tags)
