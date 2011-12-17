@@ -10,7 +10,7 @@
   -if logged_in
     -if current_user.community != @c
       .span
-        %form{:action=>"/community/#{@c.id}",:method=>'POST',:style=>"margin:0px;"}
+        %form{:action=>"/community/join",:method=>'POST',:style=>"margin:0px;"}
           %input{:type=>"hidden",:name=>"community_id", :value=>@c.id}
           %input.btn{:type=>"submit", :value=>"Join This Community"}
     -else
