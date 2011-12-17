@@ -1,6 +1,6 @@
 %h3 Tags
 - item.tags.each do |tag|
   %a.label{:href => "/tag/#{tag.id}"}= tag.name
--if current_user
+-if logged_in
   %input#addtag.mini{:type => 'text'}
 
