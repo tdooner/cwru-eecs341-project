@@ -174,11 +174,12 @@
     %h3 Thanks!
   .modal-body
     #{@item.user.name} will be happy to have this back. You'll be notified as soon as they've told us they have it.
-    %div &nbsp;
-    %div#karmabtn
-      Add 
-      %b=@item.user.name
-      to your Trust list?
-      %a.btn{:onclick =>"karma('trust',#{@item.user.id})"} Trust!
+    - if @can_karma
+      %div &nbsp;
+      %div#karmabtn
+        Add 
+        %b=@item.user.name
+        to your Trust list?
+        %a.btn{:onclick =>"karma('trust',#{@item.user.id})"} Trust!
   .modal-footer
     %a.btn.primary{:onclick => "$('#return-modal').modal('hide')"} You're Welcome!
