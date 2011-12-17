@@ -109,6 +109,13 @@ Our ER Model Diagram is attached at the end of this document as Figure \ref{fig:
 \end{figure*}
 
 \section{Transforming ER Model to Relational Model}
+Because our ER Model was well-designed with foresight into the Relational Model, the transformation from ER to Relational was relatively straightforward. The first step was to create a table for each entity in the ER model, including their regular attributes. Second, entities with one-to-one relationships are easily joined.
+
+Next, we handled the one-to-many relationships. In the ER Model, these are shown with relationships intermediating the one-to-many idea. This is more simply done in the Relational model with a composition. For example, each User has many Items, but each Item only has one User. Thus, we can simply assign each record in the Items table to have a User attribute, referencing the one User that owns the Item.
+
+The many-to-many relationships were handled with join tables to represent the relationships. For example, each Item has multiple Tags, and each Tag has many Items. Therefore, we created a table Taggings, where each Tagging represents an Item and a Tag.
+
+A different relationship involved Messages. Each message is sent from one User to another User. Thus, it can be viewed as a one-to-one join of Users, or alternatively a two-to-many relationship with Users and Messages. Regardless, we chose to have a Messages table that had one attribute for each User.
 % From Project Proposal 2
 Our Relational Model Diagram is attached at the end of this document as Figure \ref{fig:RelationalDiagram}.
 \begin{figure*}[p]
