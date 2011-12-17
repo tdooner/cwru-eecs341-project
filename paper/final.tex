@@ -227,7 +227,7 @@ SELECT c.id, z.latitude, z.longitude,
  ORDER BY latdiff*latdiff+londiff*londiff ASC;
 \end{lstlisting}
 
-In Relational Algebra and Tuple Relational Calculus, the query is actually quite simple due to the lack of orde
+In Relational Algebra and Tuple Relational Calculus, the query is actually quite simple due to the lack of order
 \[ \pi_{c.id,z.latitude,z.longitude}(\textit{community}\bowtie\textit{zip\_codes}) \]
 \[ 
 \begin{split}\{ t | t[1] = c[id] \land t[2] = z[latitude] \land t[3] = z[longitude] \land \\
@@ -319,11 +319,14 @@ big blue \textit{Borrow} button.
 \subsection{Ian}
 \subsection{Tom}
 \subsection{Brian}
+This project was an excellent opportunity to expand my knowledge of web development.  I had worked in this area a great deal before, but this time we worked from a lower level than before.  This was interesting to see how the frameworks I've used in the past actually implement their underlying helpers as we had to build them ourselves this time.  I think the project was a success.
 \section{Team Work}
 \subsection{Ian}
 \subsection{Tom}
 \subsection{Brian}
+Each of the members contributed to this project in a valuable manner.  I couldn't have asked for more from anyone.
 \section{Conclusions}
+This project met it's goals and was educative for all involved.  The process we used was modern and prepared us well for future work in this area.  We spent a lot of time polishing the project, which probably wasn't all that important in the end.  That is the one thing we would change if doing this over again.
 \section{Appendix 1: Installation Manual}
 This application follows the standard Ruby web development installation process.  Given a clean install of an operating system, the administrator must install the Ruby programming language. Most Linux distributions will have this in their package repositories, and other operating systems can download it directly from \texttt{http://www.ruby-lang.org/}.  The maintainers of this project however, recommend using RVM, which will automatically keep different Ruby versions separate, including libraries that are insalled. RVM can be found at \texttt{https://rvm.beginrescueend.com/} but will work only for UNIX and Linux operating systems.  
 
@@ -358,4 +361,8 @@ There are a number of classes that make up the application.  The basic architect
 
 Those basic objects in addition to a few helpers make up the majority of the model part of our application.  Each one can be interacted with in multiple ways using the different endpoints in the controller layer.
 
+
+\section*{Notes}
+The code for this project can be found at the following location:\\
+\texttt{http://github.com/bis12/eecs341-project}
 \end{document}
