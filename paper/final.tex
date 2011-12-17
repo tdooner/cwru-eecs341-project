@@ -293,7 +293,7 @@ SELECT * FROM items
 In Relational Algebra, this can be represented by
 \[
 \begin{split}
-  \sigma_{c.id=?}(items \bowtie users \\
+  \sigma_{c.id=?}(items \bowtie users 
     \bowtie communities~c)
 \end{split}
 \]
@@ -301,7 +301,9 @@ In Relational Algebra, this can be represented by
 In Tuple Relational Calculus, this is
 \[
 \begin{split}
-
+\{t|I(t) \rightarrow (\forall{i,u,c})I(i)U(u)C(c) \rightarrow\\
+i[user\_id] = u[user\_id] \wedge u[community\_id] = c[community\_id]\\
+\wedge c[community\_id] = ?\}
 \end{split}
 \]
 
