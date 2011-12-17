@@ -564,7 +564,9 @@ module ShareMatch
       end
 
       def get_item_control_panel item
-        if @user == item.user
+        if not logged_in
+          haml :'item/_control_panel' , :layout => false, :locals => {:item => item}
+        elsif @user == item.user
           haml :'item/_owner_panel' , :layout => false, :locals => {:item => item}
         else
           ret = ""
