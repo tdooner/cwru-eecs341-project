@@ -438,6 +438,7 @@ module ShareMatch
         else
             return a.errors.to_a.join("")
         end
+    end
 
     get '/issue/new' do
       login_required
