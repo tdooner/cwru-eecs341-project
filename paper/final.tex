@@ -240,8 +240,18 @@ In Relational Algebra and Tuple Relational Calculus, the query is actually quite
 \]
 (assuming $C(x)$ is true for tuples $x \in \textit{community}$ and $Z(x)$ is true for tuples $x \in \textit{zip\_codes}$).
 %TODO: Add two more queries to this section.
+
 \section{Integrity Constraints}
+In our application, we decided to do application-level data validation as much as possible. Thus, the database
+contains few constraints. For example, in our Create Table commands (in Figure \ref{fig:SQLCreateCommands}) only
+the primary keys are specified to be NOT NULL. We use no stored procedures or triggers.
+
+In the application logic, our ORM verifies a few things throughout the code -- for instance that email addresses 
+are not duplicated and that certain fields are not empty.
+
 \section{Relational Database Design}
+
+
 \section{Revisiting the Relational Database Schema}
 \section{DBMS Implementation}
 \section{Application Implementation}
