@@ -406,6 +406,20 @@ module ShareMatch
       haml :"user/edit"
     end
 
+    post '/karma' do
+        login_required
+        a = Karma.new({
+            :from => @user.id,
+            :unto => params["user_id"],
+            :type => (params["type"] == "block")?0:1
+        })
+        if a.save()
+            return "Done!"
+        else
+            return a.errors.to_a.join("")
+        end
+    end
+
     not_found do
       haml :'404'
     end
