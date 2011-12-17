@@ -6,6 +6,8 @@ class Review
 
 	belongs_to :user, :key => true
 	belongs_to :item, :key => true
+
+        validates_uniqueness_of :user, :scope => :item
   has n, :helpfuls
 
   def upDownVotes

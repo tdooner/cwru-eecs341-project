@@ -106,17 +106,18 @@
                 :user => review.user.id, :item => @item.id, :divid => "revvote#{@i}"}
 
   .rev#end
-    %h3 Add a Review
-    %form#comment{:method => "POST"}
-      %input{:type => "hidden", :name => "item_id", :value => @item.id}
-      %textarea#revarea.required{:name => 'body'}
-      .span5.right
-        %h4 Let your voice be heard
-        :textile
-          Try to give constructive criticism and just plain helpful reviews in general.  This is helping others know what they are getting with this item, and letting the owner know about it too.  You comment will be parsed with "textile":http://textile.thresholdstate.com/.
+    - if Review.first( :user => current_user, :item => @item) == nil
+      %h3 Add a Review
+      %form#comment{:method => "POST"}
+        %input{:type => "hidden", :name => "item_id", :value => @item.id}
+        %textarea#revarea.required{:name => 'body'}
+        .span5.right
+          %h4 Let your voice be heard
+          :textile
+            Try to give constructive criticism and just plain helpful reviews in general.  This is helping others know what they are getting with this item, and letting the owner know about it too.  You comment will be parsed with "textile":http://textile.thresholdstate.com/.
+        %br
+        %input#com-sub.submit.btn.disabled{:type => 'submit', :value => 'Post Review'}
+    - else
       %br
-      %input#com-sub.submit.btn.disabled{:type => 'submit', :value => 'Post Review'}
-
-
-
-
+      :textile
+        Thanks for reviewing!
