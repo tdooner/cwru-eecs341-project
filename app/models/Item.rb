@@ -50,14 +50,17 @@ class Item
 
   belongs_to :user
   has n, :borrowings
-  has n, :users, :through => :borrowings
   has n, :reviews
   has n, :tags, :through => Resource
 
   def available?
     #TODO: this will not work because borrowings wont be destroyed
     #upon return I think?
-    return self.borrowings.empty?
+    return self.borrowings(:current => true).empty?
+  end
+
+  def currently_has
+    return self.borrowings(:current => true).user.first
   end
 
   def printvalue

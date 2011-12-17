@@ -1,12 +1,21 @@
 class Borrowing
-	include DataMapper::Resource
+  include DataMapper::Resource
 
-	property :borrow_id, Serial
-	property :created_at, DateTime 
-	property :item_id, Integer
+  property :id, Serial
+  property :created_at, DateTime 
+  property :returned_at, DateTime, :required => false
+  property :current, Boolean, :default => true
 
-	belongs_to :user
-	belongs_to :item
-	has n, :issues
+  belongs_to :user
+  belongs_to :item
+  has n, :issues
+
+  validates_with_block do
+    if Borrowing.get(:current => true, :item => self.item, :id.not => self.id).nil?
+      true
+    else
+      [false, "There can only be one person borrowing an item at a time."]
+    end
+  end
 end
 
