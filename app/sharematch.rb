@@ -135,6 +135,7 @@ module ShareMatch
         @similar = @item.get_similar 4, @item.tags
         @yours = true if @user == @item.user
         @control_panel = get_item_control_panel @item
+        @can_karma = @user && Karma.new({:from=>@user.id, :unto=>@item.user.id, :type=>true}).valid?
         haml :'item/profile' 
       end
     end
@@ -346,6 +347,25 @@ module ShareMatch
       redirect '/'
     end
 
+    get '/community/:id' do |id|
+      @c = Community.get(id)
+      if @c.nil?
+        haml :'404'
+      else
+        haml :'community/show'
+      end
+    end
+
+    post '/community/:id' do |id|
+      self.login_required
+      @user.community_id = id
+      if @user.save
+        redirect "/community/#{id}"
+      else
+        flash[:error] = "Could not join community!"
+        redirect "/community/#{id}"
+      end
+    end
 
     get '/user' do
       user_per_page = 12.0 #must be float for pages to be correctly calculated
@@ -406,6 +426,19 @@ module ShareMatch
       haml :"user/edit"
     end
 
+    post '/karma' do
+        login_required
+        a = Karma.new({
+            :from => @user.id,
+            :unto => params["user_id"],
+            :type => (params["type"] == "block")?0:1
+        })
+        if a.save()
+            return "Done!"
+        else
+            return a.errors.to_a.join("")
+        end
+    end
 
     get '/issue/new' do
       login_required

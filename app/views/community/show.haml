@@ -1,0 +1,19 @@
+.row
+  .span10
+    -if logged_in
+      %h1 #{@c.name} #{@c.zip} (#{current_user.distance_from(@c.zip).to_miles.round} miles)
+    -else
+      %h1 #{@c.name} #{@c.zip}
+.row
+  .span
+    %h4 #{@c.users.length} Members
+  -if logged_in
+    -if current_user.community != @c
+      .span
+        %form{:action=>"/community/#{@c.id}",:method=>'POST',:style=>"margin:0px;"}
+          %input{:type=>"hidden",:name=>"community_id", :value=>@c.id}
+          %input.btn{:type=>"submit", :value=>"Join This Community"}
+    -else
+      .span
+        %h4 (Including you!)
+=@c.description

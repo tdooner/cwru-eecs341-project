@@ -13,7 +13,7 @@
           %tr
             %td
               %h4
-                =c[:community].name
+                %a.label{:href => "/community/#{c[:community].id}"}=c[:community].name
                 - if c[:distance].to_miles != 0
                   %span{:style=>"color:#CCC"} (#{(c[:distance].to_miles).round} miles)
             %td{:style=>"vertical-align:middle;"}=c[:community].zip
