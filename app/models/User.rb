@@ -79,5 +79,10 @@ class User
   def longitude
     repository.adapter.select("select z.longitude from zip_codes z where zip=? limit 1",self.zip)[0] || 0
   end
+
+  def distance_from(zip)
+    pos = repository.adapter.select("select latitude, longitude from zip_codes where zip = ?;", zip)
+    return Haversine.distance(self.latitude, self.longitude, pos[0].latitude, pos[0].longitude)
+  end
 end
 

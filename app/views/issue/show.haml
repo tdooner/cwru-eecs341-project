@@ -1,0 +1,45 @@
+:javascript
+  $(document).ready(function() {
+    $("#complain-btn").click(function(){
+      $.ajax({
+        url: '/issue/#{@issue.id}/complain',
+        dataType: 'json',
+        success: function(data) {
+          if(data.success){
+            $("#complain-btn").addClass('disabled');
+          }
+        }
+      });
+    });
+
+    $("#resolve-btn").click(function(){
+      $.ajax({
+        url: '/issue/#{@issue.id}/resolve',
+        dataType: 'json',
+        success: function(data) {
+          if(data.success){
+            $("#controls").html("<h2>Issue has been succesfully resolved!</h2>");
+          }
+        }
+      });
+    });
+
+  });
+
+
+
+%h1 Issue for #{@issue.item.name}
+%h6 Owner: #{@issue.owner.name}, Borrower: #{@issue.borrower.name}
+
+#controls.well
+  - if not @issue.resolved
+    %span#resolve-btn.btn.primary Resolve Issue
+    - if @issue.admin_notified
+      %span#complain-btn.btn.disabled Notify Share*Match Administrator
+    - else
+      %span#complain-btn.btn Notify Share*Match Administrator
+    %a{:href => "/item/#{@issue.item.id}"} -- or Go to this item's profile
+  - else
+    %h2 Issue has been succesfully resolved!
+
+
