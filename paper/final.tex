@@ -109,6 +109,13 @@ Our ER Model Diagram is attached at the end of this document as Figure \ref{fig:
 \end{figure*}
 
 \section{Transforming ER Model to Relational Model}
+Because our ER Model was well-designed with foresight into the Relational Model, the transformation from ER to Relational was relatively straightforward. The first step was to create a table for each entity in the ER model, including their regular attributes. Second, entities with one-to-one relationships are easily joined.
+
+Next, we handled the one-to-many relationships. In the ER Model, these are shown with relationships intermediating the one-to-many idea. This is more simply done in the Relational model with a composition. For example, each User has many Items, but each Item only has one User. Thus, we can simply assign each record in the Items table to have a User attribute, referencing the one User that owns the Item.
+
+The many-to-many relationships were handled with join tables to represent the relationships. For example, each Item has multiple Tags, and each Tag has many Items. Therefore, we created a table Taggings, where each Tagging represents an Item and a Tag.
+
+A different relationship involved Messages. Each message is sent from one User to another User. Thus, it can be viewed as a one-to-one join of Users, or alternatively a two-to-many relationship with Users and Messages. Regardless, we chose to have a Messages table that had one attribute for each User.
 % From Project Proposal 2
 Our Relational Model Diagram is attached at the end of this document as Figure \ref{fig:RelationalDiagram}.
 \begin{figure*}[p]
@@ -317,11 +324,13 @@ big blue \textit{Borrow} button.
 \end{figure}
 \section{Revisiting the Whole Project}
 \subsection{Ian}
+For this project, we intentionally included some features to give us a challenge in database design. Because we used an ORM, it was necessary for us to take advantage of this power to build a more complex database. Because of this, there were many different pieces of the database to focus on, each with their own nuanced requirements. This made the project very interesting throughout.
 \subsection{Tom}
 \subsection{Brian}
 This project was an excellent opportunity to expand my knowledge of web development.  I had worked in this area a great deal before, but this time we worked from a lower level than before.  This was interesting to see how the frameworks I've used in the past actually implement their underlying helpers as we had to build them ourselves this time.  I think the project was a success.
 \section{Team Work}
 \subsection{Ian}
+For the purposes of collaboration, we used GitHub to manage our code repositories. We made use of the Issues features of GitHub to communicate individual tasks to each other. I found this particularly useful because my schedule did not permit me to communicate directly with Tom and Brian all the time. Instead, we were able to use Issues to decide what we would work on. Furthermore, the application was very modular, which allowed us to split the project up into different pieces for us to work on, preventing versioning conflicts and allowing us to implement our ideas quickly and without collision.
 \subsection{Tom}
 \subsection{Brian}
 Each of the members contributed to this project in a valuable manner.  I couldn't have asked for more from anyone.
