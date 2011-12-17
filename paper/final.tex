@@ -237,7 +237,7 @@ SELECT c.id, z.latitude, z.longitude,
  ORDER BY latdiff*latdiff+londiff*londiff ASC;
 \end{lstlisting}
 
-In Relational Algebra and Tuple Relational Calculus, the query is actually quite simple due to the lack of orde
+In Relational Algebra and Tuple Relational Calculus, the query is actually quite simple due to the lack of order
 \[ \pi_{c.id,z.latitude,z.longitude}(\textit{community}\bowtie\textit{zip\_codes}) \]
 \[ 
 \begin{split}\{ t | t[1] = c[id] \land t[2] = z[latitude] \land t[3] = z[longitude] \land \\
@@ -247,7 +247,24 @@ In Relational Algebra and Tuple Relational Calculus, the query is actually quite
 \]
 (assuming $C(x)$ is true for tuples $x \in \textit{community}$ and $Z(x)$ is true for tuples $x \in \textit{zip\_codes}$).
 %TODO: Add two more queries to this section.
+% Tom's other query
+Another interesting query in the Karma section is getting a list of all trusted users. This allows the find page
+to intelligently prioritize the items found according to the users' preferences. The query looks something like
+\begin{lstlisting}
+SELECT i.* FROM items i, karmas k 
+  WHERE i.user_id = k.unto AND k.from = ? AND k.type = TRUE;
+\end{lstlisting}
 
+In Relational Algebra, this can be represented as
+\[ \begin{split}
+\pi_{i.*}(\sigma_{k.type=TRUE \land k.from=?}( \\
+  items \bowtie_{items.user\_id=karmas.unto} karmas))
+\end{split}\]
+
+In Tuple Relational Calculus, this can be represented as
+\[ 
+\begin{split} \{ t | I(t) \to ((\forall k) (K(k) \to t[user\_id] = k[unto] \\
+\land k[from] = ? \land k[type] = TRUE)) \} \end{split} \]
 \section{Integrity Constraints}
 In our application, we decided to do application-level data validation as much as possible. Thus, the database
 contains few constraints. For example, in our Create Table commands (in Figure \ref{fig:SQLCreateCommands}) only
