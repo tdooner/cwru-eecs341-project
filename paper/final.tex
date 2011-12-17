@@ -1,6 +1,7 @@
 \documentclass{acm_proc_article-sp}
 \usepackage{listings}
 \usepackage{amsmath} % For "split" math environment.
+\hyphenation{data-base}
 
 \begin{document}
 \title{Share*Match, An EECS341 Project}
@@ -166,8 +167,7 @@ Our SQL Create Table commands are listed at the end as Figure \ref{fig:SQLCreate
         "name" VARCHAR(50), "address" VARCHAR(50), "location_id" INTEGER, 
         "email" VARCHAR(50), "joined_at" TIMESTAMP, "password" INTEGER);
     \end{verbatim}
-    \
-    caption{SQL CREATE Commands}
+    \caption{SQL CREATE Commands}
     \label{fig:SQLCreateCommands}
 \end{figure*}
 
@@ -248,13 +248,70 @@ the primary keys are specified to be NOT NULL. We use no stored procedures or tr
 
 In the application logic, our ORM verifies a few things throughout the code -- for instance that email addresses 
 are not duplicated and that certain fields are not empty.
+%TODO: Explain the custom validators that we wrote in application logic.
 
 \section{Relational Database Design}
 
 
 \section{Revisiting the Relational Database Schema}
 \section{DBMS Implementation}
+We used SQLite version 3 as the backend database. In a serious production environment, we would probably use
+a more serious DBMS such as PostgreSQL. However, SQLite provided us a portable, zero-configuration DBMS library
+which supports enough of SQL to be completely usable\footnote{Interestingly, SQLite does not support the DROP COLUMN ability.}.
+On the backend of our application, we used the DataMapper ruby gem to provide us an abstracted interface to
+interact with the database. DataMapper uses the definitions of models to generate the structure for the database.
+Also, DataMapper was built with modularity in mind, so we exploited this to include functionality such as validations,
+pagination, and migrations.
+
+One issue that we worked around was the fact that we never got into a database upgrading groove. Instead of actually
+using migrations, we simply destroyed and rebuilt the database whenever the schema changed. This data loss was mitigated
+by the creation of a database seeding script which automatically populates the database with lots of fake data and some
+consistent user credentials for testing.
+
 \section{Application Implementation}
+\subsection{Signing Up}
+Application development proceeded smoothly. Before long, we had implemented a simple web application with login functionality.
+From there, we focused on producing a polished product. Figure \ref{fig:SignUpPage.png} demonstrates the log-in process
+complete with frontend and backend user input validation.
+\begin{figure}[h]
+\begin{centering}
+\includegraphics[width=0.4\textwidth]{SignUpPage.png} %& \includegraphics[width=0.25\textwidth]{ItemSearch.png} & \includegraphics[width=0.25\textwidth]{ItemView.png}
+\caption{The Sign Up Page}
+\label{fig:SignUpPage.png}
+\end{centering}
+\end{figure}
+
+\subsection{Item Finding}
+From there, we focused on developing the core functionality of our application -- item sharing. A crucial aspect of borrowing
+an item is the ability to find it. Hence, we built out a tagging functionality which allows users to impose a natual
+categorization on items, and filter using the categorization later. Figure \ref{fig:ItemSearch.png} shows the item find
+process. The grey bubbles up top are tags which allow the user to filter the results.
+\begin{figure}[h]
+\begin{centering}
+\includegraphics[width=0.4\textwidth]{ItemSearch.png}
+\caption{Item Find Process}
+\label{fig:ItemSearch.png}
+\end{centering}
+\end{figure}
+
+\subsection{Viewing Items}
+And, a key feature of an item-based web application is the item view page (Figure \ref{fig:ItemView.png}). 
+We built this page to display all the information
+you need to know to decide to borrow the item while still being as intuitive and usable as possible. This page contains
+the description of an item, the item's tags, and user reviews of that item that have been voted upon by other users.
+With this veritable plethora of information about an item, users can effectively decide whether they should click the
+big blue \textit{Borrow} button.
+
+\begin{figure}[h]
+\begin{centering}
+\includegraphics[width=0.4\textwidth]{ItemView.png}
+\caption{Item View Page}
+\label{fig:ItemView.png}
+\end{centering}
+\end{figure}
+
+% Pull in the individual files from another file. To ignore it after creation, run
+% git update-index --assume-unchanged individual.tex
 \input{individual.tex}
 \section{Conclusions}
 \section{Appendix 1: Installation Manual}
