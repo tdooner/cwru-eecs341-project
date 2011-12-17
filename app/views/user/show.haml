@@ -4,7 +4,10 @@
 
 - if flash[:success]
   .alert-message.success=flash[:success]
-
+- if flash[:error]
+  .alert-message.error
+    %p
+      = flash[:error]
 .row
   .span5
     %img.thumbnail.hilite{:src => gravatar(@u), :width => 250, :height => 250}

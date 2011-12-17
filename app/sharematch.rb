@@ -102,9 +102,8 @@ module ShareMatch
       if  @item.nil?
         haml :'404'
       else
+        @yours = true if @user == @item.user
         @similar = @item.get_similar 4, @item.tags
-        #TODO: LATER MAKE THIS SIMILAR WORK WITH TAGS!
-        #THIS IS GONNA REQUIRE A CUSTOM QUERY METHINKS
         haml :'item/profile' 
       end
     end
@@ -145,10 +144,9 @@ module ShareMatch
 
     get '/item/:id/edit' do |id|
       login_required
-      @nav[:share] = 'active'
-      #TODO: should also check if the user is the right one!
-      #very important!
       @item = Item.first(:id => id)
+      ownership_required @item
+      @nav[:share] = 'active'
       haml :'item/edit'
     end
 
@@ -338,21 +336,28 @@ module ShareMatch
     get '/user/:id' do |id|
       if id.to_i == @user.id
         @you = true
-        puts 'true'
         @u = @user
       else
         @you = false
         @u = User.get(id)
       end
-      haml :'user/show'
+      if @u.nil?
+        haml :'404'
+      else
+        haml :'user/show'
+      end
     end
 
-    get '/user/:id/edit' do  
+    get '/user/:id/edit' do  |id|
+      login_required
+      must_be_this_person id
       @nav[:user] = 'active'
       haml :"user/edit"
     end
 
     post '/user/:id/edit' do |id|
+      login_required
+      must_be_this_person id
       @nav[:user] = 'active'
       params.delete("step")
       params.delete("splat")
@@ -403,6 +408,26 @@ module ShareMatch
           redirect '/login'
         end
       end
+
+      def ownership_required item
+        if @user == item.user
+          return true
+        else
+          flash[:error] = "You are not permitted to edit that item!"
+          redirect  "/item/#{item.id}"
+        end
+      end
+
+
+      def must_be_this_person id
+        if @user.id == id.to_i
+          return true
+        else
+          flash[:error] = "You are not permitted to edit that person!"
+          redirect  "/user/#{id}"
+        end
+      end
+
 
       def current_user
         u = User.get(session[:user_id])

@@ -3,7 +3,7 @@ class Borrowing
 
 	property :borrow_id, Serial
 	property :created_at, DateTime 
-	property :item_id, Integer
+  property :returned_at, DateTime
 
 	belongs_to :user
 	belongs_to :item

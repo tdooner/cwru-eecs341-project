@@ -50,7 +50,6 @@ class Item
 
   belongs_to :user
   has n, :borrowings
-  has n, :users, :through => :borrowings
   has n, :reviews
   has n, :tags, :through => Resource
 
