@@ -1,0 +1,26 @@
+%h1 Issues
+%table.zebra-striped
+  %tr
+    %th id
+    %th status
+    %th item
+    %th owner
+    %th borrower
+    %th 
+  - @issues.each do |issue|
+    %tr
+      %td= issue.id
+      %td
+        - if issue.resolved
+          %span.label.success resolved
+        - elsif issue.admin_notified
+          %span.label.important complaint
+      %td
+        %a{:href => "/item/#{issue.item.id}"}= issue.item.name
+      %td
+        %a{:href => "/user/#{issue.owner.id}"}= issue.owner.name
+      %td
+        %a{:href => "/user/#{issue.borrower.id}"}= issue.borrower.name
+      %td
+        %a{:href => "issue/#{issue.id}"} View issue
+

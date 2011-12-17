@@ -54,8 +54,6 @@ class Item
   has n, :tags, :through => Resource
 
   def available?
-    #TODO: this will not work because borrowings wont be destroyed
-    #upon return I think?
     return self.borrowings(:current => true).empty?
   end
 

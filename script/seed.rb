@@ -8,6 +8,7 @@ class Seed
     self.users count
     self.items (count*4)
     self.borrows count
+    self.issues count/2
     self.tags (count*8)
     self.reviews (count*16)
     self.helpfuls (count*32)
@@ -103,6 +104,15 @@ class Seed
       ret = self.time_rand(creation)
       Borrowing.create(:user => user, :item => item, :current => false, :created_at => creation, :returned_at => ret)
 
+    end
+  end
+
+  def self.issues count
+    borrows = Borrowing.all
+    count.times do
+      b = borrows[rand(borrows.size)]
+      creation = self.time_rand(b.created_at)
+      Issue.create(:borrowing => b, :created_at => creation)
     end
   end
 
