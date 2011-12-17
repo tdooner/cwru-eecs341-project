@@ -406,9 +406,9 @@ module ShareMatch
 
       def current_user
         u = User.get(session[:user_id])
-        if not u
-          redirect '/login'
-        end
+        #if not u
+        #  redirect '/login'
+        #end
         return u
       end
 
