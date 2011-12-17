@@ -41,7 +41,7 @@
       .rev
         %img.tiny-pic.right{:src => result.image.icon60, :width => 60, :height => 60}
         %h3
-          %a{:href => "/user/#{result.id}"}= result.name
+          %a{:href => "/item/#{result.id}"}= result.name
           %small= result.user.community.name
         .bd
           :textile 
@@ -51,7 +51,7 @@
             %span.label.success Available
           - else
             %span.label Unavailable 
-          %a{:href => "/user/#{result.id}"} Go to item
+          %a{:href => "/item/#{result.id}"} Go to item
 
 - elsif @query
   %h6 Sorry, there aren't any results for that query...

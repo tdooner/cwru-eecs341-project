@@ -4,7 +4,7 @@
 \hyphenation{data-base}
 
 \begin{document}
-\title{Share*Match, An EECS341 Project}
+\title{Share*Match: EECS341 Project}
 \subtitle{Final Project Report}
 \numberofauthors{3}
 \author{
@@ -17,7 +17,7 @@
 }
 \maketitle
 \begin{abstract}
-We have developed a simple web application which uses a relational database to permit users to share items that would otherwise go unutilized in their own homes.
+We have developed a simple web application which uses a relational database to permit users to share items that would otherwise go unutilized in their own homes.  The project was built using modern web development practices including RESTful interfaces, AJAX interactions, MVC architecture, and testing. 
 \end{abstract}
 
 \section{Introduction}
@@ -39,8 +39,7 @@ users visual feedback of a user's real-life responsibility and likelihood to ret
 % From Project Proposal 1
 When a user navigates to the ShareMatch homepage, he or she should see a page with pictures of items on it.
 This serves to give the user an indication of what types of items have recently been shared or are new items posted. 
-Clicking on an image of an item should bring the user to the page for that item upon which they can opt to b
-orrow that item if it's available.
+Clicking on an image of an item should bring the user to the page for that item upon which they can opt to borrow that item if it's available.
 
 At the top of the homepage, user management links will allow people to interact with the site in a personal way. 
 A ``Register'' link will take a person to another page. The registration page will be a simple page with multiple 
@@ -55,14 +54,13 @@ Upon clicking on a user's name, the browsing user will be taken to the profile p
 
 ``Trust'' is our friendship mechanism. Roughly analogous to Twitter's ''follow'', ``trust'' indicates that you want to prioritize this person's items. Items from trusted loaners will show up higher when searched for.
 
-On a user's own profile page, the same fields show up with the addition of a button which
-￼signifies ``offer an item to loan''. Upon clicking this page, the loaning user will be taken to a page with a few fields on it regarding the item. Example fields include a Title, a short Description, some picture uploads, and some other item data. For example, one pertinent item attribute we plan to include is a desired rental time period (for instance ``I only want to loan my punching bag out for two week segments'').
+On a user's own profile page, the same fields show up with the addition of a button which signifies ``offer an item to loan''. Upon clicking this page, the loaning user will be taken to a page with a few fields on it regarding the item. Example fields include a Title, a short Description, some picture uploads, and some other item data. For example, one pertinent item attribute we plan to include is a desired rental time period (for instance ``I only want to loan my punching bag out for two week segments'').
 
 Items will be categorized into tagged categories. Upon uploading an item, the uploading user can specify a list of tags which apply to that item (e.g. ``Fitness, Boxing''). Items will leverage this ontology in search pages and on user profile pages so that users can find most efficiently their desired item.
 
 In general, users will probably find an item via our built-in search mechanism. A large box on top of most pages will invite users to input a keyword which will be matched against item names, tags, and descriptions. The most relevant items will be returned, and the items will be ranked using a combination of trustworthiness (if you trust the other user) and keyword relevance.
 
-The search results page will be a listed display of item images. The images will be supplimented with some other information about each item. Each item image will be clickable and take the user to a page where the user can easily request to borrow that item.
+The search results page will be a listed display of item images. The images will be supplemented with some other information about each item. Each item image will be clickable and take the user to a page where the user can easily request to borrow that item.
 
 On the borrowing page, the item will be displayed along with some other data about an item. For example, on Amazon (and other e-commerce sites), users may review items to provide valuable feedback. We see this paradigm as especially important for applications like this -- so that the bad items may be avoided and the better items chosen where such options exist.
 
@@ -75,8 +73,7 @@ The name is assumed to be of the standard western format of ``first last'' for t
 
 The item table is of a similar magnitude, containing fields for value, description, date added, and maximum loan time. The first fields are fairly self explanatory, but the maximum loan time has an interesting application in that it will be used to warn users who have borrowed an item that they are heading towards the end of their allocated time. It also has a foreign key linking it to the owner of the item.
 
-The second way that items and users are linked is through the borrowing join table. It contains the foreign keys of both users and items, with an entry indicating that the user has at
-￼some point borrowed the item. There are starting and ending dates to show for how long the user had the item, and a foreign key for an issue.
+The second way that items and users are linked is through the borrowing join table. It contains the foreign keys of both users and items, with an entry indicating that the user has at some point borrowed the item. There are starting and ending dates to show for how long the user had the item, and a foreign key for an issue.
 
 The issue table will be used to keep track of the state of a complaint against the user who borrowed or is lending the item. An example use case for this is that if the borrower breaks the item, they will notify the lender of this, and then it can be resolved through this. It contains keys for conversations that occur between the users in order to resolve the conflict.
 
@@ -88,7 +85,7 @@ An important foundation of our platform is the idea of trust between users. In o
 
 This relationship will be represented by a karma table that maps users onto users and has a single value that indicates whether the relation is a block or a trust. This is a flexible solution, and will be able to grow with the application over time.
 
-￼One of the other most important elements of our application is the idea of tags. Each item can be tagged with some sort of text. The relationship is many to many, and is a way of enabling users to navigate the site more easily and for administrators to see what common categories of items are. It will be implemented as a simple table with a join table between items and tags.
+One of the other most important elements of our application is the idea of tags. Each item can be tagged with some sort of text. The relationship is many to many, and is a way of enabling users to navigate the site more easily and for administrators to see what common categories of items are. It will be implemented as a simple table with a join table between items and tags.
 
 In addition there is a simple table that will represent media of the item. This will allow users to upload images or video of the item in question. This table will merely contain a link to a url, not the actual binary blob of data. This is because web servers are very good at serving static files and can handle this much more efficiently than piping the data out of the database.
 
@@ -104,7 +101,7 @@ The most important integrity constraint is that when a user ceases to exist, the
 
 \section{ER Model Data Design}
 % From Project Proposal 2
-Our ER Model Diagram is attached at the end as Figure \ref{fig:ERDiagram}.
+Our ER Model Diagram is attached at the end of this document as Figure \ref{fig:ERDiagram}.
 \begin{figure*}[p]
     \includegraphics[width=\textwidth]{EECS341ProjectERDiagram.pdf}
     \caption{ER Diagram for Share*Match}
@@ -113,7 +110,7 @@ Our ER Model Diagram is attached at the end as Figure \ref{fig:ERDiagram}.
 
 \section{Transforming ER Model to Relational Model}
 % From Project Proposal 2
-Our Relational Model Diagram is attached at the end as Figure \ref{fig:RelationalDiagram}.
+Our Relational Model Diagram is attached at the end of this document as Figure \ref{fig:RelationalDiagram}.
 \begin{figure*}[p]
     \includegraphics[width=\textwidth]{EECS341Relational.pdf}
     \caption{Relational Diagram for Share*Match}
@@ -122,7 +119,7 @@ Our Relational Model Diagram is attached at the end as Figure \ref{fig:Relationa
 
 \section{Creating Our Database}
 % From Project Proposal 3
-Our SQL Create Table commands are listed at the end as Figure \ref{fig:SQLCreateCommands}.
+Our SQL Create Table commands are listed at the end of this document as Figure \ref{fig:SQLCreateCommands}.
 \begin{figure*}[p]
     \begin{verbatim}
     CREATE TABLE "borrowings" ("borrow_id" INTEGER NOT NULL PRIMARY KEY 
@@ -172,7 +169,7 @@ Our SQL Create Table commands are listed at the end as Figure \ref{fig:SQLCreate
 \end{figure*}
 
 \section{SQL Queries in RA and TRC}
-By and large, our project consists of mostly simple queries. 
+By and large, as with any web application, our project consists of mostly simple queries. 
 \begin{centering}
 \lstset{language=SQL}
 \begin{lstlisting}
@@ -183,7 +180,7 @@ SELECT * FROM items;
 As a result of using an ORM (Object-Relational Mapper), simple queries are abstracted away. 
 For instance, on the ``Items with Tag'' page we wish to select all properties of
 all items with a certain tag, but we do not have to write the SQL query manually. If we did, it would look something
-like:
+like
 \lstset{language=SQL}
 \begin{lstlisting}
 SELECT i.* FROM items i, taggings g, tags t 
@@ -292,7 +289,7 @@ complete with frontend and backend user input validation.
 
 \subsection{Item Finding}
 From there, we focused on developing the core functionality of our application -- item sharing. A crucial aspect of borrowing
-an item is the ability to find it. Hence, we built out a tagging functionality which allows users to impose a natual
+an item is the ability to find it. Hence, we built out a tagging functionality which allows users to impose a natural
 categorization on items, and filter using the categorization later. Figure \ref{fig:ItemSearch.png} shows the item find
 process. The grey bubbles up top are tags which allow the user to filter the results.
 \begin{figure}[h]
@@ -324,6 +321,11 @@ big blue \textit{Borrow} button.
 \input{individual.tex}
 \section{Conclusions}
 \section{Appendix 1: Installation Manual}
+This application follows the standard Ruby web development installation process.  Given a clean install of an operating system, the administrator must install the Ruby programming language. Most Linux distributions will have this in their package repositories, and other operating systems can download it directly from \texttt{http://www.ruby-lang.org/}.  The maintainers of this project however, recommend using RVM, which will automatically keep different Ruby versions separate, including libraries that are insalled. RVM can be found at \texttt{https://rvm.beginrescueend.com/} but will work only for UNIX and Linux operating systems.  
+
+Once Ruby is installed, the administrator must download the source code of this project which can be found at \\\texttt{http://github.com/bis12/eecs341-project}.  Download this into any directory on the local system.  This project requires some non-Ruby gem libraries in order to run properly.  First install \texttt{libsqlite3} and \texttt{imagemagick} from whatever source your operating system normally uses. Then, as with any Ruby project, run \texttt{bundle install} from the top level directory of the project. This will install all of the dependencies of the project.
+
+The application is now ready to run, but has no database.  Before running for the first time,  run \texttt{rake db:rebuild}. This will create all of the databases that you need to run the application.  If this is being run in production mode, just manually add an administrator by running \texttt{tux} in the top level directory and creating a new User with admin priviliges.  If this is for development or demonstration purposes, run \texttt{rake db:seed[x]} where \texttt{x} is the number of fake users you want to generate.  This will fill the database with all of the basic objects that interact in this application.
 \section{Appendix 2: Users Manual}
 \section{Appendix 3: Programmer's Manual}
 
