@@ -5,8 +5,8 @@ class Review
 	property :body, Text
 	property :created_at, DateTime
 
-	belongs_to :user, :key => true
-	belongs_to :item, :key => true
+	belongs_to :user
+	belongs_to :item
 
         validates_uniqueness_of :user, :scope => :item
   has n, :helpfuls
