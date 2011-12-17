@@ -1,4 +1,6 @@
 \documentclass{acm_proc_article-sp}
+\usepackage{listings}
+\usepackage{amsmath} % For "split" math environment.
 
 \begin{document}
 \title{Share*Match, An EECS341 Project}
@@ -170,6 +172,74 @@ Our SQL Create Table commands are listed at the end as Figure \ref{fig:SQLCreate
 \end{figure*}
 
 \section{SQL Queries in RA and TRC}
+By and large, our project consists of mostly simple queries. 
+\begin{centering}
+\lstset{language=SQL}
+\begin{lstlisting}
+SELECT * FROM items;
+\end{lstlisting}
+\end{centering}
+
+As a result of using an ORM (Object-Relational Mapper), simple queries are abstracted away. 
+For instance, on the ``Items with Tag'' page we wish to select all properties of
+all items with a certain tag, but we do not have to write the SQL query manually. If we did, it would look something
+like:
+\lstset{language=SQL}
+\begin{lstlisting}
+SELECT i.* FROM items i, taggings g, tags t 
+  WHERE i.id=g.item_id AND t.tag_id=g.tag_id 
+  AND t.name = ?;
+\end{lstlisting}
+
+In Relational Algebra, this query can be represented as
+\[ \pi_{items.*}(\sigma_{tags.name=?}(\text{items}\bowtie\text{taggings}\bowtie\text{tags})) \]
+In Tuple Relational Calculus, this query looks like (defining $I(x)$ to be tuples $x \in \textit{items}$,
+$G(x)$ to be all tuples $x \in \textit{taggings}$, and $T(x)$ to be all tuples $x \in \textit{tags}$).
+\begin{displaymath}
+\begin{split} 
+\{i | I(i) \to ((\forall g)(G(g) \to i[id] = g[item\_id] \\
+\land ((\forall t)(T(t) \to g[tag\_id] = t[tag\_id] \land \\
+t[name] = ?))))\}
+\end{split}
+\end{displaymath}
+
+Consider also the task of finding a review by a certain user\_id for a certain item\_id. This is also
+accomplished easily with the use of the ORM. Internally, the query run is equivalent to:
+\begin{lstlisting}
+SELECT * FROM reviews 
+  WHERE item_id=? AND user_id = ?
+\end{lstlisting}
+Or, in Relational Algebra,
+\[ \sigma_{item\_id=? \land user\_id=?}(\textit{items}) \]
+Or, in Tuple-Relational Calculus (defining $R(x)$ to be true if $x$ is in the relation \textit{reviews}),
+\[ \{ t | R(t) \to (t[item\_id]=? \land t[user\_id]=?) \]
+
+However, not all queries are abstracted by the ORM. For instance, the logic to select the closest
+communities to a ZIP Codes uses a table matching the ZIP Code of each community with the latitude and
+longitude of that point, and then sorting by the difference in latitude and longitude.
+
+The query from our codebase is:
+\begin{lstlisting}
+SELECT c.id, z.latitude, z.longitude, 
+ z.latitude-(SELECT latitude 
+    FROM zip_codes where zip = ?) as latdiff, 
+ z.longitude-(SELECT longitude 
+    FROM zip_codes where zip = ?) as londiff 
+ FROM zip_codes z, communities c 
+ WHERE c.zip = z.zip 
+ ORDER BY latdiff*latdiff+londiff*londiff ASC;
+\end{lstlisting}
+
+In Relational Algebra and Tuple Relational Calculus, the query is actually quite simple due to the lack of orde
+\[ \pi_{c.id,z.latitude,z.longitude}(\textit{community}\bowtie\textit{zip\_codes}) \]
+\[ 
+\begin{split}\{ t | t[1] = c[id] \land t[2] = z[latitude] \land t[3] = z[longitude] \land \\
+(\forall c\forall z)((C(c) \land Z(z)) \to c[zip] = z[zip])
+\}
+\end{split}
+\]
+(assuming $C(x)$ is true for tuples $x \in \textit{community}$ and $Z(x)$ is true for tuples $x \in \textit{zip\_codes}$).
+%TODO: Add two more queries to this section.
 \section{Integrity Constraints}
 \section{Relational Database Design}
 \section{Revisiting the Relational Database Schema}
