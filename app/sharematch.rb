@@ -141,8 +141,7 @@ module ShareMatch
 
     post '/item/review' do
       login_required
-      h = Helpful.first_or_new({:review_user_id => params['rev_user'],
-                               :review_item_id => params['rev_item'],
+      h = Helpful.first_or_new({:review_id => params['review_id'],
                                :user => @user})
 
       h[:helpful] = params['dir'] == 'up'? true : false
@@ -152,10 +151,9 @@ module ShareMatch
         end
       end
 
-      rev = Review.first(:user_id => params['rev_user'], :item_id => params['rev_item'])
+      rev = Review.get(params['review_id'])
       haml :'item/_votes', :layout => false, :locals => {:upd => rev.upDownVotes, 
-        :user => params['rev_user'], 
-        :item => params['rev_item'],
+        :review_id => params['review_id'], 
         :divid => params['divid']}
     end
 

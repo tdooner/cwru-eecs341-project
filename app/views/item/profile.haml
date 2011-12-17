@@ -61,9 +61,9 @@
 
   
 
-  vote = function(direction, review_user, review_item, id){
+  vote = function(direction, review_id, id){
     $.post('/item/review',
-      {dir: direction, rev_user: review_user, rev_item: review_item, divid: id},
+      {dir: direction, review_id: review_id, divid: id},
       function(data){
         $('#' + id).html(data);
     });
