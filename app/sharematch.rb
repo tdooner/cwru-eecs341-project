@@ -84,6 +84,36 @@ module ShareMatch
       haml :'item/create'
     end
 
+    get '/item/:id/borrow' do |id|
+      login_required
+      item = Item.get(id)
+      if not item.available?
+        return {:success => false}.to_json
+      end
+      b = Borrowing.new(:user => @user, :item => item)
+      if b.save
+        return {:success => true}.to_json
+      else
+        puts b.errors.first
+        return {:success => false}.to_json
+      end
+    end
+
+    get '/item/:id/return' do |id|
+      login_required
+      item = Item.get(id)
+      borrowership_required item
+      borrowing = item.borrowings(:current => true).first
+      borrowing.current = false
+      borrowing.returned_at = Time.now
+      if borrowing.save
+        return {:success => true}.to_json
+      else
+        puts borrowing.errors.first
+        return {:success => false}.to_json
+      end
+    end
+
     post '/item/new' do
       login_required
       params[:user_id] = @user.id
@@ -102,8 +132,9 @@ module ShareMatch
       if  @item.nil?
         haml :'404'
       else
-        @yours = true if @user == @item.user
         @similar = @item.get_similar 4, @item.tags
+        @yours = true if @user == @item.user
+        @control_panel = get_item_control_panel @item
         haml :'item/profile' 
       end
     end
@@ -418,6 +449,15 @@ module ShareMatch
         end
       end
 
+      def borrowership_required item
+        if @user == item.currently_has
+          return true
+        else
+          flash[:error] = "You are not permitted to return that item!"
+          redirect  "/item/#{item.id}"
+        end
+      end
+
 
       def must_be_this_person id
         if @user.id == id.to_i
@@ -460,6 +500,33 @@ module ShareMatch
       def gravatar user
         hash = Digest::MD5.hexdigest(user.email.downcase)
         "http://www.gravatar.com/avatar/#{hash}"
+      end
+
+      def get_item_control_panel item
+        if @user == item.user
+          haml :'item/_owner_panel' , :layout => false, :locals => {:item => item}
+        else
+          ret = ""
+          b = haml :'item/_borrower_panel' , :layout => false, :locals => {:item => item}
+          n = haml :'item/_control_panel' , :layout => false, :locals => {:item => item}
+          if @user == item.currently_has
+            ret << "<div id='borrow-control'>"
+            ret << b
+            ret << "</div>"
+            ret << "<div id='normal-control' class='hide'>"
+            ret << n
+            ret << "</div>"
+            return ret
+          else
+            ret << "<div id='normal-control'>"
+            ret << n
+            ret << "</div>"
+            ret << "<div id='borrow-control' class='hide'>"
+            ret << b
+            ret << "</div>"
+            return ret
+          end
+        end
       end
 
     end
