@@ -7,6 +7,7 @@ class Seed
     self.communities
     self.users count
     self.items (count*4)
+    self.borrows count
     self.tags (count*8)
     self.reviews (count*16)
     self.helpfuls (count*32)
@@ -78,6 +79,30 @@ class Seed
                    :image => f,
                    :created_at => self.time_rand(user.created_at))
       a.save
+    end
+  end
+
+  def self.borrows count
+    items = Item.all
+    users = User.all
+    count.times do
+      user = users[rand(users.size)]
+      item = items[rand(items.size)]
+
+      creation = self.time_rand([user.created_at, item.created_at].max)
+
+      Borrowing.create(:user => user, :item => item, :created_at => creation)
+
+    end
+
+    (count*3).times do
+      user = users[rand(users.size)]
+      item = items[rand(items.size)]
+
+      creation = self.time_rand([user.created_at, item.created_at].max)
+      ret = self.time_rand(creation)
+      Borrowing.create(:user => user, :item => item, :current => false, :created_at => creation, :returned_at => ret)
+
     end
   end
 
