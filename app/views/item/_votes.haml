@@ -1,5 +1,5 @@
 Vote: 
-%span.label.vote{:onclick => "vote('up', #{user}, #{item}, '#{divid}');"}  Helpful 
-%span.label.vote{:onclick => "vote('down', #{user}, #{item}, '#{divid}');"}  Unhelpful 
+%span.label.vote{:onclick => "vote('up', #{review_id}, '#{divid}');"}  Helpful 
+%span.label.vote{:onclick => "vote('down', #{review_id}, '#{divid}');"}  Unhelpful 
 | #{upd[:up]} people found this review helpful
 | #{upd[:down]} people found this review unhelpful

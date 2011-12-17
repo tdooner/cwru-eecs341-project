@@ -141,8 +141,7 @@ module ShareMatch
 
     post '/item/review' do
       login_required
-      h = Helpful.first_or_new({:review_user_id => params['rev_user'],
-                               :review_item_id => params['rev_item'],
+      h = Helpful.first_or_new({:review_id => params['review_id'],
                                :user => @user})
 
       h[:helpful] = params['dir'] == 'up'? true : false
@@ -152,10 +151,9 @@ module ShareMatch
         end
       end
 
-      rev = Review.first(:user_id => params['rev_user'], :item_id => params['rev_item'])
+      rev = Review.get(params['review_id'])
       haml :'item/_votes', :layout => false, :locals => {:upd => rev.upDownVotes, 
-        :user => params['rev_user'], 
-        :item => params['rev_item'],
+        :review_id => params['review_id'], 
         :divid => params['divid']}
     end
 
@@ -303,8 +301,10 @@ module ShareMatch
     post '/login' do
       user = User.first(:email => params[:email])
       if not user.nil? and user.password_hash == params[:password]
+        path = session[:before_path]
+        session[:before_path] = nil
         session[:user_id] = user.id
-        redirect session[:before_path] || '/' 
+        redirect path || '/' 
       else
         flash[:forgot] = ''
         redirect '/login'
@@ -524,10 +524,18 @@ module ShareMatch
 
       def current_user
         u = User.get(session[:user_id])
-        if not u
+        if not request.xhr? and not u
           redirect '/login'
         end
         return u
+      end
+
+      def logged_in
+        if session[:user_id]
+            return true
+        else
+            return false
+        end
       end
 
       def admin_required
