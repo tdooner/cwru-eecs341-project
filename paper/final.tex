@@ -251,8 +251,17 @@ are not duplicated and that certain fields are not empty.
 %TODO: Explain the custom validators that we wrote in application logic.
 
 \section{Relational Database Design}
+We designed our database to contain as few functional dependcies as possible. We used the standard practice of an
+auto-increment primary key integer to keep otherwise-similar tuples distinct. And, since we don't store redundant information
+in any table, no columns are functionally determined by any other columns.
 
+One notable exception exists, however. In the users relation, we store a few properties including the user's city, state, and ZIP code. 
+Technically, the ZIP code functionally determines both the city and the state, however we store the values in the table
+anyway because they are inputted by the user, would require an additional look-up if not stored there, and are highly unlikely
+to change any time soon. 
 
+If we were to decompose the relation so that it is strictly in BCNF, we could eliminate city and state from the users
+relation and create a new relation consisting of ZIP Code (primary key), city, and state.
 \section{Revisiting the Relational Database Schema}
 \section{DBMS Implementation}
 We used SQLite version 3 as the backend database. In a serious production environment, we would probably use
