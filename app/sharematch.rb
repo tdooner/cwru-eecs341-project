@@ -338,19 +338,21 @@ module ShareMatch
 
     post '/communities/new' do
       self.login_required
+      signup = params[:signup]
+      params.delete('signup')
       c = Community.new(params)
       if c.valid? and c.save
         @user.community_id = c.id
         if @user.save
           # All went well!
-          if params[:sign_up]
+          if signup
             redirect '/sign-up?step=3'
           else
             redirect "/community/#{c.id}"
           end
         else
           flash[:error] = "Could not join community!"
-          if params[:sign_up]
+          if signup
             redirect '/sign-up?step=2'
           else
             redirect "/community/#{c.id}"
