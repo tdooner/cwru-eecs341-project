@@ -70,31 +70,29 @@ intend to implement functionality which will allow users to follow through a sli
 
 \section{Database Requirements Specification}
 % From Project Proposal 1
-The name is assumed to be of the standard western format of ``first last'' for the time being, although an upgrade to international standards could be made if it were necessary. Their physical address is stored because our application interacts with the real world and we need to know this for exchange of items. The email address and join date are included for obvious reasons. Finally the password hash is a necessity to allow users to log in to the site, and be authenticated as themselves.
+Users will input their names as a standard string. Their physical address is stored because our application interacts with the real world and we need to know this for exchange of items. The email address and join date are included for accountability purposes. Finally the password hash is a necessity to allow users to log in to the site, and be authenticated as themselves. Importantly, the \texttt{users} table will have an id attribute which will serve as the primary key.
 
-The item table is of a similar magnitude, containing fields for value, description, date added, and maximum loan time. The first fields are fairly self explanatory, but the maximum loan time has an interesting application in that it will be used to warn users who have borrowed an item that they are heading towards the end of their allocated time. It also has a foreign key linking it to the owner of the item.
+The \texttt{item} table is of a similar magnitude, containing fields for value, description, date added, and maximum loan time. The first fields are fairly self explanatory, but the maximum loan time has an interesting application in that it will be used to warn users who have borrowed an item that they are heading towards the end of their allocated time. It also has a foreign key linking it to the owner of the item.
 
-The second way that items and users are linked is through the borrowing join table. It contains the foreign keys of both users and items, with an entry indicating that the user has at some point borrowed the item. There are starting and ending dates to show for how long the user had the item, and a foreign key for an issue.
+Items and users will also be linked through the \texttt{borrowings} table. This table will contain as foreign keys the id of the user that is borrowing an item, and the item's id. Also, \texttt{borrowings} will include an entry indicating that the user has at some point borrowed the item. There are starting and ending dates to show for how long the user had the item, and a foreign key for an issue, in case there is trouble with the borrowing.
 
-The issue table will be used to keep track of the state of a complaint against the user who borrowed or is lending the item. An example use case for this is that if the borrower breaks the item, they will notify the lender of this, and then it can be resolved through this. It contains keys for conversations that occur between the users in order to resolve the conflict.
+The \texttt{issue} table will be used to keep track of the state of a complaint against the user who borrowed or is lending the item. An example use case for this is that if the borrower breaks the item, they will notify the lender through a messaging system, and then it can be resolved online. 
 
-The conversations are a major part of our application. They are also non-trivial although we have designed a system for them that is rather simple. All conversations are ongoing and take place between two users. There is no end to a conversation, and new ones do not begin later. This allows us to have a single message table that contains the primary keys of two users, in addition to the body of the message itself and a time of creation.
+The inter-user messaging system is a major part of our application. Although often complicated, we have designed a system for them that is rather simple. All messages are ongoing and take place between two users. There is no end to a conversation, and new ones do not begin later. This allows us to have a single \texttt{message} table that contains the primary keys of two users, in addition to the body of the message itself and a time of creation.
 
-The conversation will be used in two ways. Primarily as a way for the lender and borrower to decide how they will exchange their items. Also as mentioned above, they will be used in conflict resolution when an issue occurs with a borrowing event.
+The message will be used in two ways. Primarily as a way for the lender and borrower to decide how they will exchange their items. Also as mentioned above, they will be used in conflict resolution when an issue occurs with a borrowing event.
 
-An important foundation of our platform is the idea of trust between users. In order to support trustworthy users and identify non-trustworthy ones, we have implemented a simple system that is roughly analogous to ``friending'' on popular social networking sites. Users can trust one another, which must be reciprocated in order to take effect. When two users trust each other, their items will show up higher in any search for an item. Conversely, a user can block another user if they find them to be not worth borrowing or lending to, and then the blockee will not show up in any search blocker, and the blocker will not show up in any search by the blockee. This relationship is not reciprocal.
+An important foundation of our platform is the idea of trust between users. In order to support trustworthy users and identify non-trustworthy ones, we have implemented a simple system that is roughly analogous to ``friending'' on popular social networking sites. When a users trusts another user, the other user's items will show up higher in any search for an item. Conversely, a user can block another user if they find them to be not worth borrowing or lending to, and then the blockee will not show up in any search blocker, and the blocker will not show up in any search by the blockee. This relationship is not reciprocal.
 
-This relationship will be represented by a karma table that maps users onto users and has a single value that indicates whether the relation is a block or a trust. This is a flexible solution, and will be able to grow with the application over time.
+This relationship will be represented by a \texttt{karma} table that maps users onto users and has a single value that indicates whether the relation is a block or a trust. This is a flexible solution, and will be able to grow with the application over time.
 
-One of the other most important elements of our application is the idea of tags. Each item can be tagged with some sort of text. The relationship is many to many, and is a way of enabling users to navigate the site more easily and for administrators to see what common categories of items are. It will be implemented as a simple table with a join table between items and tags.
+One of the other most important elements of our application is the idea of tags. Each item can be tagged with some sort of text. The relationship is many to many, and is a way of enabling users to navigate the site more easily and for administrators to see what common categories of items are. It is implemented as a simple table \texttt{itemtags}, a join table between items and tags.
 
-In addition there is a simple table that will represent media of the item. This will allow users to upload images or video of the item in question. This table will merely contain a link to a url, not the actual binary blob of data. This is because web servers are very good at serving static files and can handle this much more efficiently than piping the data out of the database.
+Furthermore, we will aggregate users from similar locations into communities, and store them in a table \texttt{communities}. They are based on zipcode and will be used to find users who are near to each other in order to facilitate lending. They also has a description for the location and the time that the location first joined the community.
 
-There is a table that exists for the purpose of aggregating users from similar locations. It is based on zipcode and will be used to find users who are near to each other in order to facilitate lending. It also has a description for the location and the time that the location first joined the community.
+Finally, we have a system for reviews that contain a body of text and a foreign key for the user who posted the review. The nice part about these reviews is that they can be considered helpful or not helpful by other users, thereby creating a system where only useful comments are displayed at the top. This is implemented with a join table between users and comments, \texttt{reviews}.
 
-Finally, we have a system for reviews that contain a body of text and a foreign key for the user who posted the review. The nice part about these reviews is that they can be considered helpful or not helpful by other users, thereby creating a system where only useful comments are displayed at the top. This is implemented with a join table between users and comments.
-
-There will be a set of queries that occur far more frequently than others, and so the application should be optimized towards these.
+We have come up with these requirements with a couple assumptions in mind about real-world queries.
 
 Primarily the actions associated with finding and displaying items will be run the most. This will necessitate selecting items from the items table. The results will be paginated so that more than 20 results don't have to be loaded every time this action occurs. In addition when an item is viewed a lot of things will need to be loaded and displayed. This means that there will be a lot of queries to comments tables and images or other media. In addition the table that checks to see if something is borrowed will be hit pretty hard.
 
@@ -316,6 +314,20 @@ In the application logic, our ORM verifies a few things throughout the code -- f
 are not duplicated and that certain fields are not empty. To do this, we used validations built into the ORM as
 well as custom ones to ensure special constraints held. For instance, the logic to ensure an item is not borrowed
 twice simultaneously is a custom validator in the Item model.
+
+Furthermore, we used the \texttt{dm-constraints} library extensively. This library allowed us to specify application-level
+constraints to delete weak entities when their parent entity is destroyed. In total, we had twelve integrity constraints,
+such as
+\begin{itemize}
+\item When a review is deleted, remove all \textit{Helpful/Unhelpful} votes that belong to that review
+\item When an item is deleted, remove all its reviews, records of borrowing, and taggings.
+\item When a user is deleted, remove all its items, reviews, and issues.
+\end{itemize}
+
+Due to the way that \texttt{dm-constraints} handles this, deleting objects cascades properly and, for instance, deleting
+a user will leave no trace of anything associated with that user. (This is an opportunity for improvement in future
+versions, since it is preferable to maintain the presence of a past borrowing even if the user no longer exists.)
+
 \section{Relational Database Design}
 We designed our database to contain as few functional dependcies as possible. We used the standard practice of an
 auto-increment primary key integer to keep otherwise-similar tuples distinct. And, since we don't store redundant information
