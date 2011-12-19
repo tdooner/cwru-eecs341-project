@@ -1,4 +1,16 @@
 %input{:type=>"hidden", :name=>"step", :value=>"1"}
+- if @user.email
+  %fieldset
+    %label
+      %img{:src=>gravatar(@user)}
+    %p.clearfix{:style=>"margin-left:150px; line-height:1.7em"}
+      Profile pictures are pulled from the service&nbsp;
+      %a{:href=>"http://gravatar.com"}> Gravatar
+      \. To change your profile picture, 
+      %a{:href=>"https://en.gravatar.com/site/signup/"} use a Gravatar account 
+      with the e-mail address 
+      %b=@user.email
+      \.
 %fieldset
   %label{:for => 'name'} 
     %b Full Name

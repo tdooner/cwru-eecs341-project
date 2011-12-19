@@ -438,7 +438,7 @@ module ShareMatch
     end
 
     get '/user/:id' do |id|
-      if id.to_i == @user.id
+      if @user && id.to_i == @user.id
         @you = true
         @u = @user
       else
@@ -457,6 +457,7 @@ module ShareMatch
       must_be_this_person id
       @nav[:user] = 'active'
       @borrowings = @user.borrowings.select{|x| x.current == true}
+      @items = @user.items
       haml :"user/edit"
     end
 
@@ -478,6 +479,18 @@ module ShareMatch
         flash[:error] = "Error updating profile"
       end
       haml :"user/edit"
+    end
+
+    get '/user/:id/delete' do |id|
+      login_required
+      must_be_this_person id
+      if @user.destroy
+        session.delete(:user_id)
+        redirect "/"
+      else
+        flash[:error] = "Error removing profile."
+        haml :"user/edit"
+      end
     end
 
     post '/karma' do
@@ -523,11 +536,20 @@ module ShareMatch
       end
     end
 
-    get '/issue' do
+    get '/admin' do
       login_required
       admin_required
       @issues = Issue.all
-      haml :'issue/index'
+      @users = User.last(10)
+      @borrowings = Borrowing.last(10)
+      haml :'admin'
+    end
+
+    get '/admin/deleteuser/:id' do |id|
+      login_required
+      admin_required
+      User.get(id).destroy!
+      redirect '/admin'
     end
 
     get '/issue/:id/resolve' do |id|
@@ -626,7 +648,8 @@ module ShareMatch
       end
 
       def admin_required
-        if session[:user_id] and User.get(session[:user_id]).is_admin?
+        @user = User.get(session[:user_id])
+        if session[:user_id] and @user and @user.is_admin?
           return true
         else
           return redirect '/login'

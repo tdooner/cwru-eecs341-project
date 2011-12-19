@@ -42,8 +42,10 @@
           = nav_li 'HOME', '/', @nav[:home]
           = nav_li 'SHARE', '/item/new', @nav[:share]
           = nav_li 'FIND', '/item', @nav[:find]
-          = nav_li 'LOCATE', '/communities', @nav[:you]
           = nav_li 'SEARCH', '/search',  @nav[:you]
+          = nav_li 'COMMUNITIES', '/communities', @nav[:you]
+          -if @user && @user.is_admin
+            = nav_li 'ADMIN', '/admin', @nav[:admin]
     -#If this is the index, don't put the body in a container
     - if request.path_info == '/'
       =yield
