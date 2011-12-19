@@ -103,6 +103,16 @@ module ShareMatch
       end
       b = Borrowing.new(:user => @user, :item => item)
       if b.save
+        email(:from => "noreply@sharemat.ch", 
+              :to => item.user.email,
+              :subject => "#{@user.name} would like to borrow your #{item.name}!",
+              :body=>"Hi #{item.user.name},<br /><br />
+              #{@user.name} has requested to borrow your #{item.name}.<br />
+              You can message them at <a href='#{url("/user/#{@user.id}")}'>#{@user.name}'s Profile Page</a>.<br /><br />
+              Happy Sharing!<br />
+              The Share*Match Team",
+              :content_type=>:html)
+        flash[:sent] = ''
         return {:success => true}.to_json
       else
         puts b.errors.first
@@ -237,6 +247,25 @@ module ShareMatch
       end
     end
 
+    post '/message/new' do
+      login_required
+      message = Message.new(:sender => @user, 
+                          :receiver_id => params['user'].to_i, 
+                          :body => params['body'])
+      if message.save 
+        haml :'messages/_message', :layout => false, :locals => {:message => message}
+      end
+    end
+
+    get '/message' do 
+      login_required
+      @other = User.get(params['user'].to_i)
+      @messages = Message.all(:sender => @user, :receiver => @other, 
+                              :order => [:created_at.asc]) + Message.all(:sender => @other, 
+                              :receiver => @user, :order => [:created_at.asc])
+      haml :'messages/index'
+    end
+
     get '/tag/:id' do
       @nav[:find] = 'active'
       item_per_page = 12.0 #must be float for pages to be correctly calculated
@@ -249,7 +278,6 @@ module ShareMatch
 
       @pages = (@items.count / item_per_page).ceil
       @tags = Tag.first 50
-      #TODO: add ordering to tags based on popularity
 
       if @page > @pages
         @page = @pages
@@ -438,7 +466,7 @@ module ShareMatch
     end
 
     get '/user/:id' do |id|
-      if @user && id.to_i == @user.id
+      if logged_in and id.to_i == @user.id
         @you = true
         @u = @user
       else

@@ -1,0 +1,8 @@
+.rev
+  %img.tiny-pic.right{:src => gravatar(message.sender), :width => 40, :height => 40}
+  %h3
+    = message.sender.name
+    %small= message.created_at.strftime("%B %e, %Y")
+  .bd
+    :textile 
+      #{message.body}
