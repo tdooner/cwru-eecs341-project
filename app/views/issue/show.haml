@@ -42,12 +42,12 @@
     %br
     %br
     %h2 This issue is being discussed.
-    - if @user.is_admin
-      %a.large{:href => "/message?user1=#{@issue.owner.id}&user2=#{@issue.borrower.id}"}  Click here to view the conversation about this issue
-    - elsif @user == @issue.borrower
+    - if @user == @issue.borrower
       %a.large{:href => "/message?user=#{@issue.owner.id}"}  Click here to view the conversation about this issue
-    - else
+    - elsif @user == @issue.owner
       %a.large{:href => "/message?user=#{@issue.borrower.id}"}  Click here to view the conversation about this issue
+    - elsif @user.is_admin
+      %a.large{:href => "/message?user1=#{@issue.owner.id}&user2=#{@issue.borrower.id}"}  Click here to view the conversation about this issue
   - else
     %h2 Issue has been successfully resolved!
 
