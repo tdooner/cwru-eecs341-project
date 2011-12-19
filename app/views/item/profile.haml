@@ -158,7 +158,7 @@
                 
   - if logged_in and @item.user != current_user
     .rev#end
-      -if Review.first( :user => current_user, :item => @item) == nil
+      -if Review.first( :user => current_user, :item => @item).nil?
         %h3 Add a Review
         %form#comment{:method => "POST"}
           %input{:type => "hidden", :name => "item_id", :value => @item.id}
@@ -170,9 +170,9 @@
           %br
           %input#com-sub.submit.btn.disabled{:type => 'submit', :value => 'Post Review'}
       - else
-        %br
-        :textile
-          Thanks for reviewing!
+        #end
+          :textile
+            h3. Thanks for reviewing!
 
 #success-modal.modal.hide.fade.in
   .modal-header
