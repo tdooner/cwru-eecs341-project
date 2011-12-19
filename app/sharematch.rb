@@ -442,6 +442,7 @@ module ShareMatch
       must_be_this_person id
       @nav[:user] = 'active'
       @borrowings = @user.borrowings.select{|x| x.current == true}
+      @items = @user.items
       haml :"user/edit"
     end
 
@@ -463,6 +464,18 @@ module ShareMatch
         flash[:error] = "Error updating profile"
       end
       haml :"user/edit"
+    end
+
+    get '/user/:id/delete' do |id|
+      login_required
+      must_be_this_person id
+      if @user.destroy
+        session.delete(:user_id)
+        redirect "/"
+      else
+        flash[:error] = "Error removing profile."
+        haml :"user/edit"
+      end
     end
 
     post '/karma' do

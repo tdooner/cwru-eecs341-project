@@ -6,7 +6,7 @@
     %div.tags
       - if trusted
         %span.success.label Trusted
-      - if item.user == @user
+      - if @user != nil && item.user == @user 
         %span.label Yours
       - if item.available?
         %span.label Available

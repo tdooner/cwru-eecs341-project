@@ -16,6 +16,11 @@
       }
     });
   });
+  confirm_delete = function() {
+    $("#deletebtn").addClass("danger").html("Confirm: Delete Account!?").bind("click", function(){
+      window.location = "/user/"+#{@user.id}+"/delete";
+    });
+  }
 
 %div.row
   %div.span8
@@ -51,3 +56,33 @@
         %p It looks like you aren't borrowing anything!
         %div.alert-actions
           %a.btn{:href=>"/item"} View All Items
+    %h2 My Items
+    - unless @items.empty?
+      %table.well
+        %thead
+          %th{:width=>"50%"} Item
+          %th{:width=>"50%"} Borrowed By
+        %tbody
+          - @items.each do |i|
+            - b = i.borrowings.last(:current=>true)
+            %tr
+              %td
+                %a{:href=>"/item/#{i.id}"}
+                  %b=i.name
+              %td
+                -if b
+                  =b.user.name
+                -else
+                  %a{:href=>"/item/#{i.id}"} Available!
+    - else
+      %div.alert-message.block-message.warning
+        %p Oh dear! It looks like you aren't sharing any items! 
+        %div.alert-actions
+          %a.btn{:href=>"/item/new"} Share an Item
+    %h2 Delete My Account
+    %div.alert-message.block-message.error
+      %p Want out? Clicking the button below will 
+      %b delete your account and remove all traces of you from Share*Match. 
+      Again, this will permanently delete you, your items, your messages, etc., and cannot be un-done.
+      %div.alert-actions
+        %a#deletebtn.btn{:onclick=>"javascript:confirm_delete()"} Delete My Account!
