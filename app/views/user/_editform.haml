@@ -26,10 +26,6 @@
     %b City
   .input.clearfix
     %input#city.xlarge.required{:type => 'text', :name=>'city', :value=>@user.city}
-  %label{:for => 'zip'} 
-    %b Zip Code
-  .input.clearfix
-    %input#zip.xlarge.required{:type => 'text', :name=>'zip', :value=>@user.zip}
   %label{:for => 'state'} 
     %b State
   .input.clearfix
@@ -66,7 +62,7 @@
       %option{:value => "New Jersey", :id =>"Newjersey", :selected=>@user.state=="New Jersey"?"yes":false}New Jersey
       %option{:value => "New Mexico", :id =>"Newmexico", :selected=>@user.state=="New Mexico"?"yes":false}New Mexico
       %option{:value => "New York", :id =>"Newyork", :selected=>@user.state=="New York"?"yes":false}New York
-      %option{:value => "North Carolina", :id =>"Northcarolina", :selected=>@user.state=="North Carolina"?"yes":false}Nort Carolina
+      %option{:value => "North Carolina", :id =>"Northcarolina", :selected=>@user.state=="North Carolina"?"yes":false}North Carolina
       %option{:value => "North Dakota", :id =>"Northdakota", :selected=>@user.state=="North Dakota"?"yes":false}North Dakota 
       %option{:value => "Ohio", :id =>"Ohio", :selected=>@user.state=="Ohio"?"yes":false}Ohio 
       %option{:value => "Oklahoma ", :id =>"Oklahoma", :selected=>@user.state=="Oklahoma "?"yes":false}Oklahoma 
@@ -85,3 +81,7 @@
       %option{:value => "Wisconsin", :id =>"Wisconsin", :selected=>@user.state=="Wisconsin"?"yes":false}Wisconsin
       %option{:value => "Wyoming", :id =>"Wyoming", :selected=>@user.state=="Wyoming"?"yes":false}Wyoming
       %option{:value=>"", :id=>"Choose One!",:selected=>@user.state==""?"yes":false} Choose One!
+  %label{:for => 'zip'} 
+    %b Zip Code
+  .input.clearfix
+    %input#zip.xlarge.required{:type => 'text', :name=>'zip', :value=>@user.zip}

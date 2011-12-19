@@ -128,6 +128,7 @@ module ShareMatch
     post '/item/new' do
       login_required
       params[:user_id] = @user.id
+      params[:value].delete!('$,')
       @item = Item.new(params)
       if @item.valid?
         @item.save
@@ -193,12 +194,19 @@ module ShareMatch
 
     post '/item/:id/edit' do |id|
       login_required
-      #TODO: should also check if the user is the right one!
-      #very important!
-      #TODO: implement this
-      flash[:error] = "Not yet implemented"
+      puts params
+      params[:value].delete!('$,')
+      params.delete 'splat'
+      params.delete 'captures'
+      params.delete 'id'
       @item = Item.first(:id => id)
-      haml :'item/edit'
+      must_be_this_person @item.user.id
+      if @item.update(params)
+        flash[:success] = 'Updated item succesfully'
+        redirect "/item/#{id}"
+      else
+        flash[:error] = "Error saving item!"
+      end
     end
 
     post '/item/:id' do |id|
@@ -346,14 +354,26 @@ module ShareMatch
         @user.community_id = c.id
         if @user.save
           # All went well!
-          redirect '/sign-up?step=3'
+          if params[:sign_up]
+            redirect '/sign-up?step=3'
+          else
+            redirect "/community/#{c.id}"
+          end
         else
           flash[:error] = "Could not join community!"
-          redirect '/sign-up?step=2'
+          if params[:sign_up]
+            redirect '/sign-up?step=2'
+          else
+            redirect "/community/#{c.id}"
+          end
         end
       else
         flash[:error] = "Could not create community!"
-        redirect '/sign-up?step=2'
+        if params[:sign_up]
+          redirect '/sign-up?step=2'
+        else
+          redirect "/communities"
+        end
       end
     end
 

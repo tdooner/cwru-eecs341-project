@@ -84,6 +84,8 @@
   %span.divider /
   %a{:href => '/search'}
     Start a new search
+- if flash[:success]
+  .alert-message.success=flash[:success]
 - if flash[:error]
   .alert-message.error
     %p
