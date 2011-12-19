@@ -228,7 +228,7 @@ module ShareMatch
       #sorry for not using verbs...
       item = Item.get(id)
       name = item.name
-      if item.destroy!
+      if item.destroy
         flash[:success] = "#{name} is no longer shared."
         redirect "/user/#{@user.id}"
       else
@@ -548,7 +548,7 @@ module ShareMatch
     get '/admin/deleteuser/:id' do |id|
       login_required
       admin_required
-      User.get(id).destroy!
+      User.get(id).destroy
       redirect '/admin'
     end
 

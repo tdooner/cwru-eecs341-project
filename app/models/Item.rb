@@ -49,10 +49,14 @@ class Item
   mount_uploader :image, ItemImageUploader
 
   belongs_to :user
-  has n, :borrowings
-  has n, :reviews
-  has n, :tags, :through => Resource
+  has n, :borrowings, :constraint => :destroy
+  has n, :reviews, :constraint => :destroy
+  has n, :tags, {:through => Resource, :constraint => :skip}
 
+  before :destroy do
+    self.tags.clear
+    save
+  end
 
   def available?
     return self.borrowings(:current => true).empty?

@@ -179,6 +179,7 @@ DEPENDENCIES
   carrierwave
   carrierwave-datamapper
   data_mapper
+  dm-constraints
   dm-pager
   dm-sqlite-adapter
   faker
