@@ -329,6 +329,12 @@ to change any time soon.
 If we were to decompose the relation so that it is strictly in BCNF, we could eliminate city and state from the users
 relation and create a new relation consisting of ZIP Code (primary key), city, and state.
 \section{Revisiting the Relational Database Schema}
+From the beginning, we designed our schema to perform well in practice. There are few functional dependencies, so
+theoretically many of the tables are in BCNF. We don't, however, believe that we should decompose or make our tables
+more efficient by reducing them to BCNF.
+
+Our ORM manages important schema optimizations such as indices and foreign key relationships, although we needed to
+understand these concepts to design the models properly.
 \section{DBMS Implementation}
 We used SQLite version 3 as the backend database. In a serious production environment, we would probably use
 a more serious DBMS such as PostgreSQL. However, SQLite provided us a portable, zero-configuration DBMS library
