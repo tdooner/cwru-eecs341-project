@@ -42,4 +42,10 @@
         %a#mes-sub.btn.scrollPage{:href => '#end'} Message
 
 - else
-  %h6 You two haven't spoken yet
+  .multibox#convo
+    .rev#end
+      %h5 Send a message to #{@other.name}
+      %textarea#revarea.required{:name => 'body'}
+      %br
+      %a#mes-sub.btn.scrollPage{:href => '#end'} Message
+
