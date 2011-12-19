@@ -181,7 +181,7 @@ class Seed
       Message.create(:sender => user1, 
                      :receiver => user2, 
                      :body => Faker::Lorem.paragraph(3),
-                     :created_at => creation}) 
+                     :created_at => creation) 
     end
   end
 
