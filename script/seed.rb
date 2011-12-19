@@ -26,6 +26,21 @@ class Seed
 
   def self.users count
     comms = Community.all
+
+    #first add a default admin
+    comm = comms[rand(comms.size)]
+    User.create!(:name => 'Admin',
+                 :address => Faker::Address.street_address,
+                 :city => comm.name,
+                 :state => comm.state, 
+                 :zip => comm.zip,
+                 :community => comm,
+                 :email => 'admin@sharemat.ch',
+                 :password => 'password',
+                 :password_repeat => 'password',
+                 :is_admin => true,
+                 :created_at => self.time_rand)
+
     count.times do
       comm = comms[rand(comms.size)]
       name = Faker::Name.name
@@ -41,20 +56,6 @@ class Seed
                    :is_admin => false,
                    :created_at => self.time_rand)
     end
-
-    #now add a default admin
-    comm = comms[rand(comms.size)]
-    User.create!(:name => 'Admin',
-                 :address => Faker::Address.street_address,
-                 :city => comm.name,
-                 :state => 'Ohio', #TODO: change this later
-                 :zip => comm.zip,
-                 :community => comm,
-                 :email => 'admin@sharemat.ch',
-                 :password => 'password',
-                 :password_repeat => 'password',
-                 :is_admin => true,
-                 :created_at => self.time_rand)
   end
 
   def self.items count
@@ -176,7 +177,11 @@ class Seed
     count.times do
       user1 = users[rand(users.size)]
       user2 = users[rand(users.size)]
-      Message.create(:sender => user1, :receiver => user2, :body => Faker::Lorem.paragraph(3))
+      creation = self.time_rand([user1.created_at, user2.created_at].max)
+      Message.create(:sender => user1, 
+                     :receiver => user2, 
+                     :body => Faker::Lorem.paragraph(3),
+                     :created_at => creation}) 
     end
   end
 

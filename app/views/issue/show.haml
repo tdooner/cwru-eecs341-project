@@ -39,7 +39,10 @@
     - else
       %span#complain-btn.btn Notify Share*Match Administrator
     %a{:href => "/item/#{@issue.item.id}"} -- or Go to this item's profile
+    %br
+    %br
+    %h2 This issue is being discussed.
+    %a.large{:href => "/message?user1=#{@issue.owner.id}&user2=#{@issue.borrower.id}"}  Click here to view the conversation about this issue
   - else
-    %h2 Issue has been succesfully resolved!
-
+    %h2 Issue has been successfully resolved!
 

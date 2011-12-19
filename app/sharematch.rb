@@ -20,6 +20,8 @@ module ShareMatch
     set :views,    "app/views"
     enable :sessions
 
+    connections = []#list of connections for longpoll messaging
+
     configure :development do
       set :session_secret, "My session secret"#debug only, to work with shotgun
     end
@@ -250,20 +252,41 @@ module ShareMatch
     post '/message/new' do
       login_required
       message = Message.new(:sender => @user, 
-                          :receiver_id => params['user'].to_i, 
-                          :body => params['body'])
+                            :receiver_id => params['user'].to_i, 
+                            :body => params['body'])
       if message.save 
-        haml :'messages/_message', :layout => false, :locals => {:message => message}
+        ret = haml :'messages/_message', :layout => false, :locals => {:message => message}
+        connections.each do |conn|
+          conn << ret
+          conn.close
+        end
+        return {:sucess => true}.to_json
+      end
+    end
+
+
+    get '/message/poll' do
+      login_required
+      stream(:keep_open) do |out|
+        connections << out
       end
     end
 
     get '/message' do 
       login_required
-      @other = User.get(params['user'].to_i)
-      @messages = Message.all(:sender => @user, :receiver => @other, 
-                              :order => [:created_at.asc]) + Message.all(:sender => @other, 
-                              :receiver => @user, :order => [:created_at.asc])
-      haml :'messages/index'
+      if params['user1'] and params['user2']
+        admin_required
+        @other = User.get(params['user2'])
+        @first = User.get(params['user1'])
+        @messages =  Message.convo(@first, @other)
+        haml :'messages/index'
+      elsif params['user']
+        @other = User.get(params['user'].to_i)
+        @messages =  Message.convo(@user, @other)
+        haml :'messages/index'
+      else
+        haml :'404'
+      end
     end
 
     get '/tag/:id' do
@@ -387,7 +410,7 @@ module ShareMatch
     end
 
     get '/communities' do
-        haml :'community/index'
+      haml :'community/index'
     end
 
     post '/communities/new' do
@@ -522,17 +545,17 @@ module ShareMatch
     end
 
     post '/karma' do
-        login_required
-        a = Karma.new({
-            :from => @user.id,
-            :unto => params["user_id"],
-            :type => (params["type"] == "block")?0:1
-        })
-        if a.save()
-            return "Done!"
-        else
-            return a.errors.to_a.join("")
-        end
+      login_required
+      a = Karma.new({
+        :from => @user.id,
+        :unto => params["user_id"],
+        :type => (params["type"] == "block")?0:1
+      })
+      if a.save()
+        return "Done!"
+      else
+        return a.errors.to_a.join("")
+      end
     end
 
     get '/issue/new' do
@@ -560,6 +583,8 @@ module ShareMatch
       if  @issue.nil?
         haml :'404'
       else
+        @other = @issue.owner
+        @messages =  Message.convo(@user, @other)
         haml :'issue/show'
       end
     end
@@ -669,9 +694,9 @@ module ShareMatch
 
       def logged_in
         if session[:user_id]
-            return true
+          return true
         else
-            return false
+          return false
         end
       end
 

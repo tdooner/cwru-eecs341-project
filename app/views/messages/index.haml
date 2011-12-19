@@ -4,25 +4,42 @@
     $.post('/message/new?user=#{@other.id}',
       {body: $("#revarea").val()},
       function(data){
-        $('#end').before(data);
         $('#revarea').val('');
+        $('#revarea').focus();
       }
     );
   }
+
+  poll = function(){
+    $.ajax({
+      url: '/message/poll?user=#{@other.id}',
+      success: function(data){
+        $('#end').before(data);
+        poll();
+      }
+    });
+  }
+
   $(document).ready(function(){ 
     $("#mes-sub").click(message);
+
+    poll();
   });
 
-%h1 Conversation with #{@other.name}
+- if @first
+  %h2 Conversation between #{@first.name} and #{@other.name}
+- else
+  %h1 Conversation with #{@other.name}
 - if not @messages.empty?
   .multibox#convo
     - @messages.each do |message|
       = haml :'messages/_message', :locals => {:message => message}
-    .rev#end
-      %h5 Send a message to #{@other.name}
-      %textarea#revarea.required{:name => 'body'}
-      %br
-      %span#mes-sub.btn Message
+    - if not @first
+      .rev#end
+        %h5 Send a message to #{@other.name}
+        %textarea#revarea.required{:name => 'body'}
+        %br
+        %a#mes-sub.btn.scrollPage{:href => '#end'} Message
 
 - else
   %h6 You two haven't spoken yet

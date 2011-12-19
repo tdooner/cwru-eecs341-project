@@ -25,6 +25,8 @@
       %hr
       - if @you
         %a{:href => "/user/#{@u.id}/edit"} Edit your profile
+      - else
+        %a.btn{:href => "/message?user=#{@u.id}"} Message #{@u.name}
 
 %br
 - if not @u.items
