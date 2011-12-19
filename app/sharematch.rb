@@ -185,8 +185,17 @@ module ShareMatch
       #TODO: should also check if the user is the right one!
       #very important!
       #TODO: implement this
-      flash[:error] = "Not yet implemented"
+      puts params
+      params.delete 'splat'
+      params.delete 'captures'
+      params.delete 'id'
       @item = Item.first(:id => id)
+      if @item.update(params)
+        flash[:success] = 'Updated item succesfully'
+        redirect "/item/#{id}"
+      else
+        flash[:error] = "Error saving item!"
+      end
       haml :'item/edit'
     end
 
