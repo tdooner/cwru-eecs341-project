@@ -32,13 +32,14 @@
       %fieldset
         .input.clearfix
           %input.submit.btn{:type => 'submit', :value => 'Update Profile'}
-  %div.span6.offset1
+  %div.span7.offset1
     %h2 Currently Borrowing
     - unless @borrowings.empty?
       %table.well
         %thead
           %th{:width=>"50%"} Item
-          %th{:width=>"50%"} Days Remaining
+          %th{:width=>"25%"} Days Left
+          %th{:width=>"25%"} Report Issue
         %tbody
           - @borrowings.each do |b|
             %tr
@@ -51,6 +52,11 @@
                   )
               %td
                 = b.days_remaining.floor.to_s + "/" + b.item.max_loan.to_s
+              %td
+                - if b.issues.empty?
+                  %a{:href=>"/issue/new?item=#{b.item.id}"} Report
+                - else
+                  %a{:href=>"/issue/#{b.issues.last.id}"} View Report
     - else
       %div.alert-message.block-message.warning
         %p It looks like you aren't borrowing anything!
