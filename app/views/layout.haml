@@ -8,6 +8,7 @@
     %link{:href=>"/styles/local.less",:rel=>"stylesheet/less",:type=>"text/css"}
     %script{:type=>"text/javascript",:src=>'http://code.jquery.com/jquery-latest.min.js'}
     %script{:type=>"text/javascript",:src=>'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'}
+    %script{:type=>"text/javascript",:src=>'http://twitter.github.com/bootstrap/1.4.0/bootstrap-tabs.js'}
     = include_scripts
     :javascript
       $(document).ready(function(){
@@ -41,6 +42,7 @@
           = nav_li 'HOME', '/', @nav[:home]
           = nav_li 'SHARE', '/item/new', @nav[:share]
           = nav_li 'FIND', '/item', @nav[:find]
+          = nav_li 'LOCATE', '/communities', @nav[:you]
           = nav_li 'SEARCH', '/search',  @nav[:you]
     -#If this is the index, don't put the body in a container
     - if request.path_info == '/'
