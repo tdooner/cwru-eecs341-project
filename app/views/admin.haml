@@ -31,13 +31,14 @@
     %table.zebra-striped
       %thead
         %th Item
-        %th Owver
+        %th Owner
         %th Borrower
       %tbody
         - @borrowings.each do |b|
           %tr
             %td
-              %b=b.item.name
+              %b
+                %a{:href=>"/item/#{b.item_id}"}=b.item.name
             %td=b.item.user.name
             %td=b.user.name
 %h1 Issues

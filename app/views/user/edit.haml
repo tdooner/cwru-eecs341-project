@@ -51,7 +51,7 @@
                   %a{:href=>"/user/#{b.item.user_id}"}=b.item.user.name
                   )
               %td
-                = b.days_remaining.floor.to_s + "/" + b.item.max_loan.to_s
+                = [b.days_remaining.floor,0].max.to_s + "/" + b.item.max_loan.to_s
               %td
                 - if b.issues.empty?
                   %a{:href=>"/issue/new?item=#{b.item.id}"} Report
