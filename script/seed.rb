@@ -15,7 +15,7 @@ class Seed
   end
 
   def self.communities
-    Community.create(:name => 'Redmond, WA', :state => 'Washington', :zip => 98052, :description => 'Micro$oft!')
+    Community.create(:name => 'Redmond, WA', :state => 'Washington', :zip => 98052, :description => 'All the Microsoft employees should join and share here!')
     Community.create(:name => 'Pittsburgh, PA',:state => 'Pennsylvania',  :zip => 15217, :description => 'Pittsburgh Steelers')
     Community.create(:name => 'Bolingbrook, IL', :state => 'Illinois', :zip => 60490, :description => 'Bolingbrook User Groups')
     Community.create(:name => 'San Francisco, CA',:state => 'California', :zip => 94108, :description => 'San Francisco is fun!')
