@@ -103,6 +103,16 @@ module ShareMatch
       end
       b = Borrowing.new(:user => @user, :item => item)
       if b.save
+        email(:from => "noreply@sharemat.ch", 
+              :to => item.user.email,
+              :subject => "#{@user.name} would like to borrow your #{item.name}!",
+              :body=>"Hi #{item.user.name},<br /><br />
+              #{@user.name} has requested to borrow your #{item.name}.<br />
+              You can message them at <a href='#{url("/user/#{@user.id}")}'>#{@user.name}'s Profile Page</a>.<br /><br />
+              Happy Sharing!<br />
+              The Share*Match Team",
+              :content_type=>:html)
+        flash[:sent] = ''
         return {:success => true}.to_json
       else
         puts b.errors.first
@@ -438,7 +448,7 @@ module ShareMatch
     end
 
     get '/user/:id' do |id|
-      if @user && id.to_i == @user.id
+      if logged_in and id.to_i == @user.id
         @you = true
         @u = @user
       else
