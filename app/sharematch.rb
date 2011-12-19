@@ -212,6 +212,19 @@ module ShareMatch
       redirect "/item/#{@item.id}"
     end
 
+    get '/item/:id/delete' do |id|
+      #sorry for not using verbs...
+      item = Item.get(id)
+      name = item.name
+      if item.destroy!
+        flash[:success] = "#{name} is no longer shared."
+        redirect "/user/#{@user.id}"
+      else
+        flash[:error] = "Item could not be unshared..."
+        redirect request.referrer
+      end
+    end
+
     get '/tag/:id' do
       @nav[:find] = 'active'
       item_per_page = 12.0 #must be float for pages to be correctly calculated

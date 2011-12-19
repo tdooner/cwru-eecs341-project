@@ -21,6 +21,8 @@ namespace :db do
 	desc 'Add fake users, items, communities, and in general everything needed.'
 	task :seed, [:count]  => :environment do |t, args|
 		require './script/seed.rb'
+		FileUtils.rm_rf "#{Dir.pwd}/public/uploads/items/"
+		FileUtils.rm_rf "#{Dir.pwd}/public/uploads/tmp/"
 		DataMapper.auto_migrate!
 		DataMapper.finalize
 		if count = args[:count] 
