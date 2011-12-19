@@ -42,6 +42,19 @@
       });
     });
 
+    $("#alert-btn").click(function(){
+      $.ajax({
+        url: '/item/#{@item.id}/alert',
+        dataType: 'json',
+        success: function(data) {
+          if(data.success){
+            $('#alert-modal').modal('show');
+            $('#alert-btn').hide();
+            $('#alert-okay').show();
+          }
+        }
+      });
+    });
 
     $("#return-btn").click(function(){
       $.ajax({
@@ -185,3 +198,12 @@
         %a.btn{:onclick =>"karma('trust',#{@item.user.id})"} Trust!
   .modal-footer
     %a.btn.primary{:onclick => "$('#return-modal').modal('hide')"} You're Welcome!
+
+#alert-modal.modal.hide.fade.in
+  .modal-header
+    %a.close{:href => '#'} x
+    %h3 Thanks!
+  .modal-body
+    You will receive an email alert when this #{@item.name} has been returned to #{@item.user.name}.
+  .modal-footer
+    %a.btn.primary{:onclick => "$('#alert-modal').modal('hide')"} Great!

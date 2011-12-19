@@ -130,6 +130,19 @@ module ShareMatch
       borrowing.current = false
       borrowing.returned_at = Time.now
       if borrowing.save
+        item.alerts.each do |alert|
+          email(:from => "noreply@sharemat.ch", 
+                :to => alert.user.email,
+                :subject => "#{item.user.name}'s #{item.name} is now available!",
+                :body=>"Hi #{alert.user.name},<br /><br />
+                #{item.user.name}'s #{item.name} has been returned and is available for borrowing.<br />
+                You can borrow it at <a href='#{url("/item/#{item.id}")}'>#{item.user.name}'s Item Page</a>.<br /><br />
+                Happy Sharing!<br />
+                The Share*Match Team",
+                :content_type=>:html)
+          flash[:sent] = ''
+          alert.destroy
+        end
         return {:success => true}.to_json
       else
         puts borrowing.errors.first
@@ -236,11 +249,30 @@ module ShareMatch
       redirect "/item/#{@item.id}"
     end
 
+    get '/item/:id/alert' do |id|
+      login_required
+      item = Item.first(id)
+      if(item)
+        alert = Alert.new(:user => @user, :item_id => id)
+      else
+        puts "404"
+        return {:success => false}.to_json
+      end
+
+      if alert.valid?
+        alert.save
+        return {:success => true}.to_json
+      else
+        puts alert.errors.first
+        return {:success => false}.to_json
+      end
+    end
+
     get '/item/:id/delete' do |id|
       #sorry for not using verbs...
       item = Item.get(id)
       name = item.name
-      if item.destroy!
+      if item.destroy
         flash[:success] = "#{name} is no longer shared."
         redirect "/user/#{@user.id}"
       else
@@ -601,7 +633,7 @@ module ShareMatch
     get '/admin/deleteuser/:id' do |id|
       login_required
       admin_required
-      User.get(id).destroy!
+      User.get(id).destroy
       redirect '/admin'
     end
 

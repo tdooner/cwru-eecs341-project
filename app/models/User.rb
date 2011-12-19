@@ -25,10 +25,12 @@ class User
   property :password_hash, BCryptHash
   property :is_admin, Boolean
 
-  has n, :items
-  has n, :borrowings
-  has n, :helpfuls
-  has n, :karmas, :child_key=>:from
+  has n, :items, :constraint => :destroy
+  has n, :borrowings, :constraint => :destroy
+  has n, :helpfuls, :constraint => :destroy
+  has n, :karmas, {:child_key=>:from, :constraint => :destroy}
+  has n, :reviews, :constraint => :destroy
+  has n, :alerts, :constraint => :destroy
 
   belongs_to :community, :required => false
 

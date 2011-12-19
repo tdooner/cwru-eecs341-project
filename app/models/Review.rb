@@ -8,8 +8,8 @@ class Review
 	belongs_to :user
 	belongs_to :item
 
-        validates_uniqueness_of :user, :scope => :item
-  has n, :helpfuls
+    validates_uniqueness_of :user, :scope => :item
+  has n, :helpfuls, :constraint => :destroy
 
   def upDownVotes
     self.helpfuls.reduce({:up => 0, :down => 0}) do |result, hf|

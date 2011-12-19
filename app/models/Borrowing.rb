@@ -8,7 +8,7 @@ class Borrowing
 
   belongs_to :user
   belongs_to :item
-  has n, :issues
+  has n, :issues, :constraint => :destroy
 
   validates_with_block do
     if Borrowing.get(:current => true, :item => self.item, :id.not => self.id).nil?
