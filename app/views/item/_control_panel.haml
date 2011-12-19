@@ -7,5 +7,10 @@
   %span.btn.disabled Currently On Loan
 %a.btn.scrollPage{:href => '#reviews'} View Feedback
 %a.btn.scrollPage{:href => '#end', :onclick => 'setTimeout("$("#revarea").focus()",5000);'} Review
-- if not item.available?
-  %a{:href => '#'} Alert when available
+- if logged_in and not item.available?
+  - if item.alerts.first(:user => current_user)
+    %a#alert-btn.hide{:href => '#'} Alert when available
+    %span#alert-okay We'll let you know when available.
+  - else
+    %a#alert-btn{:href => '#'} Alert when available
+    %span#alert-okay.hide We'll let you know when available.

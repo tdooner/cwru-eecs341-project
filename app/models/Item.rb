@@ -52,6 +52,7 @@ class Item
   has n, :borrowings, :constraint => :destroy
   has n, :reviews, :constraint => :destroy
   has n, :tags, {:through => Resource, :constraint => :skip}
+  has n, :alerts, :constraint => :destroy
 
   before :destroy do
     self.tags.clear

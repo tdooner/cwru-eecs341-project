@@ -30,6 +30,7 @@ class User
   has n, :helpfuls, :constraint => :destroy
   has n, :karmas, {:child_key=>:from, :constraint => :destroy}
   has n, :reviews, :constraint => :destroy
+  has n, :alerts, :constraint => :destroy
 
   belongs_to :community, :required => false
 
