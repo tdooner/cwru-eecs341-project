@@ -20,25 +20,28 @@
 =@c.description
 %br
 %br
-%ul.tabs{:data => {:tabs => "tabs"}}
-  %li.active
-    %a{:href => "#users"}Members (#{@c.users.length})
-  %li
-    %a{:href => "#items"}Items (#{@c.users.all.items.length})
+-if @c.users.length > 0
+  %ul.tabs{:data => {:tabs => "tabs"}}
+    %li.active
+      %a{:href => "#users"}Members (#{@c.users.length})
+    -if @c.users.all.items.length > 0
+      %li
+        %a{:href => "#items"}Items (#{@c.users.all.items.length})
 
-.tab-content#my-tab-content
-  .active.tab-pane#users
-    %ul.media-grid
-      - @c.users.each do |user|
-        %li
-          = haml :'user/_user', :locals => {:user => user}
-  .tab-pane#items
-    %ul.media-grid
-      - @c.users.all.items.each do |item|
-        %li
-          = haml :'item/_item', :locals => {:item => item}
+  .tab-content#my-tab-content
+    .active.tab-pane#users
+      %ul.media-grid
+        - @c.users.each do |user|
+          %li
+            = haml :'user/_user', :locals => {:user => user}
+    -if @c.users.all.items.length > 0
+      .tab-pane#items
+        %ul.media-grid
+          - @c.users.all.items.each do |item|
+            %li
+              = haml :'item/_item', :locals => {:item => item}
 
-:javascript
-    jQuery(document).ready(function ($) {
-        $(".tabs").tabs();
-    });
+  :javascript
+      jQuery(document).ready(function ($) {
+          $(".tabs").tabs();
+      });

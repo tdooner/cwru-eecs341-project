@@ -335,14 +335,26 @@ module ShareMatch
         @user.community_id = c.id
         if @user.save
           # All went well!
-          redirect '/sign-up?step=3'
+          if params[:sign_up]
+            redirect '/sign-up?step=3'
+          else
+            redirect "/community/#{c.id}"
+          end
         else
           flash[:error] = "Could not join community!"
-          redirect '/sign-up?step=2'
+          if params[:sign_up]
+            redirect '/sign-up?step=2'
+          else
+            redirect "/community/#{c.id}"
+          end
         end
       else
         flash[:error] = "Could not create community!"
-        redirect '/sign-up?step=2'
+        if params[:sign_up]
+          redirect '/sign-up?step=2'
+        else
+          redirect "/communities"
+        end
       end
     end
 
