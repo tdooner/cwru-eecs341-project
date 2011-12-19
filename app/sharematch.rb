@@ -146,6 +146,7 @@ module ShareMatch
       else
         @similar = @item.get_similar 4, @item.tags
         @yours = true if @user == @item.user
+        @helpfuls = Helpful.all(:user=>@user)
         @control_panel = get_item_control_panel @item
         @can_karma = @user && Karma.new({:from=>@user.id, :unto=>@item.user.id, :type=>true}).valid?
         haml :'item/profile' 
@@ -166,7 +167,8 @@ module ShareMatch
 
       rev = Review.get(params['review_id'])
       haml :'item/_votes', :layout => false, :locals => {:upd => rev.upDownVotes, 
-        :review_id => params['review_id'], 
+        :helpfuls => Helpful.all(:user=>@user),
+        :review_id => params['review_id'].to_i, 
         :divid => params['divid']}
     end
 
