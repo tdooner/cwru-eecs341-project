@@ -1,10 +1,16 @@
 -# this should be inactive if already borrowed
 -# and alert should then show up
 %br
-- if item.available?
-  %span#borrow-btn.btn.primary Borrow
+- if not @user
+  - if item.available?
+    %a.btn.primary{:href=>"/login"} Log In To Borrow
+  - else
+    %span.btn.disabled Currently On Loan
 - else
-  %span.btn.disabled Currently On Loan
+  - if item.available?
+    %span#borrow-btn.btn.primary Borrow
+  - else
+    %span.btn.disabled Currently On Loan
 %a.btn.scrollPage{:href => '#reviews'} View Feedback
 %a.btn.scrollPage{:href => '#end', :onclick => 'setTimeout("$("#revarea").focus()",5000);'} Review
 - if logged_in and not item.available?
