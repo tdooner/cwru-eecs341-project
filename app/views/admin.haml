@@ -1,0 +1,68 @@
+:javascript
+  confirm_delete = function(element, id) {
+    element.innerHTML = "<b>Delete!</b>";
+    $(element).addClass("danger");
+    $(element).bind("click", function() {
+        window.location = "/admin/deleteuser/" + id;
+    });
+  }
+%div.row
+  %div.span8
+    %h2 Recent Users
+    %table.zebra-striped
+      %thead
+        %th Name
+        %th Items
+        %th Community
+        %th Delete!
+      %tbody
+        - @users.each do |u|
+          %tr
+            %td
+              %b 
+                %a{:href=>"/user/#{u.id}"}=u.name
+            %td=u.items.length
+            %td
+              %a{:href=>"/community/#{u.community_id}"}=u.community.name
+            %td
+              %a.btn{:onclick=>"javascript:confirm_delete(this, '#{u.id}');"} Delete?
+  %div.span7.offset1
+    %h2 Recent Borrowings
+    %table.zebra-striped
+      %thead
+        %th Item
+        %th Owver
+        %th Borrower
+      %tbody
+        - @borrowings.each do |b|
+          %tr
+            %td
+              %b=b.item.name
+            %td=b.item.user.name
+            %td=b.user.name
+%h1 Issues
+%table.zebra-striped
+  %tr
+    %th ID
+    %th Status
+    %th Item
+    %th Owner
+    %th Borrower
+    %th 
+  - @issues.each do |issue|
+    %tr
+      %td= issue.id
+      %td
+        - if issue.resolved
+          %span.label.success resolved
+        - elsif issue.admin_notified
+          %span.label.important complaint
+      %td
+        %a{:href => "/item/#{issue.item.id}"}= issue.item.name
+      %td
+        %a{:href => "/user/#{issue.owner.id}"}= issue.owner.name
+      %td
+        %a{:href => "/user/#{issue.borrower.id}"}= issue.borrower.name
+      %td
+        %a{:href => "issue/#{issue.id}"} View issue
+

@@ -521,11 +521,20 @@ module ShareMatch
       end
     end
 
-    get '/issue' do
+    get '/admin' do
       login_required
       admin_required
       @issues = Issue.all
-      haml :'issue/index'
+      @users = User.last(10)
+      @borrowings = Borrowing.last(10)
+      haml :'admin'
+    end
+
+    get '/admin/deleteuser/:id' do |id|
+      login_required
+      admin_required
+      User.get(id).destroy!
+      redirect '/admin'
     end
 
     get '/issue/:id/resolve' do |id|
@@ -624,7 +633,8 @@ module ShareMatch
       end
 
       def admin_required
-        if session[:user_id] and User.get(session[:user_id]).is_admin?
+        @user = User.get(session[:user_id])
+        if session[:user_id] and @user and @user.is_admin?
           return true
         else
           return redirect '/login'
