@@ -17,5 +17,9 @@ class Borrowing
       [false, "There can only be one person borrowing an item at a time."]
     end
   end
+
+  def days_remaining
+    self.created_at + self.item.max_loan - DateTime.now
+  end
 end
 

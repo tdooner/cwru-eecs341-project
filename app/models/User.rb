@@ -26,9 +26,9 @@ class User
   property :is_admin, Boolean
 
   has n, :items
-  #has n, :borrowings
-  #has n, :items, :through => :borrowings
+  has n, :borrowings
   has n, :helpfuls
+  has n, :karmas, :child_key=>:from
 
   belongs_to :community, :required => false
 

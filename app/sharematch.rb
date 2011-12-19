@@ -72,6 +72,17 @@ module ShareMatch
       @items = Item.page @page, :per_page => item_per_page
       @tags = Tag.first 50
 
+      if @user
+        @trusted_users = @user.karmas.select{|x| x.type==true}.map{|x| x.unto}
+        @blocked_users = @user.karmas.select{|x| x.type==false}.map{|x| x.unto}
+        # Put the trusted items first by doing a set union. Although the trusted items are
+        #  a subset of @items, doing a union like this will order them first.
+        @items = @items.map{|x| x if @trusted_users.include?(x.user_id)}.compact | @items
+      else
+        @trusted_users = []
+        @blocked_users = []
+      end
+
       haml :'item/index'
     end
 
@@ -117,6 +128,7 @@ module ShareMatch
     post '/item/new' do
       login_required
       params[:user_id] = @user.id
+      params[:value].delete!('$,')
       @item = Item.new(params)
       if @item.valid?
         @item.save
@@ -134,6 +146,7 @@ module ShareMatch
       else
         @similar = @item.get_similar 4, @item.tags
         @yours = true if @user == @item.user
+        @helpfuls = Helpful.all(:user=>@user)
         @control_panel = get_item_control_panel @item
         @can_karma = @user && Karma.new({:from=>@user.id, :unto=>@item.user.id, :type=>true}).valid?
         haml :'item/profile' 
@@ -154,7 +167,8 @@ module ShareMatch
 
       rev = Review.get(params['review_id'])
       haml :'item/_votes', :layout => false, :locals => {:upd => rev.upDownVotes, 
-        :review_id => params['review_id'], 
+        :helpfuls => Helpful.all(:user=>@user),
+        :review_id => params['review_id'].to_i, 
         :divid => params['divid']}
     end
 
@@ -182,21 +196,19 @@ module ShareMatch
 
     post '/item/:id/edit' do |id|
       login_required
-      #TODO: should also check if the user is the right one!
-      #very important!
-      #TODO: implement this
       puts params
+      params[:value].delete!('$,')
       params.delete 'splat'
       params.delete 'captures'
       params.delete 'id'
       @item = Item.first(:id => id)
+      must_be_this_person @item.user.id
       if @item.update(params)
         flash[:success] = 'Updated item succesfully'
         redirect "/item/#{id}"
       else
         flash[:error] = "Error saving item!"
       end
-      haml :'item/edit'
     end
 
     post '/item/:id' do |id|
@@ -357,14 +369,26 @@ module ShareMatch
         @user.community_id = c.id
         if @user.save
           # All went well!
-          redirect '/sign-up?step=3'
+          if params[:sign_up]
+            redirect '/sign-up?step=3'
+          else
+            redirect "/community/#{c.id}"
+          end
         else
           flash[:error] = "Could not join community!"
-          redirect '/sign-up?step=2'
+          if params[:sign_up]
+            redirect '/sign-up?step=2'
+          else
+            redirect "/community/#{c.id}"
+          end
         end
       else
         flash[:error] = "Could not create community!"
-        redirect '/sign-up?step=2'
+        if params[:sign_up]
+          redirect '/sign-up?step=2'
+        else
+          redirect "/communities"
+        end
       end
     end
 
@@ -430,6 +454,7 @@ module ShareMatch
       login_required
       must_be_this_person id
       @nav[:user] = 'active'
+      @borrowings = @user.borrowings.select{|x| x.current == true}
       haml :"user/edit"
     end
 

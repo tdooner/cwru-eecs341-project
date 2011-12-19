@@ -7,7 +7,8 @@
       %thead
         %th Community
         %th{:width=>"100px"} Zip Code
-        %th{:width=>"50px"}
+        -if logged_in
+          %th{:width=>"50px"}
       %tbody
         -if logged_in
           - @communities = current_user.closest_communities
@@ -17,32 +18,45 @@
           %tr
             %td
               %h4
-                %a.label{:href => "/community/#{c[:community].id}"}=c[:community].name
+                %a{:href => "/community/#{c[:community].id}"}=c[:community].name
                 - if c[:distance].to_miles != 0
                   %span{:style=>"color:#CCC"} (#{(c[:distance].to_miles).round} miles)
             %td{:style=>"vertical-align:middle;"}=c[:community].zip
-            %td{:style=>"vertical-align:middle;"}
-              -if logged_in and current_user.community != c[:community]
-                -if locals[:signup]
-                  %form{:action=>'/sign-up?step=2',:method=>'POST',:style=>"margin:0px;"}
-                    %input{:type=>"hidden",:name=>"community_id", :value=>c[:community].id}
-                    %input.btn.primary{:type=>"submit", :value=>"Join"}
-                -else 
-                  %form{:action=>'/community/join',:method=>'POST',:style=>"margin:0px;"}
-                    %input{:type=>"hidden",:name=>"community_id", :value=>c[:community].id}
-                    %input.btn.primary{:type=>"submit", :value=>"Join"}
-              -else
-                Member!
+            -if logged_in
+              %td{:style=>"vertical-align:middle;"}
+                -if current_user.community != c[:community]
+                  -if locals[:signup]
+                    %form{:action=>'/sign-up?step=2',:method=>'POST',:style=>"margin:0px;"}
+                      %input{:type=>"hidden",:name=>"community_id", :value=>c[:community].id}
+                      %input.btn.primary{:type=>"submit", :value=>"Join"}
+                  -else 
+                    %form{:action=>'/community/join',:method=>'POST',:style=>"margin:0px;"}
+                      %input{:type=>"hidden",:name=>"community_id", :value=>c[:community].id}
+                      %input.btn.primary{:type=>"submit", :value=>"Join"}
+                -else
+                  Member!
   %div.span5
     %h2 Create a Community
     %p Can't find a community near you? Be the pioneer of your own! Fill out the form below to put your community on the map.
-    %form.well{:action=>"/communities/new", :method=>"POST"}
-      %h5 Community Name
-      %input#name{:type=>"text",:name=>"name"}
-      %h5 Community ZIP
-      %p 
-        For purposes of location, input the ZIP code which will be used for others to automatically find this community.
-      %p
-        %input#zip{:type=>"text",:name=>"zip"}
-      %p
-        %input.btn.small{:type=>"submit", :value=>"Create and Join"}
+    -if locals[:signup]
+      %form.well{:action=>"/communities/new?signup=1", :method=>"POST"}
+        %h5 Community Name
+        %input#name{:type=>"text",:name=>"name"}
+        %h5 Community ZIP
+        %p 
+          For purposes of location, input the ZIP code which will be used for others to automatically find this community.
+        %p
+          %input#zip{:type=>"text",:name=>"zip"}
+        %p
+          %input.btn.small{:type=>"submit", :value=>"Create and Join"}
+    -else
+      %form.well{:action=>"/communities/new", :method=>"POST"}
+        %h5 Community Name
+        %input#name{:type=>"text",:name=>"name"}
+        %h5 Community ZIP
+        %p 
+          For purposes of location, input the ZIP code which will be used for others to automatically find this community.
+        %p
+          %input#zip{:type=>"text",:name=>"zip"}
+        %p
+          %input.btn.small{:type=>"submit", :value=>"Create and Join"}

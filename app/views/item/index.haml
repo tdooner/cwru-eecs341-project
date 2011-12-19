@@ -10,5 +10,5 @@
 %ul.media-grid
   - @items.each do |item|
     %li
-      = haml :'item/_item', :locals => {:item => item}
+      = haml :'item/_item', :locals => {:item => item, :trusted => item.trusted_by?(@user)}
 = haml :'helpers/pager', :locals => {:page => @page, :pages => @pages, :model => 'item'}

@@ -17,11 +17,37 @@
     });
   });
 
-%h1 Edit Profile
-- if flash[:error]
-  .alert-message.error=flash[:error]
-%form#edit_form{:method=>"POST"}
-  =haml :"user/_editform"
-  %fieldset
-    .input.clearfix
-      %input.submit.btn{:type => 'submit', :value => 'Edit User'}
+%div.row
+  %div.span8
+    %h1 Edit Profile
+    - if flash[:error]
+      .alert-message.error=flash[:error]
+    %form#edit_form{:method=>"POST"}
+      =haml :"user/_editform"
+      %fieldset
+        .input.clearfix
+          %input.submit.btn{:type => 'submit', :value => 'Update Profile'}
+  %div.span6.offset1
+    %h2 Currently Borrowing
+    - unless @borrowings.empty?
+      %table.well
+        %thead
+          %th{:width=>"50%"} Item
+          %th{:width=>"50%"} Days Remaining
+        %tbody
+          - @borrowings.each do |b|
+            %tr
+              %td
+                %a{:href=>"/item/#{b.item_id}"}
+                  %b=b.item.name
+                %p{:style=>"color:#999;"}
+                  (from
+                  %a{:href=>"/user/#{b.item.user_id}"}=b.item.user.name
+                  )
+              %td
+                = b.days_remaining.floor.to_s + "/" + b.item.max_loan.to_s
+    - else
+      %div.alert-message.block-message.warning
+        %p It looks like you aren't borrowing anything!
+        %div.alert-actions
+          %a.btn{:href=>"/item"} View All Items

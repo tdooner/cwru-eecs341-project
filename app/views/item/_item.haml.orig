@@ -3,12 +3,20 @@
   %a.no-decor{:href => "/item/#{item.id}"}
     %img.thumbnail{:src => item.image.thumb.url, :width => 210, :height => 150}
     .holder= item.name
+<<<<<<< HEAD
     %div.tags
       - if trusted
         %span.success.label Trusted
-      - if item.user == @user
-        %span.label Yours
       - if item.available?
         %span.label Available
       - else
         %br
+
+=======
+    - if item.user == @user
+      %span.label Yours
+    - elsif item.available?
+      %span.label Available
+    - else
+      %br
+>>>>>>> 4829bb18a96d42e98de4a51af2ad6a03c2163926

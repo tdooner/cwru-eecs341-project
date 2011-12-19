@@ -140,8 +140,8 @@
         :textile 
           #{review.body}
         %hr
-        %div{:id => "revvote#{@i}"}= haml :'item/_votes', :locals => {:upd => review.upDownVotes, 
-                :review_id=>review.id, :divid => "revvote#{@i}"}
+        %div{:id => "revvote#{@i}"}= haml :'item/_votes', :locals => {:upd => review.upDownVotes,
+                :helpfuls=>@helpfuls, :review_id=>review.id, :divid => "revvote#{@i}"}
                 
   - if logged_in and @item.user != current_user
     .rev#end
