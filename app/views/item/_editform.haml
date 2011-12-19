@@ -20,17 +20,11 @@
   .input.clearfix
     %textarea#description.xlarge{:name=>'desc'}
       = @item.desc || ""
--# TODO: Make this look not dumb with the remove checkbox and everything
 %fieldset
   %label{:for => 'image'}
     %b Item Image
   -if @item.image?
     %img{:src => @item.image.icon60, :width => 60, :height => 60, :style => 'border: 2px solid #777; margin: 10px; margin-left: 100px;'}
-    %br
-    %label{:for => 'remove-thumb'}
-      %b Remove Thumbnail
-    .input.clearfix 
-      %input#remove-thumb{:type => 'checkbox', :name => 'remove_thumb', :value => 'true'}
   .input.clearfix
     %input#thumb{:type => 'file', :name => 'image'}
 
