@@ -224,6 +224,19 @@ module ShareMatch
       redirect "/item/#{@item.id}"
     end
 
+    get '/item/:id/delete' do |id|
+      #sorry for not using verbs...
+      item = Item.get(id)
+      name = item.name
+      if item.destroy!
+        flash[:success] = "#{name} is no longer shared."
+        redirect "/user/#{@user.id}"
+      else
+        flash[:error] = "Item could not be unshared..."
+        redirect request.referrer
+      end
+    end
+
     get '/tag/:id' do
       @nav[:find] = 'active'
       item_per_page = 12.0 #must be float for pages to be correctly calculated
@@ -351,19 +364,21 @@ module ShareMatch
 
     post '/communities/new' do
       self.login_required
+      signup = params[:signup]
+      params.delete('signup')
       c = Community.new(params)
       if c.valid? and c.save
         @user.community_id = c.id
         if @user.save
           # All went well!
-          if params[:sign_up]
+          if signup
             redirect '/sign-up?step=3'
           else
             redirect "/community/#{c.id}"
           end
         else
           flash[:error] = "Could not join community!"
-          if params[:sign_up]
+          if signup
             redirect '/sign-up?step=2'
           else
             redirect "/community/#{c.id}"

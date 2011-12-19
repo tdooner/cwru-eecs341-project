@@ -53,6 +53,7 @@ class Item
   has n, :reviews
   has n, :tags, :through => Resource
 
+
   def available?
     return self.borrowings(:current => true).empty?
   end
