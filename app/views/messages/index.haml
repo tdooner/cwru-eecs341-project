@@ -1,0 +1,28 @@
+:javascript
+  message = function(){
+    if ($("#revarea").val() == ""){ return; }
+    $.post('/message/new?user=#{@other.id}',
+      {body: $("#revarea").val()},
+      function(data){
+        $('#end').before(data);
+        $('#revarea').val('');
+      }
+    );
+  }
+  $(document).ready(function(){ 
+    $("#mes-sub").click(message);
+  });
+
+%h1 Conversation with #{@other.name}
+- if not @messages.empty?
+  .multibox#convo
+    - @messages.each do |message|
+      = haml :'messages/_message', :locals => {:message => message}
+    .rev#end
+      %h5 Send a message to #{@other.name}
+      %textarea#revarea.required{:name => 'body'}
+      %br
+      %span#mes-sub.btn Message
+
+- else
+  %h6 You two haven't spoken yet

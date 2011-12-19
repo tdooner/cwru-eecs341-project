@@ -247,6 +247,25 @@ module ShareMatch
       end
     end
 
+    post '/message/new' do
+      login_required
+      message = Message.new(:sender => @user, 
+                          :receiver_id => params['user'].to_i, 
+                          :body => params['body'])
+      if message.save 
+        haml :'messages/_message', :layout => false, :locals => {:message => message}
+      end
+    end
+
+    get '/message' do 
+      login_required
+      @other = User.get(params['user'].to_i)
+      @messages = Message.all(:sender => @user, :receiver => @other, 
+                              :order => [:created_at.asc]) + Message.all(:sender => @other, 
+                              :receiver => @user, :order => [:created_at.asc])
+      haml :'messages/index'
+    end
+
     get '/tag/:id' do
       @nav[:find] = 'active'
       item_per_page = 12.0 #must be float for pages to be correctly calculated
@@ -259,7 +278,6 @@ module ShareMatch
 
       @pages = (@items.count / item_per_page).ceil
       @tags = Tag.first 50
-      #TODO: add ordering to tags based on popularity
 
       if @page > @pages
         @page = @pages

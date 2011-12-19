@@ -12,6 +12,7 @@ class Seed
     self.tags (count*8)
     self.reviews (count*16)
     self.helpfuls (count*32)
+    self.messages (count*count*3)
   end
 
   def self.communities
@@ -167,6 +168,15 @@ class Seed
           puts e
         end
       end
+    end
+  end
+
+  def self.messages count
+    users = User.all
+    count.times do
+      user1 = users[rand(users.size)]
+      user2 = users[rand(users.size)]
+      Message.create(:sender => user1, :receiver => user2, :body => Faker::Lorem.paragraph(3))
     end
   end
 
