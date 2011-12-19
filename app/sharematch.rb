@@ -423,7 +423,7 @@ module ShareMatch
     end
 
     get '/user/:id' do |id|
-      if id.to_i == @user.id
+      if @user && id.to_i == @user.id
         @you = true
         @u = @user
       else
