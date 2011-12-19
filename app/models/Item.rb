@@ -86,5 +86,9 @@ class Item
     return ret.to_a[0..n-1]
   end
 
+  def trusted_by?(user)
+    return false unless user
+    user.karmas.select{|x| x.type == true}.map{|x| x.unto}.include?(self.user_id)
+  end
 end
 

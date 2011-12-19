@@ -1,8 +1,13 @@
+- trusted ||= false
 .item-small
   %a.no-decor{:href => "/item/#{item.id}"}
     %img.thumbnail{:src => item.image.thumb.url, :width => 210, :height => 150}
     .holder= item.name
-    - if item.available?
-      %span.label Available
-    - else
-      %br
+    %div.tags
+      - if trusted
+        %span.success.label Trusted
+      - if item.available?
+        %span.label Available
+      - else
+        %br
+

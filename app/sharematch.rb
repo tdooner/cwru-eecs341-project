@@ -72,6 +72,17 @@ module ShareMatch
       @items = Item.page @page, :per_page => item_per_page
       @tags = Tag.first 50
 
+      if @user
+        @trusted_users = @user.karmas.select{|x| x.type==true}.map{|x| x.unto}
+        @blocked_users = @user.karmas.select{|x| x.type==false}.map{|x| x.unto}
+        # Put the trusted items first by doing a set union. Although the trusted items are
+        #  a subset of @items, doing a union like this will order them first.
+        @items = @items.map{|x| x if @trusted_users.include?(x.user_id)}.compact | @items
+      else
+        @trusted_users = []
+        @blocked_users = []
+      end
+
       haml :'item/index'
     end
 

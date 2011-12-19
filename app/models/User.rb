@@ -28,6 +28,7 @@ class User
   has n, :items
   has n, :borrowings
   has n, :helpfuls
+  has n, :karmas, :child_key=>:from
 
   belongs_to :community, :required => false
 
