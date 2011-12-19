@@ -18,7 +18,7 @@
 }
 \maketitle
 \begin{abstract}
-We have developed a simple web application which uses a relational database to permit users to share items that would otherwise go unutilized in their own homes.  The project was built using modern web development practices including RESTful interfaces, AJAX interactions, MVC architecture, and testing. 
+We have developed a simple web application\footnote{The code from our project can be found at \texttt{https://github.com/bis12/eecs341-project}} which uses a relational database to permit users to share items that would otherwise go unutilized in their own homes.  The project was built using modern web development practices including RESTful interfaces, AJAX interactions, MVC architecture, and testing. 
 \end{abstract}
 
 \section{Introduction}
@@ -189,13 +189,16 @@ were automatically outputted by the ORM once we described our models according t
 \end{figure*}
 
 \section{SQL Queries in RA and TRC}
-By and large, as with any web application, our project consists of mostly simple queries. 
-\begin{centering}
+By and large, as with any web application, our project consists of mostly simple queries. For example:
+
 \begin{lstlisting}
 SELECT * FROM items;
 \end{lstlisting}
-\end{centering}
 
+However, a few queries are more complicated. Here are some of the more complicated queries running behind-the-scenes
+in our application.
+
+\subsection{Query 1: Selecting Items With a Tag}
 As a result of using an ORM (Object-Relational Mapper), simple queries are abstracted away. 
 For instance, on the ``Items with Tag'' page we wish to select all properties of
 all items with a certain tag, but we do not have to write the SQL query manually. If we did, it would look something
@@ -219,6 +222,7 @@ t[name] = ?))))\}
 \end{split}
 \end{displaymath}
 
+\subsection{Query 2: Finding Item Reviews}
 Consider also the task of finding a review by a certain user\_id for a certain item\_id. This is also
 accomplished easily with the use of the ORM. Internally, the query run is equivalent to:
 \begin{lstlisting}
@@ -230,6 +234,7 @@ Or, in Relational Algebra,
 Or, in Tuple-Relational Calculus (defining $R(x)$ to be true if $x$ is in the relation \textit{reviews}),
 \[ \{ t | R(t) \to (t[item\_id]=? \land t[user\_id]=?) \]
 
+\subsection{Query 3: Finding Closest Communities}
 However, not all queries are abstracted by the ORM. For instance, the logic to select the closest
 communities to a ZIP Codes uses a table matching the ZIP Code of each community with the latitude and
 longitude of that point, and then sorting by the difference in latitude and longitude.
@@ -255,7 +260,8 @@ In Relational Algebra and Tuple Relational Calculus, the query is actually quite
 \end{split}
 \]
 (assuming $C(x)$ is true for tuples $x \in \textit{community}$ and $Z(x)$ is true for tuples $x \in \textit{zip\_codes}$).
-% Tom's other query
+
+\subsection{Query 4: Finding Trusted Items}
 Another interesting query in the Karma section is getting a list of all trusted users. This allows the find page
 to intelligently prioritize the items found according to the users' preferences. The query looks something like
 \begin{lstlisting}
@@ -275,7 +281,7 @@ In Tuple Relational Calculus, this can be represented as
 \begin{split} \{ t | I(t) \to ((\forall k) (K(k) \to t[user\_id] = k[unto] \\
 \land k[from] = ? \land k[type] = TRUE)) \} \end{split} \]
 
-% Brian's other query
+\subsection{Query 5: Finding a Community's Items}
 The final interesting query we will show is the one to find the items that are available to be shared in a community.  Using our ORM we can write this as \texttt{Community.users.items} which will return all of the items owned by users that are in this community. In SQL this would be equivilant to 
 \begin{lstlisting}
 SELECT * FROM items 

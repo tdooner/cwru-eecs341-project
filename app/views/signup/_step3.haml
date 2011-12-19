@@ -12,14 +12,23 @@
     });
   });
 
-
-%h2 Add a new Item
-- if flash[:error]
-  .alert-message.error
-    %p
-      = flash[:error]
-%form#item-form{:method=>"POST", :enctype => 'multipart/form-data', :action => 'item/new'}
-  = haml :'item/_editform'
-  %fieldset
-    .input.clearfix
-      %input.submit.btn{:type => 'submit', :value => 'Share it!'}
+%div.row
+  %div.span9
+    %h2 Add a new Item
+    - if flash[:error]
+      .alert-message.error
+        %p
+          = flash[:error]
+    %form#item-form{:method=>"POST", :enctype => 'multipart/form-data', :action => 'item/new'}
+      = haml :'item/_editform'
+      %fieldset
+        .input.clearfix
+          %input.submit.btn{:type => 'submit', :value => 'Share it!'}
+  %div.span5
+    %h2 Start Borrowing Now!
+    %div.alert-message.block-message.warning
+      %p 
+        %b All right! You're registered!
+      %p If you don't have any items to add, then click this button to view the catalog of borrowable items. (You can always add items later by clicking your name at the top.)
+      %div.alert-actions
+        %a.btn{:href=>"/item"} View Item Catalog

@@ -428,6 +428,7 @@ module ShareMatch
       login_required
       must_be_this_person id
       @nav[:user] = 'active'
+      @borrowings = @user.borrowings.select{|x| x.current == true}
       haml :"user/edit"
     end
 
