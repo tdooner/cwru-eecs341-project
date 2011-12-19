@@ -329,17 +329,17 @@ a user will leave no trace of anything associated with that user. (This is an op
 versions, since it is preferable to maintain the presence of a past borrowing even if the user no longer exists.)
 
 \section{Relational Database Design}
-We designed our database to contain as few functional dependcies as possible. We used the standard practice of an
+We designed our database to contain as few functional dependencies as possible. We used the standard practice of an
 auto-increment primary key integer to keep otherwise-similar tuples distinct. And, since we don't store redundant information
 in any table, no columns are functionally determined by any other columns.
 
-One notable exception exists, however. In the users relation, we store a few properties including the user's city, state, and ZIP code. 
-Technically, the ZIP code functionally determines both the city and the state, however we store the values in the table
-anyway because they are inputted by the user, would require an additional look-up if not stored there, and are highly unlikely
-to change any time soon. 
+One notable functional dependency exists, however. In the \texttt{users} relation, we store a few properties including the user's city, state, and ZIP code. 
+Technically, the ZIP code functionally determines both the city and the state. This makes the table in 3NF because ZIP Code, a non-prime attribute, is directly transitive from the only key of \texttt{users}. We decided to keep these attributes in the table anyways because they are inputted by the user, would require an additional look-up if not stored there, and are highly unlikely to change any time soon. 
 
-If we were to decompose the relation so that it is strictly in BCNF, we could eliminate city and state from the users
-relation and create a new relation consisting of ZIP Code (primary key), city, and state.
+If we were to decompose the relation so that it is strictly in BCNF, we could take the functional dependency $ZIP Code \to {City, State}$ and break it into its own new relation -- one which consists of ZIP Code (as a primary key), city, and state.
+
+Aside from this functional dependency, we cannot locate any other instances of jeopardizing the BCNF status of our tables with functional dependencies.
+
 \section{Revisiting the Relational Database Schema}
 From the beginning, we designed our schema to perform well in practice. There are few functional dependencies, so
 theoretically many of the tables are in BCNF. We don't, however, believe that we should decompose or make our tables
