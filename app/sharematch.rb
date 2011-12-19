@@ -117,6 +117,7 @@ module ShareMatch
     post '/item/new' do
       login_required
       params[:user_id] = @user.id
+      params[:value].delete!('$,')
       @item = Item.new(params)
       if @item.valid?
         @item.save
@@ -182,21 +183,19 @@ module ShareMatch
 
     post '/item/:id/edit' do |id|
       login_required
-      #TODO: should also check if the user is the right one!
-      #very important!
-      #TODO: implement this
       puts params
+      params[:value].delete!('$,')
       params.delete 'splat'
       params.delete 'captures'
       params.delete 'id'
       @item = Item.first(:id => id)
+      must_be_this_person @item.user.id
       if @item.update(params)
         flash[:success] = 'Updated item succesfully'
         redirect "/item/#{id}"
       else
         flash[:error] = "Error saving item!"
       end
-      haml :'item/edit'
     end
 
     post '/item/:id' do |id|
